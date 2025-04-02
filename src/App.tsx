@@ -4,9 +4,11 @@ import {
   FieldController,
   FormContainer,
   useFormController,
-} from "./components/molecules/form-container";
+  ValidateResponse,
+} from "./components/molecules/form";
+import { FieldValues } from "react-hook-form";
 
-interface FormData {
+interface FormData extends FieldValues {
   username: string;
   email: string;
   password: string;
@@ -20,7 +22,7 @@ const handleSubmit = (data: FormData) => {
   });
 };
 
-const validateFunction = async (data: FormData) => {
+const validateFunction = async (data: FormData): ValidateResponse => {
   const errors: Record<string, { message: string }> = {};
 
   if (!data.username) {
@@ -45,21 +47,17 @@ function App() {
   const {
     formRef,
     resetForm,
-    setFormValue,
     submitForm,
-    getFormValue,
     validateForm,
-    getFieldsError,
   } = useFormController();
 
   return (
     <>
       <div className=" border-1 border-black w-[1000px]">
-        <FormContainer
+        <FormContainer<FormData>
           ref={formRef}
           validateFunction={validateFunction}
           onReset={() => console.log("Form has been reset")}
-          onError={(error) => console.error("An error occurred:", error)}
           validationMode="onChange"
           onSubmit={handleSubmit}
           init={async () => {
@@ -76,9 +74,7 @@ function App() {
               )
             );
           }}
-          onFailure={(params) => {
-            console.log("onFailure", params);
-          }}
+          
           onValueChange={(values) =>
             console.log("Form values changed:", values)
           }
@@ -87,12 +83,8 @@ function App() {
             // Giả lập kiểm tra điều kiện trước khi submit
             return data.name !== ""; // Chỉ submit nếu tên không rỗng
           }}
-          afterSubmit={(error, data) => {
-            if (error) {
-              console.error("Submit failed with error:", error);
-            } else {
-              console.log("Submit succeeded with data:", data);
-            }
+          afterSubmit={(params) => {
+            console.log("Submit succeeded with data:", params);
           }}
         >
           <FlexibleLayout
@@ -108,7 +100,6 @@ function App() {
                 hintType="info"
                 labelAlign="right"
                 labelWidth="150px"
-                rules={{ required: true }}
                 hintDisplayMode="ellipsis"
               >
                 <input
@@ -122,13 +113,11 @@ function App() {
               <FieldController<FormData>
                 name="email"
                 label="Email"
-                type="email"
                 layout="horizontal"
                 hint="We'll never share your email with anyone else."
                 hintType="warning"
                 labelAlign="right"
                 labelWidth="150px"
-                rules={{ required: true }}
               >
                 <input
                   type="text"
@@ -141,13 +130,11 @@ function App() {
               <FieldController<FormData>
                 name="password"
                 label="Password"
-                type="password"
                 layout="horizontal"
                 hint="Must be at least 6 characters"
                 hintType="error"
                 labelAlign="right"
                 labelWidth="150px"
-                rules={{ required: true }}
               >
                 <input
                   type="text"
