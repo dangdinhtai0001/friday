@@ -1,22 +1,22 @@
-import FlexibleLayout from "@/components/flexible-layout";
+import FlexibleLayout from "@/components/molecules/flexible-layout";
 import "@/assets/styles/index.css";
 import {
   FieldController,
   FormContainer,
   useFormController,
-} from "./components/form-container";
+} from "./components/molecules/form-container";
 
 interface FormData {
-  username: string,
-  email: string,
-  password: string,
+  username: string;
+  email: string;
+  password: string;
 }
 const handleSubmit = (data: FormData) => {
   return new Promise<void>((resolve) => {
     setTimeout(() => {
       console.log("Form submitted:", data);
       resolve();
-    }, 1000); 
+    }, 1000);
   });
 };
 
@@ -58,16 +58,26 @@ function App() {
         <FormContainer
           ref={formRef}
           validateFunction={validateFunction}
+          onReset={() => console.log("Form has been reset")}
+          onError={(error) => console.error("An error occurred:", error)}
           validationMode="onChange"
           onSubmit={handleSubmit}
           init={async () => {
             // Giả lập việc lấy dữ liệu từ API
             return new Promise((resolve) =>
               setTimeout(
-                () => resolve({ username: "username", email: "foo@gmail.com", password: "12312" }),
+                () =>
+                  resolve({
+                    username: "username",
+                    email: "foo@gmail.com",
+                    password: "12312",
+                  }),
                 500
               )
             );
+          }}
+          onFailure={(params) => {
+            console.log("onFailure", params);
           }}
           onValueChange={(values) =>
             console.log("Form values changed:", values)
