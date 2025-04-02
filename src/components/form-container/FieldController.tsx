@@ -1,10 +1,9 @@
 import React from 'react';
-import { useController } from 'react-hook-form';
+import { useController, FieldValues, Path } from 'react-hook-form';
 
-interface FieldControllerProps<T extends Record<string, any>> {
-  name: keyof T;
+interface FieldControllerProps<T extends FieldValues> {
+  name: Path<T>; // Tên field, sử dụng Path<T> để đảm bảo tên hợp lệ trong T
   label: string;
-  rules?: Record<string, any>;
   layout?: 'horizontal' | 'vertical'; // Hỗ trợ layout hàng ngang hoặc hàng dọc
   hint?: string; // Hint text
   hintType?: 'info' | 'warning' | 'error'; // Loại hint (để thay đổi màu sắc)
@@ -14,10 +13,9 @@ interface FieldControllerProps<T extends Record<string, any>> {
   children: React.ReactNode; // Children để thay thế input
 }
 
-const FieldController = <T extends Record<string, any>>({
+const FieldController = <T extends FieldValues>({
   name,
   label,
-  rules = {},
   layout = 'vertical', // Default là vertical
   hint,
   hintType = 'info',
@@ -29,7 +27,7 @@ const FieldController = <T extends Record<string, any>>({
   const {
     field,
     fieldState: { error },
-  } = useController<T>({ name: name as any, rules });
+  } = useController<T>({ name });
 
   // Xác định màu sắc cho hint dựa trên hintType
   const hintColorClass = {

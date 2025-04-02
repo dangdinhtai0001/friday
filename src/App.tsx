@@ -1,29 +1,70 @@
-import FlexibleLayout from "./components/flexible-layout";
+import FlexibleLayout from "@/components/flexible-layout";
 import "@/assets/styles/index.css";
-import { FieldController, FormContainer } from "./components/form-container";
+import {
+  FieldController,
+  FormContainer,
+  useFormController,
+} from "./components/form-container";
 
-// Default values
-const defaultValues = {
-  username: "",
-  email: "",
-  password: "",
+interface FormData {
+  username: string,
+  email: string,
+  password: string,
+}
+const handleSubmit = (data: FormData) => {
+  return new Promise<void>((resolve) => {
+    setTimeout(() => {
+      console.log("Form submitted:", data);
+      resolve();
+    }, 1000); 
+  });
 };
 
-const handleSubmit = (data: typeof defaultValues) => {
-  console.log("Form Data:", data);
+const validateFunction = async (data: FormData) => {
+  const errors: Record<string, { message: string }> = {};
+
+  if (!data.username) {
+    errors.username = { message: "Username is required" };
+  } else if (data.username.length < 3) {
+    errors.username = { message: "Username must be at least 3 characters" };
+  }
+
+  if (!data.password) {
+    errors.password = { message: "Password is required" };
+  } else if (data.password.length < 6) {
+    errors.password = { message: "Password must be at least 6 characters" };
+  }
+
+  return {
+    values: Object.keys(errors).length > 0 ? {} : data,
+    errors,
+  };
 };
 
 function App() {
+  const {
+    formRef,
+    resetForm,
+    setFormValue,
+    submitForm,
+    getFormValue,
+    validateForm,
+    getFieldsError,
+  } = useFormController();
+
   return (
     <>
       <div className=" border-1 border-black w-[1000px]">
         <FormContainer
-          onSubmit={(data) => console.log("Form submitted:", data)}
+          ref={formRef}
+          validateFunction={validateFunction}
+          validationMode="onChange"
+          onSubmit={handleSubmit}
           init={async () => {
             // Giả lập việc lấy dữ liệu từ API
             return new Promise((resolve) =>
               setTimeout(
-                () => resolve({ username: "John Doe", email: 30 }),
+                () => resolve({ username: "username", email: "foo@gmail.com", password: "12312" }),
                 500
               )
             );
@@ -49,7 +90,7 @@ function App() {
             isDraggable={false} // Tắt tính năng kéo thả
           >
             <div key="item1" data-grid={{ x: 0, y: 0, w: 12, h: 3 }}>
-              <FieldController<typeof defaultValues>
+              <FieldController<FormData>
                 name="username"
                 label="Username"
                 layout="horizontal"
@@ -68,7 +109,7 @@ function App() {
               </FieldController>
             </div>
             <div key="item2" data-grid={{ x: 0, y: 0, w: 12, h: 3 }}>
-              <FieldController<typeof defaultValues>
+              <FieldController<FormData>
                 name="email"
                 label="Email"
                 type="email"
@@ -87,7 +128,7 @@ function App() {
               </FieldController>
             </div>
             <div key="item3" data-grid={{ x: 0, y: 0, w: 12, h: 3 }}>
-              <FieldController<typeof defaultValues>
+              <FieldController<FormData>
                 name="password"
                 label="Password"
                 type="password"
@@ -106,14 +147,10 @@ function App() {
               </FieldController>
             </div>
           </FlexibleLayout>
-
-          <button
-            type="submit"
-            className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
-          >
-            Submit
-          </button>
         </FormContainer>
+        <button onClick={submitForm}>Submit</button>
+        <button onClick={resetForm}>reset</button>
+        <button onClick={validateForm}>validate</button>
       </div>
     </>
   );
