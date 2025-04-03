@@ -2,7 +2,6 @@ import {
   forwardRef,
   useImperativeHandle,
   useEffect,
-  useState,
   JSX,
   useContext,
 } from "react";
@@ -27,7 +26,6 @@ const FormController = <T extends FieldValues>(
   }: FormProps<T>,
   ref: React.ForwardedRef<FormRef<T>>
 ) => {
-  const [loading, setLoading] = useState<boolean>(false);
   const { state, actions } = useContext(FormContext);
 
   // Khởi tạo useForm với resolver tùy chỉnh và mode
@@ -60,14 +58,15 @@ const FormController = <T extends FieldValues>(
   useEffect(() => {
     const initializeForm = async () => {
       if (typeof init === "function") {
-        setLoading(true);
+        actions.setStatus("loading");
+
         try {
           const resolvedValues = await (init as () => Promise<T>)();
           reset(resolvedValues);
         } catch (error) {
           console.error("Failed to initialize form:", error);
         } finally {
-          setLoading(false);
+          actions.setStatus("idle");
         }
       } else if (init) {
         reset(init);
@@ -86,13 +85,13 @@ const FormController = <T extends FieldValues>(
 
   // Xử lý submit
   const handleSubmission = async (data: T) => {
-    setLoading(true);
+    actions.setStatus("loading");
 
     // Step 1: Gọi beforeSubmit để kiểm tra xem có nên tiếp tục submit hay không
     if (beforeSubmit) {
       const shouldProceed = await beforeSubmit(data);
       if (shouldProceed === false) {
-        setLoading(false);
+        actions.setStatus("idle");
         return;
       }
     }
@@ -104,7 +103,7 @@ const FormController = <T extends FieldValues>(
     if (afterSubmit) {
       await afterSubmit(data);
     }
-    setLoading(false);
+    actions.setStatus("idle");
   };
 
   // Expose các phương thức thông qua ref
@@ -118,18 +117,19 @@ const FormController = <T extends FieldValues>(
     setFormValue: <K extends Path<T>>(name: K, value: T[K]) =>
       setValue(name, value),
     submitForm: async () => {
-      setLoading(true);
+      actions.setStatus("loading");
 
       const isValid = await trigger();
       if (!isValid) {
-        setLoading(false);
+        actions.setStatus("idle");
         return;
       }
 
       await handleSubmit(handleSubmission)();
-      setLoading(false);
+      actions.setStatus("idle");
     },
-    setFormLoading: (loading: boolean) => setLoading(loading),
+    setFormLoading: (loading: boolean) =>
+      actions.setStatus(loading ? "loading" : "idle"),
     getFormValue: () => getValues(),
     validateForm: async () => await trigger(),
     getFieldsError: () => flattenErrors(formState.errors),
@@ -137,10 +137,12 @@ const FormController = <T extends FieldValues>(
 
   return (
     <>
+      {state.formId}
       <div className="relative">
         {/* Loading Overlay */}
-        {loading && <LoadingOverlay isLoading={loading} />}
-
+        {state.status === "loading" && (
+          <LoadingOverlay isLoading={state.status === "loading"} />
+        )}
         {/* Form */}
         <form onSubmit={methods.handleSubmit(handleSubmission)}>
           <FormProvider {...methods}>{children}</FormProvider>
