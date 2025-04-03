@@ -12,6 +12,7 @@ interface FormData extends FieldValues {
   username: string;
   email: string;
   password: string;
+  description: string;
 }
 const handleSubmit = (data: FormData) => {
   return new Promise<void>((resolve) => {
@@ -69,6 +70,7 @@ function App() {
                     username: "username",
                     email: "foo@gmail.com",
                     password: "12312",
+                    description: ""
                   }),
                 500
               )
@@ -101,6 +103,7 @@ function App() {
                 labelAlign="right"
                 labelWidth="150px"
                 hintDisplayMode="ellipsis"
+                isRequired={true}
               >
                 <input
                   type="text"
@@ -139,6 +142,21 @@ function App() {
                 <input
                   type="text"
                   placeholder="Enter your username"
+                  className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </FieldController>
+            </div>
+            <div key="item4" data-grid={{ x: 0, y: 0, w: 12, h: 3 }}>
+              <FieldController<FormData>
+                name="description"
+                label="description"
+                layout="horizontal"
+                labelAlign="right"
+                labelWidth="150px"
+              >
+                <input
+                  type="text"
+                  placeholder="description"
                   className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </FieldController>
