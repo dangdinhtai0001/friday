@@ -45,15 +45,11 @@ const validateFunction = async (data: FormData): ValidateResponse => {
 };
 
 function App() {
-  const {
-    formRef,
-    resetForm,
-    submitForm,
-    validateForm,
-  } = useFormController();
+  const { formRef, resetForm, submitForm, validateForm } = useFormController();
 
   return (
     <>
+      <div className="w-10 h-10 bg-black-5 border-1 border-black"></div>
       <div className=" border-1 border-black w-[1000px]">
         <FormContainer<FormData>
           ref={formRef}
@@ -70,13 +66,12 @@ function App() {
                     username: "username",
                     email: "foo@gmail.com",
                     password: "12312",
-                    description: ""
+                    description: "",
                   }),
                 500
               )
             );
           }}
-          
           onValueChange={(values) =>
             console.log("Form values changed:", values)
           }
