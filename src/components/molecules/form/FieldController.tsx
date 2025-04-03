@@ -1,16 +1,17 @@
-import React from 'react';
-import { useController, FieldValues } from 'react-hook-form';
-import { FieldControllerProps } from './types/field.d';
+import React from "react";
+import { useController, FieldValues } from "react-hook-form";
+import { FieldControllerProps } from "./types/field.d";
 
 const FieldController = <T extends FieldValues>({
   name,
   label,
-  layout = 'vertical', // Default là vertical
+  layout = "vertical", // Default là vertical
   hint,
-  hintType = 'info',
-  labelAlign = 'right', // Mặc định căn phải
-  labelWidth = '120px', // Chiều rộng mặc định cho label
-  hintDisplayMode = 'ellipsis', // Mặc định là ellipsis
+  hintType = "info",
+  labelAlign = "right", // Mặc định căn phải
+  labelWidth = "120px", // Chiều rộng mặc định cho label
+  hintDisplayMode = "ellipsis", // Mặc định là ellipsis
+  isRequired = false,
   children,
 }: FieldControllerProps<T>) => {
   const {
@@ -20,50 +21,54 @@ const FieldController = <T extends FieldValues>({
 
   // Xác định màu sắc cho hint dựa trên hintType
   const hintColorClass = {
-    info: 'text-blue-500',
-    warning: 'text-yellow-500',
-    error: 'text-red-500',
+    info: "text-blue-500",
+    warning: "text-yellow-500",
+    error: "text-red-500",
   }[hintType];
 
   // Xác định class căn chỉnh nội dung của label
   const alignClass = {
-    left: 'text-left',
-    center: 'text-center',
-    right: 'text-right',
+    left: "text-left",
+    center: "text-center",
+    right: "text-right",
   }[labelAlign];
 
   // Class Tailwind cho hint message
   const hintClass = {
-    ellipsis: 'truncate', // Tắt đuôi với dấu ba chấm
-    full: '', // Không tắt đuôi
+    ellipsis: "truncate", // Tắt đuôi với dấu ba chấm
+    full: "", // Không tắt đuôi
   }[hintDisplayMode];
 
   // Tính toán khoảng cách từ lề trái của label đến lề trái của hint message
-  const marginLeftForHint = layout === 'horizontal'
-    ? `calc(${labelWidth} + 1rem)` // 1rem ~ space-x-4 (khoảng cách giữa label và input)
-    : undefined;
+  const marginLeftForHint =
+    layout === "horizontal"
+      ? `calc(${labelWidth} + 1rem)` // 1rem ~ space-x-4 (khoảng cách giữa label và input)
+      : undefined;
 
   return (
-    <div className="flex flex-col space-y-2">
+    <div className="flex flex-col space-y-1">
       {/* Container chính chứa label và input */}
       <div
         className={`${
-          layout === 'horizontal'
-            ? 'flex items-center space-x-4' // Layout horizontal với label và input căn giữa theo chiều dọc
-            : 'flex flex-col space-y-2' // Layout vertical
+          layout === "horizontal"
+            ? "flex items-center space-x-4" // Layout horizontal với label và input căn giữa theo chiều dọc
+            : "flex flex-col space-y-1" // Layout vertical
         }`}
       >
         {/* Label */}
         <label
           htmlFor={name.toString()}
-          className={`font-medium text-gray-700 ${alignClass} pr-2 ${
-            layout === 'horizontal' ? 'shrink-0 self-center' : '' // Thêm self-center để căn giữa theo chiều dọc
+          className={`font-medium ${
+            error ? "text-red-500" : "text-gray-700" // Thay đổi màu chữ nếu có lỗi
+          } ${alignClass} pr-2 ${
+            layout === "horizontal" ? "shrink-0 self-center" : "" // Thêm self-center để căn giữa theo chiều dọc
           }`}
           style={{
             minWidth: labelWidth, // Sử dụng style inline để thiết lập chiều rộng
           }}
         >
           {label}
+          {isRequired && <span className="text-red-500 ml-1">*</span>}
         </label>
 
         {/* Input và Error Circle */}
@@ -92,7 +97,7 @@ const FieldController = <T extends FieldValues>({
         {error && (
           <p
             className="text-red-500 text-sm animate-shake"
-            style={{ animationDuration: '0.5s' }}
+            style={{ animationDuration: "0.5s" }}
           >
             {error.message}
           </p>
@@ -101,7 +106,7 @@ const FieldController = <T extends FieldValues>({
         {hint && (
           <p
             className={`text-sm ${hintColorClass} ${hintClass}`}
-            title={hintDisplayMode === 'ellipsis' ? hint : undefined} // Tooltip khi ellipsis
+            title={hintDisplayMode === "ellipsis" ? hint : undefined} // Tooltip khi ellipsis
           >
             {hint}
           </p>

@@ -10,4 +10,5 @@ export interface FieldControllerProps<T extends FieldValues> {
     labelWidth?: string; // Chiều rộng cố định hoặc tối thiểu cho label
     hintDisplayMode?: 'ellipsis' | 'full'; // Chế độ hiển thị hint message
     children: React.ReactNode; // Children để thay thế input
+    isRequired?: boolean; // đánh dấu field là required
   }
