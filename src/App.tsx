@@ -1,5 +1,5 @@
 import FlexibleLayout from "@/components/molecules/flexible-layout";
-import "@/assets/styles/index.css";
+import "@/assets/styles/main.css";
 import {
   FieldController,
   FormContainer,
@@ -49,7 +49,11 @@ function App() {
 
   return (
     <>
-      <div className="w-10 h-10 bg-black-5 border-1 border-black"></div>
+    <div className="flex">
+    <div className="w-10 h-10 bg-black-100 mx-4"></div>
+    <div className="w-10 h-10 bg-black-80 mx-4"></div>
+    <div className="w-10 h-10 bg-black-40 mx-4"></div>
+    </div>
       <div className=" border-1 border-black w-[1000px]">
         <FormContainer<FormData>
           ref={formRef}
