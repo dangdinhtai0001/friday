@@ -4,13 +4,29 @@ import { FormProps, FormRef } from "./types/form";
 import FormController from "./FormController";
 import { forwardRef, JSX } from "react";
 
-const FormContainer = <T extends FieldValues>(
-  { children, ...props }: FormProps<T>,
-  ref: React.ForwardedRef<FormRef<T>>
+const FormContainer = <
+  FormValues extends FieldValues,
+  SubmitResponse,
+  ExternalContext
+>(
+  {
+    children,
+    ...props
+  }: FormProps<FormValues, SubmitResponse, ExternalContext>,
+  ref: React.ForwardedRef<FormRef<FormValues>>
 ) => {
+  const { externalContext, initialFieldState, initialLayout } = props;
+
   return (
-    <FormProvider>
-      <FormController<T> {...props} ref={ref}>
+    <FormProvider
+      externalContext={externalContext}
+      initialFieldState={initialFieldState}
+      initialLayout={initialLayout}
+    >
+      <FormController<FormValues, SubmitResponse, ExternalContext>
+        {...props}
+        ref={ref}
+      >
         {children}
       </FormController>
     </FormProvider>
@@ -19,6 +35,12 @@ const FormContainer = <T extends FieldValues>(
 
 // export default FormContainer;
 
-export default forwardRef(FormContainer) as <T extends FieldValues>(
-  props: FormProps<T> & { ref?: React.ForwardedRef<FormRef<T>> }
+export default forwardRef(FormContainer) as <
+  FormValues extends FieldValues,
+  SubmitResponse,
+  ExternalContext
+>(
+  props: FormProps<FormValues, SubmitResponse, ExternalContext> & {
+    ref?: React.ForwardedRef<FormRef<FormValues>>;
+  }
 ) => JSX.Element;
