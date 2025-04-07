@@ -1,4 +1,7 @@
 import { Path, FieldError, FieldValues } from "react-hook-form";
+import { FormState, FormActions } from "./context.d";
+import { FieldState } from "./field";
+import { Layout } from "react-grid-layout";
 
 // Định nghĩa kiểu dữ liệu cho response của validateFunction
 export interface ValidateResponse<T extends FieldValues> {
@@ -6,17 +9,35 @@ export interface ValidateResponse<T extends FieldValues> {
   errors: Record<string, { message: string }>;
 }
 
-// Kiểu dữ liệu cho props của FormContainer
-export interface FormProps<T extends FieldValues> {
+export interface FormLayout {
+  [fieldName: string]: Layout
+}
+
+// Data type for FormContainer props
+export interface FormProps<
+  FormValues extends FieldValues,
+  SubmitResponse,
+  ExternalContext
+> {
   children: React.ReactNode;
-  onSubmit: (data: T) => void | Promise<void>; // Hàm xử lý submit
-  validateFunction?: (data: T) => Promise<ValidateResponse<T>>; // Hàm validate tuỳ chỉnh
-  init?: T | (() => Promise<T>); // Giá trị khởi tạo (đồng bộ hoặc bất đồng bộ)
-  onValueChange?: (values: T) => void; // Hàm xử lý khi giá trị thay đổi
-  beforeSubmit?: (data: T) => boolean | Promise<boolean>; // Trigger trước khi submit
-  afterSubmit?: (data: T) => void | Promise<void>; // Trigger sau khi submit
-  validationMode?: "onChange" | "onSubmit"; // Chế độ validate
-  onReset?: () => void; // Hàm xử lý khi reset form
+  onValueChange?: (values: FormValues) => void; // Handler function when values change
+  beforeSubmit?: (values: FormValues) => boolean | Promise<boolean>; // Trigger before submission
+  afterSubmit: (
+    values: FormValues,
+    response: SubmitResponse
+  ) => void | Promise<void>; // Trigger after submission, receives both the form data and the response
+  validateFunction?: (data: FormValues) => Promise<ValidateResponse<T>>; // Custom validation function
+  init?: FormValues | (() => Promise<FormValues>); // Initial value (synchronous or asynchronous)
+  onSubmit: (data: FormValues) => SubmitResponse | Promise<SubmitResponse>; // Submit handler function now returns a response of type R
+  validationMode?: "onChange" | "onSubmit"; // Validation mode
+  onReset?: () => void; // Handler function when resetting the form
+  onReady?: (
+    state: FormState<ExternalContext>,
+    actions: FormActions<ExternalContext>
+  ) => void; // Hook triggered when the form is ready
+  externalContext?: ExternalContext; // Optional external context to pass via props
+  initialFieldState: FieldState;
+  initialLayout: FormLayout;
 }
 
 // Định nghĩa kiểu dữ liệu cho ref

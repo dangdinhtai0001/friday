@@ -1,18 +1,20 @@
-import {
-  forwardRef,
-  useImperativeHandle,
-  useEffect,
-  JSX,
-  useContext,
-} from "react";
+import { forwardRef, useImperativeHandle, useEffect, JSX } from "react";
 import { useForm, FormProvider, Path } from "react-hook-form";
 import { LoadingOverlay } from "@/components/molecules/loading-overlay";
 import type { FieldValues } from "react-hook-form";
 import { flattenErrors } from "./utils";
 import { FormProps, FormRef } from "./types/form.d";
-import FormContext from "./contexts/FormContext";
+import { useFormContext } from "./contexts/FormContext";
+import { FlexibleLayout } from "@/components/molecules/flexible-layout";
+import React from "react";
+import FieldController from "./FieldController";
+import { FieldControllerProps } from "./types/field";
 
-const FormController = <T extends FieldValues>(
+const FormController = <
+  FormValues extends FieldValues,
+  SubmitResponse,
+  ExternalContext
+>(
   {
     children,
     onSubmit,
@@ -23,13 +25,14 @@ const FormController = <T extends FieldValues>(
     validationMode = "onSubmit",
     onReset,
     afterSubmit,
-  }: FormProps<T>,
-  ref: React.ForwardedRef<FormRef<T>>
+    onReady,
+  }: FormProps<FormValues, SubmitResponse, ExternalContext>,
+  ref: React.ForwardedRef<FormRef<FormValues>>
 ) => {
-  const { state, actions } = useContext(FormContext);
+  const { state, actions } = useFormContext<ExternalContext>();
 
-  // Khởi tạo useForm với resolver tùy chỉnh và mode
-  const methods = useForm<T>({
+  // Initialize useForm with custom resolver and mode
+  const methods = useForm<FormValues>({
     mode: validationMode,
     resolver: validateFunction
       ? async (data) => {
@@ -54,40 +57,53 @@ const FormController = <T extends FieldValues>(
 
   const values = watch();
 
-  // Khởi tạo giá trị ban đầu của form
+  // Initialize form values
   useEffect(() => {
     const initializeForm = async () => {
-      if (typeof init === "function") {
-        actions.setStatus("loading");
-
-        try {
-          const resolvedValues = await (init as () => Promise<T>)();
-          reset(resolvedValues);
-        } catch (error) {
-          console.error("Failed to initialize form:", error);
-        } finally {
-          actions.setStatus("idle");
+      try {
+        // Step 1: Handle initialization (synchronous or asynchronous)
+        let resolvedValues: FormValues | undefined;
+        if (typeof init === "function") {
+          actions.setStatus("loading");
+          resolvedValues = await (init as () => Promise<FormValues>)();
+        } else if (init) {
+          resolvedValues = init;
         }
-      } else if (init) {
-        reset(init);
+
+        // Step 2: Reset the form with the resolved values
+        if (resolvedValues) {
+          reset(resolvedValues);
+        }
+      } catch (error) {
+        console.error("Failed to initialize form:", error);
+      } finally {
+        // Step 3: Ensure loading state is reset
+        actions.setStatus("idle");
+
+        // Step 4: Call onReady after initialization completes
+        if (onReady) {
+          onReady(state, actions);
+        }
       }
     };
 
+    // Trigger form initialization
     initializeForm();
-  }, [init, reset]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [init, reset, onReady]);
 
-  // Theo dõi sự thay đổi giá trị trong form
+  // Track value changes in the form
   useEffect(() => {
     if (onValueChange) {
       onValueChange(values);
     }
   }, [values, onValueChange]);
 
-  // Xử lý submit
-  const handleSubmission = async (data: T) => {
+  // Handle form submission
+  const handleSubmission = async (data: FormValues) => {
     actions.setStatus("loading");
 
-    // Step 1: Gọi beforeSubmit để kiểm tra xem có nên tiếp tục submit hay không
+    // Step 1: Call beforeSubmit to check if submission should proceed
     if (beforeSubmit) {
       const shouldProceed = await beforeSubmit(data);
       if (shouldProceed === false) {
@@ -96,17 +112,29 @@ const FormController = <T extends FieldValues>(
       }
     }
 
-    // Step 2: Gọi hàm onSubmit và nhận response
-    await onSubmit(data);
-
-    // Step 3: Gọi afterSubmit từ props để xử lý logic sau submit
-    if (afterSubmit) {
-      await afterSubmit(data);
+    // Step 2: Call onSubmit and capture the response
+    let response: SubmitResponse | undefined;
+    try {
+      response = await onSubmit(data);
+    } catch (error) {
+      console.error("Error during submission:", error);
+      actions.setStatus("idle");
+      return;
     }
+
+    // Step 3: Call afterSubmit with both data and response
+    if (afterSubmit) {
+      try {
+        await afterSubmit(data, response);
+      } catch (error) {
+        console.error("Error in afterSubmit:", error);
+      }
+    }
+
     actions.setStatus("idle");
   };
 
-  // Expose các phương thức thông qua ref
+  // Expose methods through ref
   useImperativeHandle(ref, () => ({
     resetForm: () => {
       reset();
@@ -114,7 +142,7 @@ const FormController = <T extends FieldValues>(
         onReset();
       }
     },
-    setFormValue: <K extends Path<T>>(name: K, value: T[K]) =>
+    setFormValue: <K extends Path<FormValues>>(name: K, value: FormValues[K]) =>
       setValue(name, value),
     submitForm: async () => {
       actions.setStatus("loading");
@@ -138,6 +166,7 @@ const FormController = <T extends FieldValues>(
   return (
     <>
       {state.formId}
+      {JSON.stringify(state.externalContext)}
       <div className="relative">
         {/* Loading Overlay */}
         {state.status === "loading" && (
@@ -145,13 +174,41 @@ const FormController = <T extends FieldValues>(
         )}
         {/* Form */}
         <form onSubmit={methods.handleSubmit(handleSubmission)}>
-          <FormProvider {...methods}>{children}</FormProvider>
+          <FormProvider {...methods}>
+            <FlexibleLayout rowHeight={10} isDraggable={false}>
+              {React.Children.map(children, (child) => {
+                if (
+                  React.isValidElement(child) &&
+                  child.type === FieldController
+                ) {
+                  const childProps: FieldControllerProps<FieldValues> =
+                    child.props as FieldControllerProps<FieldValues>;
+                  return (
+                    <div
+                      key={childProps.name}
+                      data-grid={state.layout[childProps.name]}
+                    >
+                      {child}
+                    </div>
+                  );
+                }
+
+                return null;
+              })}
+            </FlexibleLayout>
+          </FormProvider>
         </form>
       </div>
     </>
   );
 };
 
-export default forwardRef(FormController) as <T extends FieldValues>(
-  props: FormProps<T> & { ref?: React.ForwardedRef<FormRef<T>> }
+export default forwardRef(FormController) as <
+  FormValues extends FieldValues,
+  SubmitResponse,
+  ExternalContext
+>(
+  props: FormProps<FormValues, SubmitResponse, ExternalContext> & {
+    ref?: React.ForwardedRef<FormRef<FormValues>>;
+  }
 ) => JSX.Element;
