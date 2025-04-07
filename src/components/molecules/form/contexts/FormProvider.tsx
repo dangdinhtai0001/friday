@@ -1,23 +1,39 @@
-// src/contexts/FormProvider.tsx
+// src\components\molecules\form\contexts\FormProvider.tsx
 import React, { useState } from "react";
-import { v4 as uuidv4 } from 'uuid';
-import FormContext from "./FormContext";
+import { v4 as uuidv4 } from "uuid";
+import { FormContext } from "./FormContext";
 import { FormState, FormActions } from "../types/context.d";
+import { FieldState } from "../types/field.d";
+import { FormLayout } from "../types/form";
 
-interface FormProviderProps {
+interface FormProviderProps<T = unknown> {
   children: React.ReactNode;
+  externalContext?: T;
+  initialFieldState?: FieldState;
+  initialLayout?: FormLayout;
 }
 
-export const FormProvider: React.FC<FormProviderProps> = ({ children }) => {
+export const FormProvider = <T,>({
+  children,
+  externalContext,
+  initialFieldState,
+  initialLayout,
+}: FormProviderProps<T>) => {
+  // Initialize state with default values
   const [state, setState] = useState<FormState>({
     formId: uuidv4(),
     status: "idle",
     submitCount: 0,
     lastSubmitStatus: null,
     isDirty: false,
+    externalContext: externalContext || null,
+    fieldState: initialFieldState || {},
+    layout: initialLayout || {},
+    initialLayout: initialLayout || {},
   });
 
-  const actions: FormActions = {
+  // Define actions for the context
+  const actions: FormActions<T> = {
     setFormId: (id: string) => {
       setState((prevState) => ({ ...prevState, formId: id }));
     },
@@ -43,12 +59,47 @@ export const FormProvider: React.FC<FormProviderProps> = ({ children }) => {
         submitCount: 0,
         lastSubmitStatus: null,
         isDirty: false,
+        externalContext: externalContext || null, // Reset with default value
+        fieldState: initialFieldState || {}, // Reset fieldState to initial value
+        layout: initialLayout || {},
+        initialLayout: initialLayout || {},
       });
+    },
+    setExternalContext: (context?: T) => {
+      setState((prevState) => ({ ...prevState, externalContext: context }));
+    },
+    patchFieldState: (
+      fieldName: string,
+      updates: Partial<FieldState[string]>
+    ) => {
+      setState((prevState) => ({
+        ...prevState,
+        fieldState: {
+          ...prevState.fieldState,
+          [fieldName]: { ...prevState.fieldState[fieldName], ...updates },
+        },
+      }));
+    },
+    patchLayout: (fieldName: string, updates: Partial<FieldState[string]>) => {
+      setState((prevState) => ({
+        ...prevState,
+        layout: {
+          ...prevState.layout,
+          [fieldName]: { ...prevState.layout[fieldName], ...updates },
+        },
+      }));
     },
   };
 
   return (
-    <FormContext.Provider value={{ state, actions }}>
+    <FormContext.Provider
+      value={
+        { state, actions } as {
+          state: FormState<unknown>;
+          actions: FormActions<unknown>;
+        }
+      }
+    >
       {children}
     </FormContext.Provider>
   );
