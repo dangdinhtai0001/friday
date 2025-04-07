@@ -1,102 +1,134 @@
-import React from "react";
+import React, { forwardRef, useEffect } from "react";
 import { useController, FieldValues } from "react-hook-form";
 import { FieldControllerProps } from "./types/field.d";
+import { useFormContext } from "./contexts/FormContext";
 
-const FieldController = <T extends FieldValues>({
-  name,
-  label,
-  layout = "vertical", // Default là vertical
-  hint,
-  hintType = "info",
-  labelAlign = "right", // Mặc định căn phải
-  labelWidth = "120px", // Chiều rộng mặc định cho label
-  hintDisplayMode = "ellipsis", // Mặc định là ellipsis
-  isRequired = false,
-  children,
-}: FieldControllerProps<T>) => {
+// Main Component Implementation
+const FieldController = <T extends FieldValues>(
+  {
+    name,
+    label,
+    layout = "vertical", // Default is vertical
+    hint,
+    hintType = "info",
+    labelAlign = "right", // Default alignment is right
+    labelWidth = "120px", // Default width for the label
+    hintDisplayMode = "ellipsis", // Default is ellipsis
+    isRequired = false,
+    children,
+  }: FieldControllerProps<T>,
+  ref: any // Ref forwarded to the child element
+) => {
+  const { state, actions } = useFormContext();
+
   const {
     field,
     fieldState: { error },
   } = useController<T>({ name });
 
-  // Xác định màu sắc cho hint dựa trên hintType
+  // Determine the color class for the hint based on hintType
   const hintColorClass = {
-    info: "text-blue-500",
-    warning: "text-yellow-500",
-    error: "text-red-500",
+    info: "text-secondary-blue",
+    warning: "text-secondary-yellow",
+    error: "text-secondary-red",
   }[hintType];
 
-  // Xác định class căn chỉnh nội dung của label
+  // Determine the alignment class for the label
   const alignClass = {
     left: "text-left",
     center: "text-center",
     right: "text-right",
   }[labelAlign];
 
-  // Class Tailwind cho hint message
+  // Tailwind classes for the hint message
   const hintClass = {
-    ellipsis: "truncate", // Tắt đuôi với dấu ba chấm
-    full: "", // Không tắt đuôi
+    ellipsis: "truncate", // Truncate with ellipsis
+    full: "", // No truncation
   }[hintDisplayMode];
 
-  // Tính toán khoảng cách từ lề trái của label đến lề trái của hint message
+  // Calculate the left margin for the hint message
   const marginLeftForHint =
     layout === "horizontal"
-      ? `calc(${labelWidth} + 1rem)` // 1rem ~ space-x-4 (khoảng cách giữa label và input)
+      ? `calc(${labelWidth} + 1rem)` // 1rem ~ space-x-4 (spacing between label and input)
       : undefined;
 
+  // UseEffect to detect error changes
+  useEffect(() => {
+    if (error) {
+      actions.patchLayout(name, { h: 3.3 + 1.5 });
+    } else {
+      actions.patchLayout(name, state.initialLayout[name]);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [error, name]);
+
   return (
-    <div className="flex flex-col space-y-1">
-      {/* Container chính chứa label và input */}
+    <div key={name} data-grid={{ x: 0, y: 0, w: 12, h: 7 }}>
+      {/* Main container for the label and input */}
       <div
         className={`${
           layout === "horizontal"
-            ? "flex items-center space-x-4" // Layout horizontal với label và input căn giữa theo chiều dọc
-            : "flex flex-col space-y-1" // Layout vertical
+            ? "flex items-center space-x-4" // Horizontal layout with label and input vertically aligned
+            : "flex flex-col space-y-1" // Vertical layout
         }`}
       >
         {/* Label */}
         <label
           htmlFor={name.toString()}
           className={`font-medium ${
-            error ? "text-red-500" : "text-gray-700" // Thay đổi màu chữ nếu có lỗi
+            error ? "text-secondary-red" : "text-balck-100" // Change text color if there's an error
           } ${alignClass} pr-2 ${
-            layout === "horizontal" ? "shrink-0 self-center" : "" // Thêm self-center để căn giữa theo chiều dọc
+            layout === "horizontal" ? "shrink-0 self-center" : "" // Add self-center for vertical alignment
           }`}
           style={{
-            minWidth: labelWidth, // Sử dụng style inline để thiết lập chiều rộng
+            minWidth: labelWidth, // Use inline styles to set the width
           }}
         >
-          {label}
-          {isRequired && <span className="text-red-500 ml-1">*</span>}
+          <div className="relative inline-block">
+            {isRequired && (
+              <span className="absolute top-2 right-0 transform translate-x-full -translate-y-1/2 text-secondary-red">
+                *
+              </span>
+            )}
+            {label}
+          </div>
         </label>
 
-        {/* Input và Error Circle */}
+        {/* Input and Error Circle */}
         <div className="relative w-full">
-          {/* Render children và truyền props field vào */}
-          {React.Children.map(children, (child) => {
+          {/* Render children and pass field props */}
+          {/* {React.Children.map(children, (child) => {
             if (React.isValidElement(child)) {
-              return React.cloneElement(child, { ...field });
+              return React.cloneElement(child, { ...field, disabled: (state.fieldState[name]?.isDisabled ?? false) });
+            }
+            return child;
+          })} */}
+          {React.Children.map(children, (child) => {
+            if (React.isValidElement<Record<string, unknown>>(child)) {
+              return React.cloneElement(child, {
+                ...field,
+                disabled: state.fieldState[name]?.isDisabled ?? false,
+              });
             }
             return child;
           })}
-          {/* Vòng tròn đỏ khi có lỗi */}
+          {/* Red circle when there's an error */}
           {error && (
-            <div className="absolute right-2 top-1/2 transform -translate-y-1/2 w-2 h-2 bg-red-500 rounded-full"></div>
+            <div className="absolute right-2 top-1/2 transform -translate-y-1/2 w-2 h-2 bg-secondary-red rounded-full"></div>
           )}
         </div>
       </div>
 
-      {/* Error Message và Hint Message */}
+      {/* Error Message and Hint Message */}
       <div
         className="flex flex-col space-y-1"
         style={{
-          marginLeft: marginLeftForHint, // Đẩy hint message vào lề trái bằng tổng khoảng cách
+          marginLeft: marginLeftForHint, // Push the hint message to the left by the total spacing
         }}
       >
         {error && (
           <p
-            className="text-red-500 text-sm animate-shake"
+            className="text-secondary-red text-14 animate-shake"
             style={{ animationDuration: "0.5s" }}
           >
             {error.message}
@@ -105,8 +137,8 @@ const FieldController = <T extends FieldValues>({
 
         {hint && (
           <p
-            className={`text-sm ${hintColorClass} ${hintClass}`}
-            title={hintDisplayMode === "ellipsis" ? hint : undefined} // Tooltip khi ellipsis
+            className={`text-14 ${hintColorClass} ${hintClass}`}
+            title={hintDisplayMode === "ellipsis" ? hint : undefined} // Tooltip when ellipsis
           >
             {hint}
           </p>
@@ -116,4 +148,5 @@ const FieldController = <T extends FieldValues>({
   );
 };
 
-export default FieldController;
+// Export with forwardRef
+export default forwardRef(FieldController);
