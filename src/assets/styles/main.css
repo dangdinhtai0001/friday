@@ -1,4 +1,2 @@
-@import "./tailwind.css";
-@import "./daisyui-config.css";
-@import "./light-theme.css";
-@import "./dark-theme.css";
+@import "./tailwindcss/config.css";
+@import "./daisyui/config.css"
