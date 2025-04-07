@@ -1,12 +1,14 @@
-import FlexibleLayout from "@/components/molecules/flexible-layout";
 import "@/assets/styles/main.css";
 import {
   FieldController,
   FormContainer,
   useFormController,
   ValidateResponse,
+  withController,
 } from "./components/molecules/form";
-import { FieldValues } from "react-hook-form";
+import { FieldPath, FieldValues } from "react-hook-form";
+import { FormState } from "@/components/molecules/form/types/context.d";
+import { Input } from "@/components/atoms/input";
 
 interface FormData extends FieldValues {
   username: string;
@@ -49,14 +51,19 @@ function App() {
 
   return (
     <>
-    <div className="flex">
-    <div className="w-10 h-10 bg-black-100 mx-4"></div>
-    <div className="w-10 h-10 bg-black-80 mx-4"></div>
-    <div className="w-10 h-10 bg-black-40 mx-4"></div>
-    </div>
       <div className=" border-1 border-black w-[1000px]">
-        <FormContainer<FormData>
+        <FormContainer<FormData, unknown, unknown>
           ref={formRef}
+          initialLayout={{
+            username: { i: "", x: 0, y: 0, w: 5, h: 3.3 },
+            email: { i: "", x: 6, y: 0, w: 5, h: 3.3 },
+            password: { i: "", x: 0, y: 1, w: 12, h: 3.3 },
+            description: { i: "", x: 0, y: 2, w: 12, h: 3.3 },
+          }}
+          initialFieldState={{
+            username: { isVisible: true, isDisabled: true },
+          }}
+          externalContext={{ foo: "bar" }}
           validateFunction={validateFunction}
           onReset={() => console.log("Form has been reset")}
           validationMode="onChange"
@@ -76,91 +83,83 @@ function App() {
               )
             );
           }}
-          onValueChange={(values) =>
+          onValueChange={(values: FormData) =>
             console.log("Form values changed:", values)
           }
-          beforeSubmit={async (data) => {
+          beforeSubmit={async (data: FormData) => {
             console.log("Before submit:", data);
             // Giả lập kiểm tra điều kiện trước khi submit
             return data.name !== ""; // Chỉ submit nếu tên không rỗng
           }}
-          afterSubmit={(params) => {
+          afterSubmit={(params: FormData) => {
             console.log("Submit succeeded with data:", params);
           }}
+          onReady={(state: FormState) => {
+            console.log("Form ready!!!", state);
+          }}
         >
-          <FlexibleLayout
-            rowHeight={20} // Ghi đè giá trị mặc định
-            isDraggable={false} // Tắt tính năng kéo thả
+          <FieldController
+            name="username"
+            label="Username"
+            layout="horizontal"
+            hint="Enter your unique username"
+            hintType="info"
+            labelAlign="right"
+            labelWidth="90px"
+            hintDisplayMode="ellipsis"
+            isRequired={true}
           >
-            <div key="item1" data-grid={{ x: 0, y: 0, w: 12, h: 3 }}>
-              <FieldController<FormData>
-                name="username"
-                label="Username"
-                layout="horizontal"
-                hint="Enter your unique username"
-                hintType="info"
-                labelAlign="right"
-                labelWidth="150px"
-                hintDisplayMode="ellipsis"
-                isRequired={true}
-              >
-                <input
-                  type="text"
-                  placeholder="Enter your username"
-                  className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
-              </FieldController>
-            </div>
-            <div key="item2" data-grid={{ x: 0, y: 0, w: 12, h: 3 }}>
-              <FieldController<FormData>
-                name="email"
-                label="Email"
-                layout="horizontal"
-                hint="We'll never share your email with anyone else."
-                hintType="warning"
-                labelAlign="right"
-                labelWidth="150px"
-              >
-                <input
-                  type="text"
-                  placeholder="Enter your username"
-                  className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
-              </FieldController>
-            </div>
-            <div key="item3" data-grid={{ x: 0, y: 0, w: 12, h: 3 }}>
-              <FieldController<FormData>
-                name="password"
-                label="Password"
-                layout="horizontal"
-                hint="Must be at least 6 characters"
-                hintType="error"
-                labelAlign="right"
-                labelWidth="150px"
-              >
-                <input
-                  type="text"
-                  placeholder="Enter your username"
-                  className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
-              </FieldController>
-            </div>
-            <div key="item4" data-grid={{ x: 0, y: 0, w: 12, h: 3 }}>
-              <FieldController<FormData>
-                name="description"
-                label="description"
-                layout="horizontal"
-                labelAlign="right"
-                labelWidth="150px"
-              >
-                <input
-                  type="text"
-                  placeholder="description"
-                  className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
-              </FieldController>
-            </div>
-          </FlexibleLayout>
+            <Input
+              type="text"
+              placeholder="Enter your username"
+            />
+          </FieldController>
+          <FieldController
+            key="email"
+            name="email"
+            label="Email"
+            layout="horizontal"
+            hint="We'll never share your email with anyone else."
+            hintType="warning"
+            labelAlign="right"
+            labelWidth="90px"
+          >
+            <input
+              type="text"
+              placeholder="Enter your username"
+              className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </FieldController>
+          <FieldController
+            key="password"
+            name="password"
+            label="Password"
+            layout="horizontal"
+            hint="Must be at least 6 characters"
+            hintType="error"
+            labelAlign="right"
+            labelWidth="90px"
+          >
+            <input
+              type="text"
+              placeholder="Enter your username"
+              className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </FieldController>
+          <FieldController
+            key="description"
+            name="description"
+            label="description"
+            layout="horizontal"
+            labelAlign="right"
+            labelWidth="90px"
+          >
+            <input
+              type="text"
+              placeholder="description"
+              className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </FieldController>
         </FormContainer>
         <button onClick={submitForm}>Submit</button>
         <button onClick={resetForm}>reset</button>
