@@ -1,7 +1,9 @@
-import React, { forwardRef, useEffect } from "react";
+import React, { ForwardedRef, forwardRef, useEffect } from "react";
 import { useController, FieldValues } from "react-hook-form";
 import { FieldControllerProps } from "./types/field.d";
 import { useFormContext } from "./contexts/FormContext";
+import { eventBus } from "@/composables/lib/eventBus";
+import { FormEventNames } from "./formEvents";
 
 // Main Component Implementation
 const FieldController = <T extends FieldValues>(
@@ -17,7 +19,7 @@ const FieldController = <T extends FieldValues>(
     isRequired = false,
     children,
   }: FieldControllerProps<T>,
-  ref: any // Ref forwarded to the child element
+  ref: ForwardedRef<unknown> // Ref forwarded to the child element
 ) => {
   const { state, actions } = useFormContext();
 
@@ -62,6 +64,63 @@ const FieldController = <T extends FieldValues>(
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [error, name]);
 
+  const handleOnChange = (e: unknown) => {
+    try {
+      // Check if e is a valid event object
+      if (typeof e !== "object" || e === null) {
+        console.error("Invalid event object:", e);
+        return;
+      }
+
+      // Cast e to EventTarget to access the target property
+      const target = (
+        e as React.ChangeEvent<
+          HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+        >
+      ).target;
+
+      let value: unknown;
+
+      // Handle based on the input type
+      if (target instanceof HTMLInputElement) {
+        if (target.type === "checkbox") {
+          // For checkboxes, get the value from the checked property
+          value = target.checked;
+        } else if (target.type === "file") {
+          // For file inputs, get the list of files
+          value = Array.from(target.files || []);
+        } else {
+          // For other input types, get the value from the value property
+          value = target.value;
+        }
+      } else if (target instanceof HTMLTextAreaElement) {
+        // For textareas, get the value from the value property
+        value = target.value;
+      } else if (target instanceof HTMLSelectElement) {
+        if (target.multiple) {
+          // For multi-select, get all selected values
+          value = Array.from(target.selectedOptions).map(
+            (option) => option.value
+          );
+        } else {
+          // For single-select, get the selected value
+          value = target.value;
+        }
+      } else {
+        console.error("Unsupported input type:", target);
+        return;
+      }
+
+      // Call field.onChange with the new value
+      field.onChange(value);
+
+      // Emit the VALUE_CHANGE event with the new value
+      eventBus.emit(FormEventNames.VALUE_CHANGE, { field: name, value });
+    } catch (error) {
+      console.error("Error handling onChange event:", error);
+    }
+  };
+
   return (
     <div key={name} data-grid={{ x: 0, y: 0, w: 12, h: 7 }}>
       {/* Main container for the label and input */}
@@ -97,17 +156,12 @@ const FieldController = <T extends FieldValues>(
         {/* Input and Error Circle */}
         <div className="relative w-full">
           {/* Render children and pass field props */}
-          {/* {React.Children.map(children, (child) => {
-            if (React.isValidElement(child)) {
-              return React.cloneElement(child, { ...field, disabled: (state.fieldState[name]?.isDisabled ?? false) });
-            }
-            return child;
-          })} */}
           {React.Children.map(children, (child) => {
             if (React.isValidElement<Record<string, unknown>>(child)) {
               return React.cloneElement(child, {
                 ...field,
                 disabled: state.fieldState[name]?.isDisabled ?? false,
+                onChange: handleOnChange,
               });
             }
             return child;

@@ -7,6 +7,8 @@ export interface FieldState {
   };
 }
 
+export type FieldRefs = Record<string, React.RefObject<unknown>>;
+
 export interface FieldControllerProps<T extends FieldValues> {
   name: Path<T>; // Tên field, sử dụng Path<T> để đảm bảo tên hợp lệ trong T
   label: string;
@@ -18,4 +20,5 @@ export interface FieldControllerProps<T extends FieldValues> {
   hintDisplayMode?: "ellipsis" | "full"; // Chế độ hiển thị hint message
   children: React.ReactNode; // Children để thay thế input
   isRequired?: boolean; // đánh dấu field là required
+  fieldRefs?: FieldRefs;
 }
