@@ -9,6 +9,8 @@ import { FlexibleLayout } from "@/components/molecules/flexible-layout";
 import React from "react";
 import FieldController from "./FieldController";
 import { FieldControllerProps } from "./types/field";
+import { eventBus } from "@/composables/lib/eventBus";
+import { FormEventNames, FormEventPayload } from "./formEvents";
 
 const FormController = <
   FormValues extends FieldValues,
@@ -26,7 +28,6 @@ const FormController = <
     onReset,
     afterSubmit,
     onReady,
-    resolveFieldDisability,
   }: FormProps<FormValues, SubmitResponse, ExternalContext>,
   ref: React.ForwardedRef<FormRef<FormValues>>
 ) => {
@@ -94,20 +95,36 @@ const FormController = <
   }, [init, reset, onReady]);
 
   // Track value changes in the form
+  // useEffect(() => {
+  //   if (onValueChange) {
+  //     onValueChange(values);
+  //   }
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [values, onValueChange]);
+
+  // Register the event listener when the component mounts
   useEffect(() => {
-    if (onValueChange) {
-      onValueChange(values);
-      // const fieldDisability = resolveFieldDisability(values);
+    // Define the event handler inside the useEffect
+    const handleValueChange = (
+      payload: FormEventPayload[FormEventNames.VALUE_CHANGE]
+    ) => {
+      // Trigger the `onValueChange` callback if it exists
+      if (onValueChange) {
+        onValueChange(values);
+      }
 
-      // Object.entries(fieldDisability).forEach(([fieldName, isDisabled]) => {
-      //   if (isDisabled !== undefined) {
-      //     actions.patchFieldState(fieldName, { isDisabled });
-      //   }
-      // });
+      // Log the received payload and current form values for debugging
+      console.log("Received payload:", payload);
+    };
 
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [values, onValueChange]);
+    // Subscribe to the event
+    eventBus.on(FormEventNames.VALUE_CHANGE, handleValueChange);
+
+    // Unsubscribe from the event when the component unmounts
+    return () => {
+      eventBus.off(FormEventNames.VALUE_CHANGE, handleValueChange);
+    };
+  }, [onValueChange, values]); // Add `onValueChange` and `values` as dependencies
 
   // Handle form submission
   const handleSubmission = async (data: FormValues) => {
