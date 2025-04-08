@@ -4,17 +4,16 @@ import {
   FormContainer,
   useFormController,
   ValidateResponse,
-  withController,
 } from "./components/molecules/form";
-import { FieldPath, FieldValues } from "react-hook-form";
+import { FieldValues } from "react-hook-form";
 import { FormState } from "@/components/molecules/form/types/context.d";
 import { Input } from "@/components/atoms/input";
 
 interface FormData extends FieldValues {
-  username: string;
-  email: string;
-  password: string;
-  description: string;
+  username?: string;
+  email?: string;
+  password?: string;
+  description?: string;
 }
 const handleSubmit = (data: FormData) => {
   return new Promise<void>((resolve) => {
@@ -25,7 +24,25 @@ const handleSubmit = (data: FormData) => {
   });
 };
 
-const validateFunction = async (data: FormData): ValidateResponse => {
+const resolveFieldDisability = (
+  values: FormData
+): Partial<Record<keyof FormData, boolean>> => {
+  console.log("resolveFieldDisability", values);
+  let description = false;
+  if (values.username === "username1") {
+    description = true;
+  }
+  return {
+    username: false,
+    email: false,
+    password: false,
+    description: description,
+  };
+};
+
+const validateFunction = async (
+  data: FormData
+): Promise<ValidateResponse<FormData>> => {
   const errors: Record<string, { message: string }> = {};
 
   if (!data.username) {
@@ -54,6 +71,7 @@ function App() {
       <div className=" border-1 border-black w-[1000px]">
         <FormContainer<FormData, unknown, unknown>
           ref={formRef}
+          resolveFieldDisability={resolveFieldDisability}
           initialLayout={{
             username: { i: "", x: 0, y: 0, w: 5, h: 3.3 },
             email: { i: "", x: 6, y: 0, w: 5, h: 3.3 },
@@ -109,10 +127,7 @@ function App() {
             hintDisplayMode="ellipsis"
             isRequired={true}
           >
-            <Input
-              type="text"
-              placeholder="Enter your username"
-            />
+            <Input type="text" placeholder="Enter your username" />
           </FieldController>
           <FieldController
             key="email"
