@@ -28,3 +28,4 @@ export function flattenErrors<T extends FieldValues>(
     {} as Record<string, FieldError | undefined>
   );
 }
+
