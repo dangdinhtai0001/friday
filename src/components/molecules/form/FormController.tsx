@@ -26,6 +26,7 @@ const FormController = <
     onReset,
     afterSubmit,
     onReady,
+    resolveFieldDisability,
   }: FormProps<FormValues, SubmitResponse, ExternalContext>,
   ref: React.ForwardedRef<FormRef<FormValues>>
 ) => {
@@ -96,7 +97,16 @@ const FormController = <
   useEffect(() => {
     if (onValueChange) {
       onValueChange(values);
+      // const fieldDisability = resolveFieldDisability(values);
+
+      // Object.entries(fieldDisability).forEach(([fieldName, isDisabled]) => {
+      //   if (isDisabled !== undefined) {
+      //     actions.patchFieldState(fieldName, { isDisabled });
+      //   }
+      // });
+
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [values, onValueChange]);
 
   // Handle form submission

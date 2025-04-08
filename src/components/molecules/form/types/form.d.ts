@@ -10,7 +10,7 @@ export interface ValidateResponse<T extends FieldValues> {
 }
 
 export interface FormLayout {
-  [fieldName: string]: Layout
+  [fieldName: string]: Layout;
 }
 
 // Data type for FormContainer props
@@ -38,6 +38,9 @@ export interface FormProps<
   externalContext?: ExternalContext; // Optional external context to pass via props
   initialFieldState: FieldState;
   initialLayout: FormLayout;
+  resolveFieldDisability: (
+    values: FormValues
+  ) => Partial<Record<keyof FormValues, boolean>>;
 }
 
 // Định nghĩa kiểu dữ liệu cho ref
