@@ -13,6 +13,12 @@ export interface FormLayout {
   [fieldName: string]: Layout;
 }
 
+export interface OnValueChangePayload<FormValues extends FieldValues> {
+  field: string;
+  value: unknown;
+  values: FormValues;
+}
+
 // Data type for FormContainer props
 export interface FormProps<
   FormValues extends FieldValues,
@@ -20,7 +26,8 @@ export interface FormProps<
   ExternalContext
 > {
   children: React.ReactNode;
-  onValueChange?: (values: FormValues) => void; // Handler function when values change
+  // onValueChange?: (values: FormValues) => void; // Handler function when values change
+  onValueChange?: (payload: OnValueChangePayload) => void; // Handler function when values change
   beforeSubmit?: (values: FormValues) => boolean | Promise<boolean>; // Trigger before submission
   afterSubmit: (
     values: FormValues,

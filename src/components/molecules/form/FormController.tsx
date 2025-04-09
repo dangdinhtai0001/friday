@@ -2,15 +2,15 @@ import { forwardRef, useImperativeHandle, useEffect, JSX } from "react";
 import { useForm, FormProvider, Path } from "react-hook-form";
 import { LoadingOverlay } from "@/components/molecules/loading-overlay";
 import type { FieldValues } from "react-hook-form";
-import { flattenErrors } from "./utils";
-import { FormProps, FormRef } from "./types/form.d";
+import { flattenErrors, resolveEventName } from "./utils";
+import { FormProps, FormRef, OnValueChangePayload } from "./types/form.d";
 import { useFormContext } from "./contexts/FormContext";
 import { FlexibleLayout } from "@/components/molecules/flexible-layout";
 import React from "react";
 import FieldController from "./FieldController";
 import { FieldControllerProps } from "./types/field";
-import { eventBus } from "@/composables/lib/eventBus";
-import { FormEventNames, FormEventPayload } from "./formEvents";
+import { eventBus } from "@/composables/lib/EventBus";
+import { FormEventNames, FormEventPayload } from "./FormEvents";
 
 const FormController = <
   FormValues extends FieldValues,
@@ -94,14 +94,6 @@ const FormController = <
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [init, reset, onReady]);
 
-  // Track value changes in the form
-  // useEffect(() => {
-  //   if (onValueChange) {
-  //     onValueChange(values);
-  //   }
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [values, onValueChange]);
-
   // Register the event listener when the component mounts
   useEffect(() => {
     // Define the event handler inside the useEffect
@@ -110,21 +102,27 @@ const FormController = <
     ) => {
       // Trigger the `onValueChange` callback if it exists
       if (onValueChange) {
-        onValueChange(values);
+        onValueChange({
+          ...payload,
+          values: getValues(),
+        } as OnValueChangePayload<FormValues>);
       }
-
-      // Log the received payload and current form values for debugging
-      console.log("Received payload:", payload);
     };
 
+    const valueChangeEvent = resolveEventName(
+      FormEventNames.VALUE_CHANGE,
+      state.formId || ""
+    );
+
     // Subscribe to the event
-    eventBus.on(FormEventNames.VALUE_CHANGE, handleValueChange);
+    eventBus.on(valueChangeEvent, handleValueChange);
 
     // Unsubscribe from the event when the component unmounts
     return () => {
-      eventBus.off(FormEventNames.VALUE_CHANGE, handleValueChange);
+      eventBus.off(valueChangeEvent, handleValueChange);
     };
-  }, [onValueChange, values]); // Add `onValueChange` and `values` as dependencies
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [onValueChange, values]);
 
   // Handle form submission
   const handleSubmission = async (data: FormValues) => {

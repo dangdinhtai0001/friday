@@ -2,6 +2,7 @@ import "@/assets/styles/main.css";
 import {
   FieldController,
   FormContainer,
+  OnValueChangePayload,
   useFormController,
   ValidateResponse,
 } from "./components/molecules/form";
@@ -101,8 +102,8 @@ function App() {
               )
             );
           }}
-          onValueChange={(values: FormData) =>
-            console.log("Form values changed:", values)
+          onValueChange={(payload: OnValueChangePayload<FormData>) =>
+            console.log("Form values changed:", payload)
           }
           beforeSubmit={async (data: FormData) => {
             console.log("Before submit:", data);
