@@ -1,6 +1,4 @@
-// utils/eventBus.ts
-
-type Listener<T = undefined> = (payload: T) => void;
+export type Listener<T = undefined> = (payload: T) => void;
 
 class EventBus {
   private listeners: Record<string, Array<Listener<unknown>>> = {};
