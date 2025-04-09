@@ -1,5 +1,5 @@
 export enum FormEventNames {
-  VALUE_CHANGE = "form:valueChange",
+  VALUE_CHANGE = "form::valueChange",
 }
 
 export interface FormEventPayload {
