@@ -28,6 +28,7 @@ const FormController = <
     onReset,
     afterSubmit,
     onReady,
+    resolveFieldDisability,
   }: FormProps<FormValues, SubmitResponse, ExternalContext>,
   ref: React.ForwardedRef<FormRef<FormValues>>
 ) => {
@@ -107,6 +108,11 @@ const FormController = <
           values: getValues(),
         } as OnValueChangePayload<FormValues>);
       }
+
+      const fieldDisabilities = resolveFieldDisability(getValues());
+      Object.entries(fieldDisabilities).forEach(([fieldName, isDisabled]) => {
+        actions.patchFieldState(fieldName, { isDisabled });
+      });
     };
 
     const valueChangeEvent = resolveEventName(
