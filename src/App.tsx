@@ -9,6 +9,7 @@ import {
 import { FieldValues } from "react-hook-form";
 import { FormState } from "@/components/molecules/form/types/context.d";
 import { Input } from "@/components/atoms/input";
+import { FilterableDataGrid } from "@/components/templates/filterable-data-grid";
 
 interface FormData extends FieldValues {
   username?: string;
@@ -28,16 +29,11 @@ const handleSubmit = (data: FormData) => {
 const resolveFieldDisability = (
   values: FormData
 ): Partial<Record<keyof FormData, boolean>> => {
-  console.log("resolveFieldDisability", values);
-  let description = false;
-  if (values.username === "username1") {
-    description = true;
-  }
   return {
     username: false,
     email: false,
     password: false,
-    description: description,
+    description: values.username === "username1",
   };
 };
 
@@ -69,6 +65,7 @@ function App() {
 
   return (
     <>
+      <FilterableDataGrid></FilterableDataGrid>
       <div className=" border-1 border-black w-[1000px]">
         <FormContainer<FormData, unknown, unknown>
           ref={formRef}
@@ -80,7 +77,7 @@ function App() {
             description: { i: "", x: 0, y: 2, w: 12, h: 3.3 },
           }}
           initialFieldState={{
-            username: { isVisible: true, isDisabled: true },
+            username: { isVisible: true, isDisabled: false },
           }}
           externalContext={{ foo: "bar" }}
           validateFunction={validateFunction}
