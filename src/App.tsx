@@ -9,7 +9,7 @@ import {
 import { FieldValues } from "react-hook-form";
 import { FormState } from "@/components/molecules/form/types/context.d";
 import { Input } from "@/components/atoms/input";
-import { FilterableDataGrid } from "@/components/templates/filterable-data-grid";
+import { DataViewLayout } from "@/components/templates/data-view-layout";
 
 interface FormData extends FieldValues {
   username?: string;
@@ -65,7 +65,7 @@ function App() {
 
   return (
     <>
-      <FilterableDataGrid></FilterableDataGrid>
+      <DataViewLayout></DataViewLayout>
       <div className=" border-1 border-black w-[1000px]">
         <FormContainer<FormData, unknown, unknown>
           ref={formRef}
