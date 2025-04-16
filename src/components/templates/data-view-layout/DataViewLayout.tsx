@@ -1,11 +1,22 @@
-import React from "react";
-import { DataViewLayoutProps } from "./types";
+import React, { forwardRef, useImperativeHandle } from "react";
+import { DataViewCommands, DataViewLayoutProps } from "./types";
 import FilterContainer from "./FilterContainer";
+import { useDataViewContext } from "./context/DataViewContext";
 
-const DataViewLayout = ({ children }: DataViewLayoutProps) => {
+const DataViewLayout = (
+  { children }: DataViewLayoutProps,
+  ref: React.ForwardedRef<DataViewCommands>
+) => {
+
+  const { state } = useDataViewContext()
+
   const filterChildren = React.Children.toArray(children).find((child) => {
     return React.isValidElement(child) && child.type === FilterContainer;
   });
+
+  useImperativeHandle(ref, () => ({
+    getId: () => state.id || "",
+  }));
 
   return (
     <div className="flex flex-col">
@@ -25,4 +36,6 @@ const DataViewLayout = ({ children }: DataViewLayoutProps) => {
   );
 };
 
-export default DataViewLayout;
+export default forwardRef(DataViewLayout) as <DataViewLayoutProps>(
+  props: DataViewLayoutProps & { ref?: React.ForwardedRef<DataViewCommands> }
+) => React.ReactNode;

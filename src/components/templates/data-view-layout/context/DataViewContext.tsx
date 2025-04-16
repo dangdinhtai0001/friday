@@ -4,6 +4,7 @@ import type {
   DataViewActions,
   DataViewContextValue,
 } from "../types.d";
+import { v4 as uuidv4 } from "uuid";
 
 // Create a generic context
 export const DataViewContext = React.createContext<
@@ -25,7 +26,10 @@ const createNoOpActions = (): DataViewActions => ({});
 
 // Define a generic initial state
 const createInitialState = (): DataViewState => {
-  return {};
+  return {
+    id: uuidv4(),
+    filters: [],
+  };
 };
 
 // Export a default context with no-op actions and initial state

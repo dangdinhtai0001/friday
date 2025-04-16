@@ -1,11 +1,44 @@
 import React from "react";
 
+// Define the runtime value for FilterOperator
+export const FILTER_OPERATORS = [
+  "eq",
+  "neq",
+  "gt",
+  "gte",
+  "lt",
+  "lte",
+  "like",
+  "ilike",
+  "is",
+  "is_not",
+  "in",
+  "not_in",
+  "between",
+  "not_between",
+] as const;
+
+// Ensure the runtime value matches the type
+export type FilterOperator = (typeof FILTER_OPERATORS)[number];
+
+export interface Filter {
+  id?: string;
+  name: string;
+  value: string;
+  operator: FilterOperator;
+}
+
 export interface DataViewState {
   id?: string;
+  filters?: Filter[];
 }
 
 export interface DataViewActions {
-  id?: string;
+  addFilter: (filter: Filter) => void;
+  removeFilter: (filter: Filter) => void;
+  updateFilter: (id: string, updates: Partial<Filter>) => void;
+  clearFilters: () => void;
+  setFilters: (filters: Filter[]) => void;
 }
 
 export interface DataViewProviderProps {
@@ -23,4 +56,25 @@ export interface DataViewLayoutProps {
 
 export interface FilterContainerProps {
   children?: React.ReactNode;
+}
+
+// --------------------------------------------------------------------
+
+export enum DataViewEventNames {
+  FILTER_CHANGE = "filterChange",
+}
+
+export interface DataViewEventPayload {
+  [DataViewEventNames.FILTER_CHANGE]: Filter[];
+}
+
+// --------------------------------------------------------------------
+
+export interface DataViewCommands {
+  getId: () => string;
+}
+
+export interface UseDataViewControlReturn {
+  ref: React.RefObject<DataViewCommands | null>;
+  getId: () => string | undefined;
 }
