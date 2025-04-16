@@ -33,6 +33,6 @@ export function isValidFilter(filter: unknown): filter is Filter {
  * @param name The specific name of the event (e.g., "valueChange").
  * @returns A scoped event name (e.g., "form:form-1:valueChange").
  */
-export function resolveEventName(name: string, id: string): string {
-    return `data-view:${id}:${name}`;
+export function resolveEventName(name: string, id?: string): string {
+  return `data-view:${id || ""}:${name}`;
   }
