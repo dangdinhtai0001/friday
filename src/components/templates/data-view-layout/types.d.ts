@@ -61,11 +61,11 @@ export interface FilterContainerProps {
 // --------------------------------------------------------------------
 
 export enum DataViewEventNames {
-  FILTER_CHANGE = "filterChange",
+  TRIGGER_FILTER = "triggerFilter",
 }
 
 export interface DataViewEventPayload {
-  [DataViewEventNames.FILTER_CHANGE]: Filter[];
+  [DataViewEventNames.TRIGGER_FILTER]: undefined;
 }
 
 // --------------------------------------------------------------------
