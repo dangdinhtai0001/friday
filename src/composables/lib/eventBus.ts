@@ -46,4 +46,4 @@ class EventBus {
 }
 
 // Export a singleton instance of EventBus
-export const eventBus = new EventBus();
+export const EventBusInstance = new EventBus();

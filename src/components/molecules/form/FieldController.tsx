@@ -2,7 +2,7 @@ import React, { ForwardedRef, forwardRef, useEffect } from "react";
 import { useController, FieldValues } from "react-hook-form";
 import { FieldControllerProps } from "./types/field.d";
 import { useFormContext } from "./contexts/FormContext";
-import { eventBus } from "@/composables/lib/EventBus";
+import { EventBusInstance } from "@/composables/lib/EventBus";
 import { FormEventNames } from "./FormEvents";
 import { resolveEventName } from "./utils";
 
@@ -116,7 +116,7 @@ const FieldController = <T extends FieldValues>(
       field.onChange(value);
 
       // Emit the VALUE_CHANGE event with the new value
-      eventBus.emit(
+      EventBusInstance.emit(
         resolveEventName(FormEventNames.VALUE_CHANGE, state.formId || ""),
         { field: name, value }
       );

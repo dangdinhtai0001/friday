@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { eventBus } from "@/composables/lib/EventBus";
+import { EventBusInstance } from "@/composables/lib/EventBus";
 import type { Listener } from "@/composables/lib/EventBus";
 
 /**
@@ -13,11 +13,11 @@ function useEventBus<T = undefined>(
 ): void {
   useEffect(() => {
     // Register the listener when the component mounts
-    eventBus.on(eventName, callback);
+    EventBusInstance.on(eventName, callback);
 
     // Cleanup the listener when the component unmounts
     return () => {
-      eventBus.off(eventName, callback);
+      EventBusInstance.off(eventName, callback);
     };
   }, [eventName, callback]); // Re-run effect if eventName or callback changes
 }

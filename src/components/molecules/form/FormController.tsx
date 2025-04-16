@@ -9,7 +9,7 @@ import { FlexibleLayout } from "@/components/molecules/flexible-layout";
 import React from "react";
 import FieldController from "./FieldController";
 import { FieldControllerProps } from "./types/field";
-import { eventBus } from "@/composables/lib/EventBus";
+import { EventBusInstance } from "@/composables/lib/EventBus";
 import { FormEventNames, FormEventPayload } from "./FormEvents";
 
 const FormController = <
@@ -121,11 +121,11 @@ const FormController = <
     );
 
     // Subscribe to the event
-    eventBus.on(valueChangeEvent, handleValueChange);
+    EventBusInstance.on(valueChangeEvent, handleValueChange);
 
     // Unsubscribe from the event when the component unmounts
     return () => {
-      eventBus.off(valueChangeEvent, handleValueChange);
+      EventBusInstance.off(valueChangeEvent, handleValueChange);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [onValueChange, values]);

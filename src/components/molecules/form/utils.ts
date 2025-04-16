@@ -33,5 +33,5 @@ export function flattenErrors<T extends FieldValues>(
  * @returns A scoped event name (e.g., "form:form-1:valueChange").
  */
 export function resolveEventName(name: string, id: string): string {
-  return `${name}(${id})`;
+  return `form:${id}:${name}`;
 }
