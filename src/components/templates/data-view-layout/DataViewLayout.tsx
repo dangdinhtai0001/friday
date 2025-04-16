@@ -1,14 +1,19 @@
-import React, { forwardRef, useImperativeHandle } from "react";
-import { DataViewCommands, DataViewLayoutProps } from "./types";
-import FilterContainer from "./FilterContainer";
+import React, { forwardRef, useEffect, useImperativeHandle } from "react";
+import {
+  DataViewCommands,
+  DataViewEventNames,
+  DataViewLayoutProps,
+} from "./types.d";
+import FilterContainer from "./containers/FilterContainer";
 import { useDataViewContext } from "./context/DataViewContext";
+import { EventBusInstance } from "@/composables/lib/EventBus";
+import { resolveEventName } from "./Utils";
 
 const DataViewLayout = (
   { children }: DataViewLayoutProps,
   ref: React.ForwardedRef<DataViewCommands>
 ) => {
-
-  const { state } = useDataViewContext()
+  const { state } = useDataViewContext();
 
   const filterChildren = React.Children.toArray(children).find((child) => {
     return React.isValidElement(child) && child.type === FilterContainer;
@@ -17,6 +22,26 @@ const DataViewLayout = (
   useImperativeHandle(ref, () => ({
     getId: () => state.id || "",
   }));
+
+  // Register the event listener when the component mounts
+  useEffect(() => {
+    const handleOnTriggerFilter = () => {
+      console.log("trigger filter", state.filters);
+    };
+
+    const triggerFilterEvent = resolveEventName(
+      DataViewEventNames.TRIGGER_FILTER,
+      state.id
+    );
+
+    EventBusInstance.on(triggerFilterEvent, handleOnTriggerFilter);
+
+    // Unsubscribe from the event when the component unmounts
+    return () => {
+      EventBusInstance.off(triggerFilterEvent, handleOnTriggerFilter);
+    };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div className="flex flex-col">
