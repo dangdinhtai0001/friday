@@ -65,7 +65,12 @@ function App() {
 
   return (
     <>
-      <DataViewLayout>
+      <DataViewLayout
+        additionalEventBindings={{
+          "E_C_ADD": () => {
+            console.log("event E_C_ADD");
+          }
+        }}>
         <FilterContainer>
           <div>FilterContainer</div>
         </FilterContainer>

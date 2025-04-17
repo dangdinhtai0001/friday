@@ -1,4 +1,4 @@
-import React, { forwardRef, useEffect, useImperativeHandle } from "react";
+import React, { forwardRef, useImperativeHandle } from "react";
 import {
   DataViewCommands,
   DataViewEventNames,
@@ -8,9 +8,10 @@ import FilterContainer from "./containers/FilterContainer";
 import { useDataViewContext } from "./context/DataViewContext";
 import { EventBusInstance } from "@/composables/lib/EventBus";
 import { resolveEventName } from "./Utils";
+import useEventListeners from "@/composables/hooks/useEventListeners";
 
 const DataViewLayout = (
-  { children }: DataViewLayoutProps,
+  { children, additionalEventBindings }: DataViewLayoutProps,
   ref: React.ForwardedRef<DataViewCommands>
 ) => {
   const { state } = useDataViewContext();
@@ -23,25 +24,39 @@ const DataViewLayout = (
     getId: () => state.id || "",
   }));
 
-  // Register the event listener when the component mounts
-  useEffect(() => {
-    const handleOnTriggerFilter = () => {
-      console.log("trigger filter", state.filters);
-    };
+  // Default event handler
+  const handleOnTriggerFilter = () => {
+    console.log('trigger filter', state.filters);
+  };
 
-    const triggerFilterEvent = resolveEventName(
-      DataViewEventNames.TRIGGER_FILTER,
-      state.id
-    );
+  // Resolve the event name dynamically
+  const triggerFilterEvent = resolveEventName(
+    DataViewEventNames.TRIGGER_FILTER,
+    state.id
+  );
 
-    EventBusInstance.on(triggerFilterEvent, handleOnTriggerFilter);
+  // Default event handlers
+  const defaultEventHandlers = {
+    [triggerFilterEvent]: handleOnTriggerFilter,
+  };
 
-    // Unsubscribe from the event when the component unmounts
-    return () => {
-      EventBusInstance.off(triggerFilterEvent, handleOnTriggerFilter);
-    };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  // Preprocess additionalEventBindings to resolve event names with state.id
+  const resolvedAdditionalEventBindings = additionalEventBindings
+    ? Object.entries(additionalEventBindings).reduce((acc, [eventName, handler]) => {
+      const resolvedEventName = resolveEventName(eventName, state.id);
+      acc[resolvedEventName] = handler;
+      return acc;
+    }, {} as Record<string, () => void>)
+    : {};
+
+  // Merge default event handlers with prop-provided event handlers
+  const mergedEventHandlers = {
+    ...defaultEventHandlers,
+    ...resolvedAdditionalEventBindings,
+  };
+
+  // Use the custom hook to manage event subscriptions
+  useEventListeners(mergedEventHandlers, EventBusInstance);
 
   return (
     <div className="flex flex-col">

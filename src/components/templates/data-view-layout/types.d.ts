@@ -52,6 +52,7 @@ export interface DataViewContextValue {
 
 export interface DataViewLayoutProps {
   children?: React.ReactNode;
+  additionalEventBindings?: Record<string, (...args: unknown[]) => void>;
 }
 
 export interface FilterContainerProps {
