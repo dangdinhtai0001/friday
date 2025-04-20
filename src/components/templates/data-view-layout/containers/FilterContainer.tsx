@@ -17,7 +17,7 @@ function FilterContainer({ children }: FilterContainerProps) {
   };
 
   return (
-    <div className="filter-component">
+    <div className="filter-container">
       {children}
       <Button onClick={applyFilters}>Apply filters</Button>
     </div>

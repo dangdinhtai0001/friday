@@ -59,6 +59,10 @@ export interface FilterContainerProps {
   children?: React.ReactNode;
 }
 
+export interface ActionContainerProps {
+  children?: React.ReactNode;
+}
+
 // --------------------------------------------------------------------
 
 export enum DataViewEventNames {

@@ -9,7 +9,11 @@ import {
 import { FieldValues } from "react-hook-form";
 import { FormState } from "@/components/molecules/form/types/context.d";
 import { Input } from "@/components/atoms/input";
-import { DataViewLayout, FilterContainer } from "@/components/templates/data-view-layout";
+import {
+  DataViewLayout,
+  FilterContainer,
+  ActionContainer,
+} from "@/components/templates/data-view-layout";
 
 interface FormData extends FieldValues {
   username?: string;
@@ -67,13 +71,17 @@ function App() {
     <>
       <DataViewLayout
         additionalEventBindings={{
-          "E_C_ADD": () => {
+          E_C_ADD: () => {
             console.log("event E_C_ADD");
-          }
-        }}>
+          },
+        }}
+      >
         <FilterContainer>
           <div>FilterContainer</div>
         </FilterContainer>
+        <ActionContainer>
+          <div>ActionContainer</div>
+        </ActionContainer>
       </DataViewLayout>
       <div className=" border-1 border-black w-[1000px]">
         <FormContainer<FormData, unknown, unknown>
