@@ -65,7 +65,14 @@ export interface ActionContainerProps {
 
 export interface ActionTriggerProps {
   children?: React.ReactNode;
-  type: "button" | "modal" | "custom"
+  type: "button" | "dialog" | "custom";
+  label?: string;
+  "data-grid"?: {
+    x: number;
+    y: number;
+    w: number;
+    h: number;
+  };
 }
 
 // --------------------------------------------------------------------
