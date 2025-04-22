@@ -1,6 +1,6 @@
 import { ReactElement, isValidElement } from "react";
 import { useDataViewContext } from "../context/DataViewContext";
-import { ActionContainerProps } from "../types";
+import { ActionContainerProps, ActionTriggerProps } from "../types";
 import ActionTrigger from "./ActionTrigger";
 import { FlexibleLayout } from "@/components/molecules/flexible-layout";
 
@@ -33,8 +33,21 @@ function ActionContainer({ children }: ActionContainerProps) {
 
     if (Array.isArray(children)) {
       return children
-        .filter((child): child is ReactElement => isValidElement(child) && isActionTrigger(child))
-        .map((child, index) => <div key={index}>{child}</div>);
+        .filter(
+          (child): child is ReactElement =>
+            isValidElement(child) && isActionTrigger(child)
+        )
+        .map((child, index) => {
+          // Extract data-grid from child props
+          const props = child.props as ActionTriggerProps;
+          const dataGrid = props["data-grid"];
+
+          return (
+            <div key={index} {...(dataGrid ? { "data-grid": dataGrid } : {})}>
+              {child}
+            </div>
+          );
+        });
     }
 
     return isValidElement(children) && isActionTrigger(children) ? (
