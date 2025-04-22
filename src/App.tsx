@@ -81,9 +81,17 @@ function App() {
           <div>FilterContainer</div>
         </FilterContainer>
         <ActionContainer>
-          <ActionTrigger type="button" />
-          <ActionTrigger type="modal" />
-          <ActionTrigger type="custom" />
+          <ActionTrigger
+            type="dialog"
+            data-grid={{ x: 0, y: 0, w: 1, h: 2 }}
+            label="Create"
+          />
+          <ActionTrigger
+            type="button"
+            data-grid={{ x: 1, y: 0, w: 1, h: 2 }}
+            label="Delete"
+          />
+          <ActionTrigger type="custom" data-grid={{ x: 2, y: 0, w: 1, h: 2 }} />
         </ActionContainer>
       </DataViewLayout>
       <div className=" border-1 border-black w-[1000px]">
