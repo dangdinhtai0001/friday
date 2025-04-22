@@ -14,6 +14,7 @@ import {
   FilterContainer,
   ActionContainer,
 } from "@/components/templates/data-view-layout";
+import ActionTrigger from "./components/templates/data-view-layout/containers/ActionTrigger";
 
 interface FormData extends FieldValues {
   username?: string;
@@ -80,7 +81,9 @@ function App() {
           <div>FilterContainer</div>
         </FilterContainer>
         <ActionContainer>
-          <div>ActionContainer</div>
+          <ActionTrigger type="button" />
+          <ActionTrigger type="modal" />
+          <ActionTrigger type="custom" />
         </ActionContainer>
       </DataViewLayout>
       <div className=" border-1 border-black w-[1000px]">
