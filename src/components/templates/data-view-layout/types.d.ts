@@ -63,6 +63,11 @@ export interface ActionContainerProps {
   children?: React.ReactNode;
 }
 
+export interface ActionTriggerProps {
+  children?: React.ReactNode;
+  type: "button" | "modal" | "custom"
+}
+
 // --------------------------------------------------------------------
 
 export enum DataViewEventNames {
