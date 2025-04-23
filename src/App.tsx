@@ -36,7 +36,7 @@ const handleSubmit = (data: FormData) => {
 };
 
 const resolveFieldDisability = (
-  values: FormData
+  values: FormData,
 ): Partial<Record<keyof FormData, boolean>> => {
   return {
     username: false,
@@ -47,7 +47,7 @@ const resolveFieldDisability = (
 };
 
 const validateFunction = async (
-  data: FormData
+  data: FormData,
 ): Promise<ValidateResponse<FormData>> => {
   const errors: Record<string, { message: string }> = {};
 
@@ -82,19 +82,38 @@ function App() {
           E_C_EXPORT: (params: unknown) => {
             console.log("event E_C_EXPORT", params);
           },
+          E_C_CREATE: (params: unknown) => {
+            console.log("event E_C_CREATE", params);
+          },
         }}
       >
         <FilterContainer>
           <div>FilterContainer</div>
         </FilterContainer>
         <ActionContainer>
-          <ButtonTrigger className="bg-secondary-indigo" variant="solid" label="Export" event-name="E_C_EXPORT" data-grid={{ x: 0, y: 0, w: 1, h: 2 }} />
-          <DialogTrigger label="Create" title="Create new data" trigger-class-name="bg-secondary-green" data-grid={{ x: 1, y: 0, w: 1, h: 2 }} />
+          <ButtonTrigger
+            className="bg-secondary-indigo"
+            variant="solid"
+            label="Export"
+            eventName="E_C_EXPORT"
+            data-grid={{ x: 0, y: 0, w: 1, h: 2 }}
+          />
+          <DialogTrigger
+            label="Create"
+            title="Create new data"
+            triggerClassName="bg-secondary-green"
+            eventName="E_C_CREATE"
+            footerButtons={[
+              { label: "Cancel", command: "cancel", variant: "default" },
+              { label: "Submit", command: "submit", variant: "default" },
+            ]}
+            data-grid={{ x: 1, y: 0, w: 1, h: 2 }}
+          />
           <FormTrigger label="Create" data-grid={{ x: 2, y: 0, w: 1, h: 2 }} />
           <CustomTrigger data-grid={{ x: 3, y: 0, w: 1, h: 2 }}></CustomTrigger>
         </ActionContainer>
       </DataViewLayout>
-      <div className=" border-1 border-black w-[1000px]">
+      <div className="w-[1000px] border-1 border-black">
         <FormContainer<FormData, unknown, unknown>
           ref={formRef}
           resolveFieldDisability={resolveFieldDisability}
@@ -123,8 +142,8 @@ function App() {
                     password: "12312",
                     description: "",
                   }),
-                500
-              )
+                500,
+              ),
             );
           }}
           onValueChange={(payload: OnValueChangePayload<FormData>) =>
@@ -168,7 +187,7 @@ function App() {
             <input
               type="text"
               placeholder="Enter your username"
-              className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full rounded-md border px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
             />
           </FieldController>
           <FieldController
@@ -184,7 +203,7 @@ function App() {
             <input
               type="text"
               placeholder="Enter your username"
-              className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full rounded-md border px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
             />
           </FieldController>
           <FieldController
@@ -198,7 +217,7 @@ function App() {
             <input
               type="text"
               placeholder="description"
-              className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full rounded-md border px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
             />
           </FieldController>
         </FormContainer>
