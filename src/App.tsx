@@ -13,6 +13,10 @@ import {
   DataViewLayout,
   FilterContainer,
   ActionContainer,
+  ButtonTrigger,
+  DialogTrigger,
+  FormTrigger,
+  CustomTrigger,
 } from "@/components/templates/data-view-layout";
 import ActionTrigger from "./components/templates/data-view-layout/containers/ActionTrigger";
 
@@ -75,23 +79,19 @@ function App() {
           E_C_ADD: () => {
             console.log("event E_C_ADD");
           },
+          E_C_EXPORT: (params: unknown) => {
+            console.log("event E_C_EXPORT", params);
+          },
         }}
       >
         <FilterContainer>
           <div>FilterContainer</div>
         </FilterContainer>
         <ActionContainer>
-          <ActionTrigger
-            type="dialog"
-            data-grid={{ x: 0, y: 0, w: 1, h: 2 }}
-            label="Create"
-          />
-          <ActionTrigger
-            type="button"
-            data-grid={{ x: 1, y: 0, w: 1, h: 2 }}
-            label="Delete"
-          />
-          <ActionTrigger type="custom" data-grid={{ x: 2, y: 0, w: 1, h: 2 }} />
+          <ButtonTrigger className="bg-secondary-indigo" variant="solid" label="Export" event-name="E_C_EXPORT" data-grid={{ x: 0, y: 0, w: 1, h: 2 }} />
+          <DialogTrigger label="Create" title="Create new data" trigger-class-name="bg-secondary-green" data-grid={{ x: 1, y: 0, w: 1, h: 2 }} />
+          <FormTrigger label="Create" data-grid={{ x: 2, y: 0, w: 1, h: 2 }} />
+          <CustomTrigger data-grid={{ x: 3, y: 0, w: 1, h: 2 }}></CustomTrigger>
         </ActionContainer>
       </DataViewLayout>
       <div className=" border-1 border-black w-[1000px]">
