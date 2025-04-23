@@ -1,30 +1,35 @@
-import { DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger as _DialogTrigger, Dialog } from "@/components/atoms/dialog";
-import { Button } from "@/components/atoms/button";
+import { useDataViewContext } from "../context/DataViewContext";
 import { DialogTriggerProps } from "../types";
+import { ButtonDialog } from "@/components/molecules/button-dialog";
+import { EventBusInstance } from "@/composables/lib/EventBus";
+import { resolveEventName } from "../Utils";
 
-function DialogTrigger({ label, title, "trigger-class-name": triggerClassName }: DialogTriggerProps) {
-    return (
-        <>
-            <Dialog>
-                <_DialogTrigger asChild>
-                    <Button className={triggerClassName}>{label}</Button>
-                </_DialogTrigger>
-                <DialogContent>
-                    <DialogHeader>
-                        <DialogTitle>{title}</DialogTitle>
-                    </DialogHeader>
-                    <div>This is form </div>
-                    <DialogFooter>
-                        <Button variant="outline">Cancel</Button>
-                        <Button>Submit</Button>
-                    </DialogFooter>
-                </DialogContent>
-            </Dialog>
-        </>
-    );
+function DialogTrigger({
+  label,
+  title,
+  triggerClassName,
+  footerButtons,
+  eventName,
+}: DialogTriggerProps) {
+  const { state } = useDataViewContext();
+
+  const handleTrigger = (command: string) => {
+    EventBusInstance.emit(resolveEventName(eventName || "", state.id), {
+      command,
+    });
+  };
+  return (
+    <>
+      <ButtonDialog
+        label={label}
+        title={title}
+        triggerClassName={triggerClassName}
+        footerButtons={footerButtons}
+        onExecuteCommand={handleTrigger}
+      />
+    </>
+  );
 }
 
 DialogTrigger.displayName = "DialogTrigger";
 export default DialogTrigger;
-
-

@@ -1,4 +1,6 @@
 import { ButtonProps } from "@/components/atoms/button";
+import { ButtonDialogProps } from "@/components/molecules/button-dialog";
+
 import React from "react";
 // Define the runtime value for FilterOperator
 export const FILTER_OPERATORS = [
@@ -66,7 +68,7 @@ export interface ActionContainerProps {
 export interface ActionTriggerProps {
   children?: React.ReactNode;
   label?: string;
-  "event-name"?: string;
+  eventName?: string;
   "data-grid"?: {
     x: number;
     y: number;
@@ -77,10 +79,9 @@ export interface ActionTriggerProps {
 
 export interface ButtonTriggerProps extends ActionTriggerProps, ButtonProps {}
 
-export interface DialogTriggerProps extends ActionTriggerProps {
-  title?: string;
-  "trigger-class-name"?: string;
-}
+export interface DialogTriggerProps
+  extends ActionTriggerProps,
+    ButtonDialogProps {}
 
 // --------------------------------------------------------------------
 
