@@ -18,7 +18,9 @@ function ActionTrigger({ type, label }: ActionTriggerProps) {
     return (
       <>
         <Dialog>
-          <DialogTrigger asChild>{renderButton()}</DialogTrigger>
+          <DialogTrigger asChild>
+            <Button>{label}</Button>
+          </DialogTrigger>
           <DialogContent>
             <DialogHeader>
               <DialogTitle>{label}</DialogTitle>
