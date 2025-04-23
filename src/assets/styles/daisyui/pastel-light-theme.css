@@ -41,8 +41,8 @@
   
     /* Background Colors */
     --background-1: rgba(255, 255, 255, 1);
-    --background-2: rgba(247, 249, 251, 1);
-    --background-3: rgba(229, 236, 246, 1);
-    --background-4: rgba(227, 245, 255, 1);
-    --background-5: rgba(229, 236, 246, 0.5);
+    --background-2: rgba(249, 249, 250, 1);
+    --background-3: rgba(230, 241, 253, 1);
+    --background-4: rgba(237, 238, 252, 1);
+    --background-5: rgba(255, 255, 255, 0.8);
   }
