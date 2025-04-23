@@ -1,17 +1,21 @@
+
+
+import * as React from "react";
 import { cn } from "@/composables/lib/utils";
 
-export function DialogFooter({
+const DialogFooter = ({
   className,
   ...props
-}: React.ComponentProps<"div">) {
-  return (
-    <div
-      data-slot="dialog-footer"
-      className={cn(
-        "flex flex-col-reverse gap-2 sm:flex-row sm:justify-end",
-        className
-      )}
-      {...props}
-    />
-  );
-}
+}: React.HTMLAttributes<HTMLDivElement>) => (
+  <div
+    className={cn(
+      "flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2",
+      className
+    )}
+    {...props}
+  />
+);
+
+DialogFooter.displayName = "DialogFooter";
+
+export { DialogFooter };

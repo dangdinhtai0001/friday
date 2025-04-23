@@ -1,15 +1,20 @@
-import { cn } from "@/composables/lib/utils";
-import * as DialogPrimitive from "@radix-ui/react-dialog";
 
-export function DialogDescription({
-  className,
-  ...props
-}: React.ComponentProps<typeof DialogPrimitive.Description>) {
-  return (
+
+import * as React from "react";
+import * as DialogPrimitive from "@radix-ui/react-dialog";
+import { cn } from "@/composables/lib/utils";
+
+const DialogDescription = React.forwardRef<
+    React.ComponentRef<typeof DialogPrimitive.Description>,
+    React.ComponentPropsWithoutRef<typeof DialogPrimitive.Description>
+>(({ className, ...props }, ref) => (
     <DialogPrimitive.Description
-      data-slot="dialog-description"
-      className={cn("text-muted-foreground text-sm", className)}
-      {...props}
+        ref={ref}
+        className={cn("text-sm text-muted-foreground", className)}
+        {...props}
     />
-  );
-}
+));
+
+DialogDescription.displayName = DialogPrimitive.Description.displayName;
+
+export { DialogDescription };

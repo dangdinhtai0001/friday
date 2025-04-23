@@ -1,14 +1,17 @@
+
+
+import * as React from "react";
 import { cn } from "@/composables/lib/utils";
 
-export function DialogHeader({
-  className,
-  ...props
-}: React.ComponentProps<"div">) {
-  return (
-    <div
-      data-slot="dialog-header"
-      className={cn("flex flex-col gap-2 text-center sm:text-left", className)}
-      {...props}
-    />
-  );
-}
+const DialogHeader = ({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) => (
+  <div
+    className={cn(
+      "flex flex-col space-y-1.5 text-center sm:text-left border-b border-border-1 pb-2 border-black-20",
+      className
+    )}
+    {...props}
+  />
+);
+
+DialogHeader.displayName = "DialogHeader";
+export { DialogHeader };
