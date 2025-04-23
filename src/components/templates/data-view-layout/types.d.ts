@@ -1,5 +1,5 @@
+import { ButtonProps } from "@/components/atoms/button";
 import React from "react";
-
 // Define the runtime value for FilterOperator
 export const FILTER_OPERATORS = [
   "eq",
@@ -65,14 +65,21 @@ export interface ActionContainerProps {
 
 export interface ActionTriggerProps {
   children?: React.ReactNode;
-  type: "button" | "dialog" | "custom";
   label?: string;
+  "event-name"?: string;
   "data-grid"?: {
     x: number;
     y: number;
     w: number;
     h: number;
   };
+}
+
+export interface ButtonTriggerProps extends ActionTriggerProps, ButtonProps {}
+
+export interface DialogTriggerProps extends ActionTriggerProps {
+  title?: string;
+  "trigger-class-name"?: string;
 }
 
 // --------------------------------------------------------------------
