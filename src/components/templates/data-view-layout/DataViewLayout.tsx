@@ -67,7 +67,7 @@ const DataViewLayout = (
   useEventListeners(mergedEventHandlers, EventBusInstance);
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col ">
       {/* Filter container ------------------------------------------------ */}
       {filterChildren ? (
         React.cloneElement(filterChildren as React.ReactElement)

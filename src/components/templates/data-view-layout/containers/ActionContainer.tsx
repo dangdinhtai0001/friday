@@ -1,30 +1,26 @@
 import { ReactElement, isValidElement } from "react";
-import { useDataViewContext } from "../context/DataViewContext";
 import { ActionContainerProps, ActionTriggerProps } from "../types";
-import ActionTrigger from "./ActionTrigger";
 import { FlexibleLayout } from "@/components/molecules/flexible-layout";
+import ButtonTrigger from "./ButtonTrigger";
+import CustomTrigger from "./CustomTrigger";
+import DialogTrigger from "./DialogTrigger";
+import FormTrigger from "./FormTrigger";
+
+// List of allowed components
+const allowedComponents = [
+  ButtonTrigger,
+  CustomTrigger,
+  DialogTrigger,
+  FormTrigger,
+];
 
 function ActionContainer({ children }: ActionContainerProps) {
-  const { state } = useDataViewContext();
-
-  // Type guard to check if a child is an ActionTrigger component
-  const isActionTrigger = (child: ReactElement): boolean => {
+  // Type guard to check if a child belongs to the specified components
+  const isAllowedTrigger = (child: ReactElement): boolean => {
     if (!isValidElement(child)) return false;
 
-    // Check if the child's type matches the ActionTrigger component
-    if (child.type === ActionTrigger) return true;
-
-    // Handle functional components with displayName
-    const childType = child.type as unknown;
-    if (
-      typeof childType === "function" &&
-      "displayName" in (childType as object) &&
-      (childType as { displayName?: string }).displayName === "ActionTrigger"
-    ) {
-      return true;
-    }
-
-    return false;
+    // Check if child.type is in the list of allowed components
+    return allowedComponents.includes(child.type as typeof allowedComponents[number]);
   };
 
   // Function to render children based on type checks
@@ -35,7 +31,7 @@ function ActionContainer({ children }: ActionContainerProps) {
       return children
         .filter(
           (child): child is ReactElement =>
-            isValidElement(child) && isActionTrigger(child)
+            isValidElement(child) && isAllowedTrigger(child)
         )
         .map((child, index) => {
           // Extract data-grid from child props
@@ -50,7 +46,7 @@ function ActionContainer({ children }: ActionContainerProps) {
         });
     }
 
-    return isValidElement(children) && isActionTrigger(children) ? (
+    return isValidElement(children) && isAllowedTrigger(children) ? (
       <div>{children}</div>
     ) : null;
   };
