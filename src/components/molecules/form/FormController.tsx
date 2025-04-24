@@ -39,12 +39,12 @@ const FormController = <
     mode: validationMode,
     resolver: validateFunction
       ? async (data) => {
-          const result = await validateFunction(data);
-          return {
-            values: result.values,
-            errors: result.errors,
-          };
-        }
+        const result = await validateFunction(data);
+        return {
+          values: result.values,
+          errors: result.errors,
+        };
+      }
       : undefined,
   });
 
@@ -195,42 +195,38 @@ const FormController = <
   }));
 
   return (
-    <>
-      {state.formId}
-      {JSON.stringify(state.externalContext)}
-      <div className="relative">
-        {/* Loading Overlay */}
-        {state.status === "loading" && (
-          <LoadingOverlay isLoading={state.status === "loading"} />
-        )}
-        {/* Form */}
-        <form onSubmit={methods.handleSubmit(handleSubmission)}>
-          <FormProvider {...methods}>
-            <FlexibleLayout rowHeight={10} isDraggable={false}>
-              {React.Children.map(children, (child) => {
-                if (
-                  React.isValidElement(child) &&
-                  child.type === FieldController
-                ) {
-                  const childProps: FieldControllerProps<FieldValues> =
-                    child.props as FieldControllerProps<FieldValues>;
-                  return (
-                    <div
-                      key={childProps.name}
-                      data-grid={state.layout[childProps.name]}
-                    >
-                      {child}
-                    </div>
-                  );
-                }
+    <div className="relative">
+      {/* Loading Overlay */}
+      {state.status === "loading" && (
+        <LoadingOverlay isLoading={state.status === "loading"} />
+      )}
+      {/* Form */}
+      <form onSubmit={methods.handleSubmit(handleSubmission)}>
+        <FormProvider {...methods}>
+          <FlexibleLayout rowHeight={10} isDraggable={false}>
+            {React.Children.map(children, (child) => {
+              if (
+                React.isValidElement(child) &&
+                child.type === FieldController
+              ) {
+                const childProps: FieldControllerProps<FieldValues> =
+                  child.props as FieldControllerProps<FieldValues>;
+                return (
+                  <div
+                    key={childProps.name}
+                    data-grid={state.layout[childProps.name]}
+                  >
+                    {child}
+                  </div>
+                );
+              }
 
-                return null;
-              })}
-            </FlexibleLayout>
-          </FormProvider>
-        </form>
-      </div>
-    </>
+              return null;
+            })}
+          </FlexibleLayout>
+        </FormProvider>
+      </form>
+    </div>
   );
 };
 
