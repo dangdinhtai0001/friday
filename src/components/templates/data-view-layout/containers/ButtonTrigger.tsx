@@ -5,6 +5,7 @@ import { resolveEventName } from "../Utils";
 import { useDataViewContext } from "../context/DataViewContext";
 import { useState } from "react";
 import { Spinner } from "@/components/atoms/loader";
+import { cn } from "@/composables/lib/utils";
 
 function ButtonTrigger({
   label,
@@ -20,7 +21,7 @@ function ButtonTrigger({
     EventBusInstance.emit(resolveEventName(eventName || "", state.id), { setIsLoading });
   };
   return (
-    <Button className={className} variant={variant} onClick={handleTrigger} disabled={isLoading}>
+    <Button className={cn(className, "w-full h-full")} variant={variant} onClick={handleTrigger} disabled={isLoading}>
       <div className="flex items-center gap-2">
         {isLoading ? <Spinner className="w-12 h-12" /> : null} {label}
       </div>
