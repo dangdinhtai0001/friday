@@ -83,6 +83,8 @@ export interface DialogTriggerProps
   extends ActionTriggerProps,
     ButtonDialogProps {}
 
+export interface FormTriggerProps extends DialogTriggerProps, FormProps {}
+
 // --------------------------------------------------------------------
 
 export enum DataViewEventNames {
