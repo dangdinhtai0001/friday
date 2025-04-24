@@ -4,6 +4,7 @@ import { ButtonDialog } from "@/components/molecules/button-dialog";
 import { EventBusInstance } from "@/composables/lib/EventBus";
 import { resolveEventName } from "../Utils";
 import { type ButtonDialogCommand } from "@/components/molecules/button-dialog";
+import { cn } from "@/composables/lib/utils";
 
 function DialogTrigger({
   label,
@@ -24,7 +25,7 @@ function DialogTrigger({
       <ButtonDialog
         label={label}
         title={title}
-        triggerClassName={triggerClassName}
+        triggerClassName={cn(triggerClassName, "w-full h-full")}
         footerButtons={footerButtons}
         onExecuteCommand={handleTrigger}
       >
