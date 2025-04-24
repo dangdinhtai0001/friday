@@ -3,6 +3,7 @@ import { DialogTriggerProps } from "../types";
 import { ButtonDialog } from "@/components/molecules/button-dialog";
 import { EventBusInstance } from "@/composables/lib/EventBus";
 import { resolveEventName } from "../Utils";
+import { type ButtonDialogCommand } from "@/components/molecules/button-dialog";
 
 function DialogTrigger({
   label,
@@ -10,14 +11,14 @@ function DialogTrigger({
   triggerClassName,
   footerButtons,
   eventName,
+  children,
 }: DialogTriggerProps) {
   const { state } = useDataViewContext();
 
-  const handleTrigger = (command: string) => {
-    EventBusInstance.emit(resolveEventName(eventName || "", state.id), {
-      command,
-    });
+  const handleTrigger = (command: ButtonDialogCommand): Promise<void> | void => {
+    EventBusInstance.emit(resolveEventName(eventName || "", state.id), command);
   };
+
   return (
     <>
       <ButtonDialog
@@ -26,7 +27,9 @@ function DialogTrigger({
         triggerClassName={triggerClassName}
         footerButtons={footerButtons}
         onExecuteCommand={handleTrigger}
-      />
+      >
+        {children}
+      </ButtonDialog>
     </>
   );
 }
