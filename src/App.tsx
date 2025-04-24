@@ -15,7 +15,6 @@ import {
   ActionContainer,
   ButtonTrigger,
   DialogTrigger,
-  FormTrigger,
   CustomTrigger,
 } from "@/components/templates/data-view-layout";
 import { ButtonDialogCommand } from "./components/molecules/button-dialog/types";
@@ -26,6 +25,7 @@ interface FormData extends FieldValues {
   password?: string;
   description?: string;
 }
+
 const handleSubmit = (data: FormData) => {
   return new Promise<void>((resolve) => {
     setTimeout(() => {
@@ -74,7 +74,7 @@ function App() {
 
   return (
     <>
-      
+
       <DataViewLayout
         additionalEventBindings={{
           E_C_ADD: () => {
@@ -121,13 +121,131 @@ function App() {
             eventName="E_C_DELETE"
             footerButtons={[
               { label: "Cancel", command: "cancel", variant: "outline", className: "" },
-              { label: "Submit", command: "submit", variant: "default", className: "bg-secondary-green" },
+              { label: "Submit", command: "submit", variant: "default", className: "bg-black-100 text-white-100" },
             ]}
             data-grid={{ x: 1, y: 0, w: 1, h: 2 }}
           >
-            <div className=""> Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptate quia eos quas at adipisci impedit, iste numquam sit. Sit tempore dicta sequi ratione nesciunt natus aspernatur minima libero, accusamus similique!</div>
+            <div className="typography-regular-14"> Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptate quia eos quas at adipisci impedit, iste numquam sit. Sit tempore dicta sequi ratione nesciunt natus aspernatur minima libero, accusamus similique!</div>
           </DialogTrigger>
-          <FormTrigger label="Create" data-grid={{ x: 2, y: 0, w: 1, h: 2 }} />
+          <DialogTrigger
+            label="Create"
+            title="Create new data"
+            triggerClassName="bg-secondary-green"
+            eventName="E_C_CREATE"
+            footerButtons={[
+              { label: "Cancel", command: "cancel", variant: "outline", className: "" },
+              { label: "Submit", command: "submit", variant: "default", className: "bg-black-100 text-white-100" },
+            ]}
+            data-grid={{ x: 2, y: 0, w: 1, h: 2 }}
+          >
+            <FormContainer<FormData, unknown, unknown>
+              ref={formRef}
+              resolveFieldDisability={resolveFieldDisability}
+              initialLayout={{
+                username: { i: "", x: 0, y: 0, w: 5, h: 3.3 },
+                email: { i: "", x: 6, y: 0, w: 5, h: 3.3 },
+                password: { i: "", x: 0, y: 1, w: 12, h: 3.3 },
+                description: { i: "", x: 0, y: 2, w: 12, h: 3.3 },
+              }}
+              initialFieldState={{
+                username: { isVisible: true, isDisabled: false },
+              }}
+              externalContext={{ foo: "bar" }}
+              validateFunction={validateFunction}
+              onReset={() => console.log("Form has been reset")}
+              validationMode="onChange"
+              onSubmit={handleSubmit}
+              init={async () => {
+                // Giả lập việc lấy dữ liệu từ API
+                return new Promise((resolve) =>
+                  setTimeout(
+                    () =>
+                      resolve({
+                        username: "username",
+                        email: "foo@gmail.com",
+                        password: "12312",
+                        description: "",
+                      }),
+                    500,
+                  ),
+                );
+              }}
+              onValueChange={(payload: OnValueChangePayload<FormData>) =>
+                console.log("Form values changed:", payload)
+              }
+              beforeSubmit={async (data: FormData) => {
+                console.log("Before submit:", data);
+                // Giả lập kiểm tra điều kiện trước khi submit
+                return data.name !== ""; // Chỉ submit nếu tên không rỗng
+              }}
+              afterSubmit={(params: FormData) => {
+                console.log("Submit succeeded with data:", params);
+              }}
+              onReady={(state: FormState) => {
+                console.log("Form ready!!!", state);
+              }}
+            >
+              <FieldController
+                name="username"
+                label="Username"
+                layout="horizontal"
+                hint="Enter your unique username"
+                hintType="info"
+                labelAlign="right"
+                labelWidth="90px"
+                hintDisplayMode="ellipsis"
+                isRequired={true}
+              >
+                <Input type="text" placeholder="Enter your username" />
+              </FieldController>
+              <FieldController
+                key="email"
+                name="email"
+                label="Email"
+                layout="horizontal"
+                hint="We'll never share your email with anyone else."
+                hintType="warning"
+                labelAlign="right"
+                labelWidth="90px"
+              >
+                <input
+                  type="text"
+                  placeholder="Enter your username"
+                  className="w-full rounded-md border px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                />
+              </FieldController>
+              <FieldController
+                key="password"
+                name="password"
+                label="Password"
+                layout="horizontal"
+                hint="Must be at least 6 characters"
+                hintType="error"
+                labelAlign="right"
+                labelWidth="90px"
+              >
+                <input
+                  type="text"
+                  placeholder="Enter your username"
+                  className="w-full rounded-md border px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                />
+              </FieldController>
+              <FieldController
+                key="description"
+                name="description"
+                label="description"
+                layout="horizontal"
+                labelAlign="right"
+                labelWidth="90px"
+              >
+                <input
+                  type="text"
+                  placeholder="description"
+                  className="w-full rounded-md border px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                />
+              </FieldController>
+            </FormContainer>
+          </DialogTrigger>
           <CustomTrigger data-grid={{ x: 3, y: 0, w: 1, h: 2 }}></CustomTrigger>
         </ActionContainer>
       </DataViewLayout>
@@ -232,7 +350,7 @@ function App() {
             labelAlign="right"
             labelWidth="90px"
           >
-            <input
+            <Input
               type="text"
               placeholder="description"
               className="w-full rounded-md border px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
