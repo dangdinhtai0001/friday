@@ -9,11 +9,18 @@ export interface FooterButtonConfig {
   disabled?: boolean; // Whether the button is disabled
 }
 
+export interface ButtonDialogCommand {
+  command: string;
+  setIsOpen?: (isOpen: boolean) => void; // setter for controlling the dialog's open state
+  setIsLoading?: (isLoading: boolean) => void; // setter for controlling the dialog's loading state
+}
+
 // Props for the ButtonDialog component
 export interface ButtonDialogProps {
   label?: string; // Label for the trigger button
   title?: string; // Title of the dialog
   triggerClassName?: string; // Custom class name for the trigger button
   footerButtons?: FooterButtonConfig[]; // List of buttons in the footer
-  onExecuteCommand?: (command: string) => void;
+  onExecuteCommand?: (command: ButtonDialogCommand) => Promise<void> | void;
+  children?: React.ReactNode; // Content to be displayed inside the dialog
 }
