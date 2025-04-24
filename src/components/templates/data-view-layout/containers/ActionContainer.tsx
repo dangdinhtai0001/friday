@@ -39,7 +39,7 @@ function ActionContainer({ children }: ActionContainerProps) {
           const dataGrid = props["data-grid"];
 
           return (
-            <div key={index} {...(dataGrid ? { "data-grid": dataGrid } : {})}>
+            <div key={index} {...(dataGrid ? { "data-grid": dataGrid } : {})} className="">
               {child}
             </div>
           );
@@ -53,7 +53,7 @@ function ActionContainer({ children }: ActionContainerProps) {
 
   return (
     <div className="action-container">
-      <FlexibleLayout rowHeight={10} isDraggable={false}>
+      <FlexibleLayout rowHeight={10} isDraggable={false} margin={[10,10]} cols={{lg:24}}>
         {renderChildren()}
       </FlexibleLayout>
     </div>
