@@ -18,7 +18,7 @@ import {
   FormTrigger,
   CustomTrigger,
 } from "@/components/templates/data-view-layout";
-import ActionTrigger from "./components/templates/data-view-layout/containers/ActionTrigger";
+import { ButtonDialogCommand } from "./components/molecules/button-dialog/types";
 
 interface FormData extends FieldValues {
   username?: string;
@@ -74,17 +74,33 @@ function App() {
 
   return (
     <>
+      
       <DataViewLayout
         additionalEventBindings={{
           E_C_ADD: () => {
             console.log("event E_C_ADD");
           },
-          E_C_EXPORT: (params: unknown) => {
+          E_C_EXPORT: async (params: unknown) => {
+            const { setIsLoading } = params as { setIsLoading: (isLoading: boolean) => void };
+            setIsLoading(true);
+            await new Promise((resolve) => setTimeout(resolve, 2000));
+            setIsLoading(false);
             console.log("event E_C_EXPORT", params);
           },
-          E_C_CREATE: (params: unknown) => {
-            console.log("event E_C_CREATE", params);
-          },
+          E_C_DELETE: async (params: unknown) => {
+            const { setIsOpen, command, setIsLoading } = params as ButtonDialogCommand;
+
+            if (command === "cancel") {
+              setIsOpen?.(false);
+            }
+            if (command === "submit") {
+              setIsLoading?.(true);
+              await new Promise((resolve) => setTimeout(resolve, 2000));
+              setIsLoading?.(false);
+              setIsOpen?.(false);
+              console.log("event E_C_DELETE completed", params);
+            }
+          }
         }}
       >
         <FilterContainer>
@@ -99,16 +115,18 @@ function App() {
             data-grid={{ x: 0, y: 0, w: 1, h: 2 }}
           />
           <DialogTrigger
-            label="Create"
-            title="Create new data"
-            triggerClassName="bg-secondary-green"
-            eventName="E_C_CREATE"
+            label="Delete"
+            title="Delete data"
+            triggerClassName="bg-secondary-red text-white-80"
+            eventName="E_C_DELETE"
             footerButtons={[
-              { label: "Cancel", command: "cancel", variant: "default" },
-              { label: "Submit", command: "submit", variant: "default" },
+              { label: "Cancel", command: "cancel", variant: "outline", className: "" },
+              { label: "Submit", command: "submit", variant: "default", className: "bg-secondary-green" },
             ]}
             data-grid={{ x: 1, y: 0, w: 1, h: 2 }}
-          />
+          >
+            <div className=""> Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptate quia eos quas at adipisci impedit, iste numquam sit. Sit tempore dicta sequi ratione nesciunt natus aspernatur minima libero, accusamus similique!</div>
+          </DialogTrigger>
           <FormTrigger label="Create" data-grid={{ x: 2, y: 0, w: 1, h: 2 }} />
           <CustomTrigger data-grid={{ x: 3, y: 0, w: 1, h: 2 }}></CustomTrigger>
         </ActionContainer>
