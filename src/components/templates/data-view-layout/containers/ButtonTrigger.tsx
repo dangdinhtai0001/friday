@@ -6,6 +6,7 @@ import { useDataViewContext } from "../context/DataViewContext";
 import { useState } from "react";
 import { Spinner } from "@/components/atoms/loader";
 import { cn } from "@/composables/lib/utils";
+import { BusyButton } from "@/components/molecules/busy-button";
 
 function ButtonTrigger({
   label,
@@ -18,14 +19,20 @@ function ButtonTrigger({
   const [isLoading, setIsLoading] = useState(false);
 
   const handleTrigger = () => {
-    EventBusInstance.emit(resolveEventName(eventName || "", state.id), { setIsLoading });
+    EventBusInstance.emit(resolveEventName(eventName || "", state.id), {
+      setIsLoading,
+    });
   };
   return (
-    <Button className={cn(className, "w-full h-full")} variant={variant} onClick={handleTrigger} disabled={isLoading}>
-      <div className="flex items-center gap-2">
-        {isLoading ? <Spinner className="w-12 h-12" /> : null} {label}
-      </div>
-    </Button>
+    <BusyButton
+      isLoading={isLoading}
+      className={cn(className)}
+      variant={variant}
+      onClick={handleTrigger}
+      disabled={isLoading}
+    >
+      {label}
+    </BusyButton>
   );
 }
 

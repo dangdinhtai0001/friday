@@ -10,7 +10,7 @@ import {
 import { Button } from "@/components/atoms/button";
 import { ButtonDialogProps } from "./types";
 import { useState } from "react";
-import { Spinner } from "@/components/atoms/loader";
+import { BusyButton } from "../busy-button";
 
 function ButtonDialog({
   label,
@@ -50,20 +50,16 @@ function ButtonDialog({
         {/* Footer */}
         <DialogFooter>
           {footerButtons?.map((button, index) => (
-            <Button
+            <BusyButton
               key={index}
               variant={button.variant}
               className={button.className}
               onClick={() => handleExecuteCommand(button.command)}
               disabled={isLoading || button.disabled}
+              isLoading={isLoading && executeCommand === button.command}
             >
-              <div className="flex items-center gap-2">
-                {(isLoading && executeCommand === button.command) ? (
-                  <Spinner className="w-16 h-16" />
-                ) : null}
-                {button.label}
-              </div>
-            </Button>
+              {button.label}
+            </BusyButton>
           ))}
         </DialogFooter>
       </DialogContent>
