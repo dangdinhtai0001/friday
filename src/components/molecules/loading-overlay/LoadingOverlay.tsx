@@ -1,12 +1,14 @@
 import React from 'react';
-import type {LoadingOverlayProps} from './types'
+import type { LoadingOverlayProps } from './types'
+import { Spinner } from '@/components/atoms/loader';
 
 const LoadingOverlay: React.FC<LoadingOverlayProps> = ({ isLoading, text = 'Loading...' }) => {
   if (!isLoading) return null;
 
   return (
-    <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div className="text-white text-lg font-bold">{text}</div>
+    <div className="flex flex-col gap-2 absolute inset-0  items-center justify-center z-50 bg-gradient-to-t from-background-3/50 to-background-4/50 backdrop-blur-[1.5px]">
+      <Spinner className='h-24 w-24' />
+      <div className="typography-regular-16">{text}</div>
     </div>
   );
 };

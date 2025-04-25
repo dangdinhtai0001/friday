@@ -6,7 +6,7 @@ function BusyButton({ isLoading, children, ...props }: BusyButtonProps) {
   return (
     <Button {...props}>
       <div className="flex items-center gap-2">
-        {isLoading ? <Spinner className="h-12 w-12" /> : null}
+        {isLoading ? <Spinner className={`h-12 w-12 ${isLoading ? "opacity-30" : ""}`} /> : null}
         {children}
       </div>
     </Button>

@@ -48,7 +48,7 @@ function ButtonDialog({
         {children}
 
         {/* Footer */}
-        <DialogFooter>
+        <DialogFooter className="flex justify-end gap-2">
           {footerButtons?.map((button, index) => (
             <BusyButton
               key={index}
