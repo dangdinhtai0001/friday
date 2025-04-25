@@ -70,7 +70,7 @@ const validateFunction = async (
 };
 
 function App() {
-  const { formRef, resetForm, submitForm, validateForm } = useFormController();
+  const { formRef, resetForm, submitForm, validateForm, getFieldsError } = useFormController();
 
   return (
     <>
@@ -100,6 +100,24 @@ function App() {
               setIsOpen?.(false);
               console.log("event E_C_DELETE completed", params);
             }
+          },
+          E_C_CREATE: async (params: unknown) => {
+            const { command, setIsLoading, setIsOpen } = params as ButtonDialogCommand;
+
+            if (command === "reset") {
+              console.log("event E_C_CREATE reset");
+              resetForm();
+            }
+            if (command === "submit") {
+              setIsLoading?.(true);
+              console.log("event E_C_CREATE submit");
+              await submitForm();
+
+              // if (Object.keys(getFieldsError()).length <= 0) {
+              //   setIsOpen?.(false);
+              // }
+              setIsLoading?.(false);
+            }
           }
         }}
       >
@@ -109,7 +127,7 @@ function App() {
         <ActionContainer>
           <ButtonTrigger
             className="bg-secondary-indigo"
-            variant="solid"
+            variant="filled"
             label="Export"
             eventName="E_C_EXPORT"
             data-grid={{ x: 0, y: 0, w: 1, h: 2 }}
@@ -134,7 +152,8 @@ function App() {
             eventName="E_C_CREATE"
             footerButtons={[
               { label: "Cancel", command: "cancel", variant: "outline", className: "" },
-              { label: "Submit", command: "submit", variant: "default", className: "bg-black-100 text-white-100" },
+              { label: "Reset", command: "reset", className: "" },
+              { label: "Submit", command: "submit", variant: "filled", className: "bg-black-100 text-white-100" },
             ]}
             data-grid={{ x: 2, y: 0, w: 1, h: 2 }}
           >
@@ -196,7 +215,7 @@ function App() {
                 hintDisplayMode="ellipsis"
                 isRequired={true}
               >
-                <Input type="text" placeholder="Enter your username" />
+                <Input type="text" placeholder="Enter your username" className="w-full" />
               </FieldController>
               <FieldController
                 key="email"
@@ -208,11 +227,7 @@ function App() {
                 labelAlign="right"
                 labelWidth="90px"
               >
-                <input
-                  type="text"
-                  placeholder="Enter your username"
-                  className="w-full rounded-md border px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
-                />
+                <Input type="text" placeholder="Enter your username" className="w-full" />
               </FieldController>
               <FieldController
                 key="password"
@@ -224,11 +239,7 @@ function App() {
                 labelAlign="right"
                 labelWidth="90px"
               >
-                <input
-                  type="text"
-                  placeholder="Enter your username"
-                  className="w-full rounded-md border px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
-                />
+                <Input type="password" placeholder="Enter your username" className="w-full" />
               </FieldController>
               <FieldController
                 key="description"
@@ -238,18 +249,14 @@ function App() {
                 labelAlign="right"
                 labelWidth="90px"
               >
-                <input
-                  type="text"
-                  placeholder="description"
-                  className="w-full rounded-md border px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
-                />
+                <Input type="text" placeholder="description" className="w-full" />
               </FieldController>
             </FormContainer>
           </DialogTrigger>
           <CustomTrigger data-grid={{ x: 3, y: 0, w: 1, h: 2 }}></CustomTrigger>
         </ActionContainer>
       </DataViewLayout>
-      <div className="w-[1000px] border-1 border-black">
+      {/* <div className="w-[1000px] border-1 border-black">
         <FormContainer<FormData, unknown, unknown>
           ref={formRef}
           resolveFieldDisability={resolveFieldDisability}
@@ -353,14 +360,14 @@ function App() {
             <Input
               type="text"
               placeholder="description"
-              className="w-full rounded-md border px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+              className=""
             />
           </FieldController>
         </FormContainer>
         <button onClick={submitForm}>Submit</button>
         <button onClick={resetForm}>reset</button>
         <button onClick={validateForm}>validate</button>
-      </div>
+      </div> */}
     </>
   );
 }

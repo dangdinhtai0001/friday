@@ -138,7 +138,7 @@ const FieldController = <T extends FieldValues>(
         {/* Label */}
         <label
           htmlFor={name.toString()}
-          className={`font-medium ${
+          className={`typography-regular-16 ${
             error ? "text-secondary-red" : "text-balck-100" // Change text color if there's an error
           } ${alignClass} pr-2 ${
             layout === "horizontal" ? "shrink-0 self-center" : "" // Add self-center for vertical alignment
