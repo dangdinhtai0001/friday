@@ -14,9 +14,10 @@ function Input({ className, type, ...props }: React.ComponentProps<"input">) {
       //   className
       // )}
       className={cn(
-        "rounded-16 px-20 py-16 border-[0.5px] border-black-10",
+        "rounded-8 px-2 py-1 border-[0.5px] border-black-10 bg-background-5 typography-regular-14 text-black-100",
         "hover:border-black-40",
-        "disabled:text-black-20 disabled:bg-black-5 disabled:border-black-5",
+        "disabled:text-black-20 disabled:bg-black-5 disabled:border-black-5 disabled:cursor-not-allowed",
+        "focus:ring-2 focus:outline-none focus:ring-black-10 focus:ring-offset-0",
         className
       )}
       {...props}
