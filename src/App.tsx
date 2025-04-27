@@ -18,6 +18,93 @@ import {
   CustomTrigger,
 } from "@/components/templates/data-view-layout";
 import { ButtonDialogCommand } from "./components/molecules/button-dialog/types";
+import {
+  EdgePanel,
+  EdgePanelTrigger,
+  EdgePanelContent,
+  EdgePanelTitle,
+  EdgePanelFooter,
+} from "@/components/molecules/edge-pannel";
+import {
+  ColDef,
+  DataGrid,
+  GroupColDef,
+} from "./components/organisms/data-grid";
+
+type Person = {
+  firstName: string;
+  lastName: string;
+  age: number;
+  visits: number;
+  status: string;
+  progress: number;
+};
+
+const defaultData: Person[] = [
+  {
+    firstName: "tanner",
+    lastName: "linsley",
+    age: 24,
+    visits: 100,
+    status: "In Relationship",
+    progress: 50,
+  },
+  {
+    firstName: "tandy",
+    lastName: "miller",
+    age: 40,
+    visits: 40,
+    status: "Single",
+    progress: 80,
+  },
+  {
+    firstName: "joe",
+    lastName: "dirte",
+    age: 45,
+    visits: 20,
+    status: "Complicated",
+    progress: 10,
+  },
+];
+
+const columns: (ColDef<Person> | GroupColDef<Person>)[] = [
+  {
+    headerName: "name",
+    groupId: "name",
+    columns: [
+      {
+        headerName: "First Name",
+        field: "firstName",
+      },
+      {
+        headerName: "Last Name",
+        field: "lastName",
+      },
+    ],
+  },
+  {
+    headerName: "Info",
+    groupId: "info",
+    columns: [
+      {
+        headerName: "Age",
+        field: "age",
+      },
+      {
+        headerName: "status",
+        field: "status",
+      },
+      {
+        headerName: "Progress",
+        field: "progress",
+      },
+      {
+        headerName: "Visits",
+        field: "visits",
+      },
+    ],
+  },
+];
 
 interface FormData extends FieldValues {
   username?: string;
@@ -70,10 +157,23 @@ const validateFunction = async (
 };
 
 function App() {
-  const { formRef, resetForm, submitForm, validateForm, getFieldsError } = useFormController();
+  const { formRef, resetForm, submitForm, validateForm, getFieldsError } =
+    useFormController();
 
   return (
     <>
+      <EdgePanel>
+        <EdgePanelTrigger>open</EdgePanelTrigger>
+        <EdgePanelContent>
+          <EdgePanelTitle>Create new user</EdgePanelTitle>
+          <div className="h-[100px] w-[800px] overflow-auto border-1 border-red-200">
+            he heh he
+          </div>
+          <EdgePanelFooter>Footer</EdgePanelFooter>
+        </EdgePanelContent>
+      </EdgePanel>
+
+      <DataGrid columns={columns} data={defaultData} />
 
       <DataViewLayout
         additionalEventBindings={{
@@ -81,14 +181,17 @@ function App() {
             console.log("event E_C_ADD");
           },
           E_C_EXPORT: async (params: unknown) => {
-            const { setIsLoading } = params as { setIsLoading: (isLoading: boolean) => void };
+            const { setIsLoading } = params as {
+              setIsLoading: (isLoading: boolean) => void;
+            };
             setIsLoading(true);
             await new Promise((resolve) => setTimeout(resolve, 2000));
             setIsLoading(false);
             console.log("event E_C_EXPORT", params);
           },
           E_C_DELETE: async (params: unknown) => {
-            const { setIsOpen, command, setIsLoading } = params as ButtonDialogCommand;
+            const { setIsOpen, command, setIsLoading } =
+              params as ButtonDialogCommand;
 
             if (command === "cancel") {
               setIsOpen?.(false);
@@ -102,11 +205,16 @@ function App() {
             }
           },
           E_C_CREATE: async (params: unknown) => {
-            const { command, setIsLoading, setIsOpen } = params as ButtonDialogCommand;
+            const { command, setIsLoading, setIsOpen } =
+              params as ButtonDialogCommand;
 
             if (command === "reset") {
               console.log("event E_C_CREATE reset");
               resetForm();
+            }
+            if (command === "cancel") {
+              console.log("event E_C_CREATE cancel");
+              setIsOpen?.(false);
             }
             if (command === "submit") {
               setIsLoading?.(true);
@@ -118,7 +226,7 @@ function App() {
               // }
               setIsLoading?.(false);
             }
-          }
+          },
         }}
       >
         <FilterContainer>
@@ -138,12 +246,28 @@ function App() {
             triggerClassName="bg-secondary-red text-white-80"
             eventName="E_C_DELETE"
             footerButtons={[
-              { label: "Cancel", command: "cancel", variant: "outline", className: "" },
-              { label: "Submit", command: "submit", variant: "default", className: "bg-black-100 text-white-100" },
+              {
+                label: "Cancel",
+                command: "cancel",
+                variant: "outline",
+                className: "",
+              },
+              {
+                label: "Submit",
+                command: "submit",
+                variant: "default",
+                className: "bg-black-100 text-white-100",
+              },
             ]}
             data-grid={{ x: 1, y: 0, w: 1, h: 2 }}
           >
-            <div className="typography-regular-14"> Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptate quia eos quas at adipisci impedit, iste numquam sit. Sit tempore dicta sequi ratione nesciunt natus aspernatur minima libero, accusamus similique!</div>
+            <div className="typography-regular-14">
+              {" "}
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptate
+              quia eos quas at adipisci impedit, iste numquam sit. Sit tempore
+              dicta sequi ratione nesciunt natus aspernatur minima libero,
+              accusamus similique!
+            </div>
           </DialogTrigger>
           <DialogTrigger
             label="Create"
@@ -151,9 +275,19 @@ function App() {
             triggerClassName="bg-secondary-green"
             eventName="E_C_CREATE"
             footerButtons={[
-              { label: "Cancel", command: "cancel", variant: "outline", className: "" },
+              {
+                label: "Cancel",
+                command: "cancel",
+                variant: "outline",
+                className: "",
+              },
               { label: "Reset", command: "reset", className: "" },
-              { label: "Submit", command: "submit", variant: "filled", className: "bg-black-100 text-white-100" },
+              {
+                label: "Submit",
+                command: "submit",
+                variant: "filled",
+                className: "bg-black-100 text-white-100",
+              },
             ]}
             data-grid={{ x: 2, y: 0, w: 1, h: 2 }}
           >
@@ -215,7 +349,11 @@ function App() {
                 hintDisplayMode="ellipsis"
                 isRequired={true}
               >
-                <Input type="text" placeholder="Enter your username" className="w-full" />
+                <Input
+                  type="text"
+                  placeholder="Enter your username"
+                  className="w-full"
+                />
               </FieldController>
               <FieldController
                 key="email"
@@ -227,7 +365,11 @@ function App() {
                 labelAlign="right"
                 labelWidth="90px"
               >
-                <Input type="text" placeholder="Enter your username" className="w-full" />
+                <Input
+                  type="text"
+                  placeholder="Enter your username"
+                  className="w-full"
+                />
               </FieldController>
               <FieldController
                 key="password"
@@ -239,7 +381,11 @@ function App() {
                 labelAlign="right"
                 labelWidth="90px"
               >
-                <Input type="password" placeholder="Enter your username" className="w-full" />
+                <Input
+                  type="password"
+                  placeholder="Enter your username"
+                  className="w-full"
+                />
               </FieldController>
               <FieldController
                 key="description"
@@ -249,7 +395,11 @@ function App() {
                 labelAlign="right"
                 labelWidth="90px"
               >
-                <Input type="text" placeholder="description" className="w-full" />
+                <Input
+                  type="text"
+                  placeholder="description"
+                  className="w-full"
+                />
               </FieldController>
             </FormContainer>
           </DialogTrigger>

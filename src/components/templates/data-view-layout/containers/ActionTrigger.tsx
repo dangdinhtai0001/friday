@@ -8,7 +8,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/atoms/dialog";
+} from "@/components/molecules/dialog";
 
 function ActionTrigger({ type, label }: ActionTriggerProps) {
   const renderButton = () => {

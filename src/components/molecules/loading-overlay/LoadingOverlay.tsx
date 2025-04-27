@@ -6,7 +6,7 @@ const LoadingOverlay: React.FC<LoadingOverlayProps> = ({ isLoading, text = 'Load
   if (!isLoading) return null;
 
   return (
-    <div className="flex flex-col gap-2 absolute inset-0  items-center justify-center z-50 bg-gradient-to-t from-background-3/50 to-background-4/50 backdrop-blur-[1.5px]">
+    <div className="flex flex-col gap-2 absolute inset-0  items-center justify-center z-50 bg-gradient-to-t from-background-3/70 to-background-4/70 backdrop-blur-4">
       <Spinner className='h-24 w-24' />
       <div className="typography-regular-16">{text}</div>
     </div>
