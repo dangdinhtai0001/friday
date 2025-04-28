@@ -20,7 +20,9 @@ function ActionContainer({ children }: ActionContainerProps) {
     if (!isValidElement(child)) return false;
 
     // Check if child.type is in the list of allowed components
-    return allowedComponents.includes(child.type as typeof allowedComponents[number]);
+    return allowedComponents.includes(
+      child.type as (typeof allowedComponents)[number],
+    );
   };
 
   // Function to render children based on type checks
@@ -31,7 +33,7 @@ function ActionContainer({ children }: ActionContainerProps) {
       return children
         .filter(
           (child): child is ReactElement =>
-            isValidElement(child) && isAllowedTrigger(child)
+            isValidElement(child) && isAllowedTrigger(child),
         )
         .map((child, index) => {
           // Extract data-grid from child props
@@ -39,7 +41,11 @@ function ActionContainer({ children }: ActionContainerProps) {
           const dataGrid = props["data-grid"];
 
           return (
-            <div key={index} {...(dataGrid ? { "data-grid": dataGrid } : {})} className="">
+            <div
+              key={index}
+              {...(dataGrid ? { "data-grid": dataGrid } : {})}
+              className=""
+            >
               {child}
             </div>
           );
@@ -53,7 +59,12 @@ function ActionContainer({ children }: ActionContainerProps) {
 
   return (
     <div className="action-container">
-      <FlexibleLayout rowHeight={10} isDraggable={false} margin={[10,10]} cols={{lg:24}}>
+      <FlexibleLayout
+        rowHeight={10}
+        isDraggable={false}
+        margin={[10, 10]}
+        cols={{ lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 }}
+      >
         {renderChildren()}
       </FlexibleLayout>
     </div>
