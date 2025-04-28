@@ -16,7 +16,7 @@ function HeaderCell<TData>({ header }: HeaderCellProps<TData>) {
 
     return (
         <div
-            className="header-cell border-b-1 border-black-20 py-2 px-3 typography-regular-12 text-black-40"
+            className="header-cell border-b-1 border-black-20 py-2 px-3 typography-regular-12 text-black-40 w-full"
             style={{
                 width: `${headerWidth}px`,
                 flexShrink: 0,

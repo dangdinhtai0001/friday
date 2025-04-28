@@ -7,7 +7,7 @@ export interface HeaderContainerProps<TData> {
 function HeaderContainer<TData>({ table }: HeaderContainerProps<TData>) {
 
     return (
-        <div className="header-container relative">
+        <div className="header-container w-full relative">
             {table.getHeaderGroups().map((headerGroup, rowIndex) => (
                 <HeaderRow key={headerGroup.id} headerGroup={headerGroup} rowIndex={rowIndex} />
             ))}
