@@ -30,7 +30,7 @@ import {
   DataGrid,
   GroupColDef,
 } from "./components/organisms/data-grid";
-
+import { faker } from "@faker-js/faker";
 type Person = {
   firstName: string;
   lastName: string;
@@ -40,40 +40,33 @@ type Person = {
   progress: number;
 };
 
-const defaultData: Person[] = [
-  {
-    firstName: "tanner",
-    lastName: "linsley",
-    age: 24,
-    visits: 100,
-    status: "In Relationship",
-    progress: 50,
-  },
-  {
-    firstName: "tandy",
-    lastName: "miller",
-    age: 40,
-    visits: 40,
-    status: "Single",
-    progress: 80,
-  },
-  {
-    firstName: "joe",
-    lastName: "dirte",
-    age: 45,
-    visits: 20,
-    status: "Complicated",
-    progress: 10,
-  },
-];
+function mockData(size: number): Person[] {
+  const data: Person[] = [];
+  const statusOptions = ["relationship", "complicated", "single"];
+
+  for (let i = 0; i < size; i++) {
+    data.push({
+      firstName: faker.person.firstName(),
+      lastName: faker.person.lastName(),
+      age: faker.number.int({ min: 18, max: 80 }),
+      visits: faker.number.int({ min: 0, max: 100 }),
+      status: faker.helpers.arrayElement(statusOptions),
+      progress: faker.number.int({ min: 0, max: 100 }),
+    });
+  }
+
+  return data;
+}
+
+const defaultData: Person[] = mockData(1000);
 
 const columns: (ColDef<Person> | GroupColDef<Person>)[] = [
   {
-    headerName: "name",
+    headerName: "Name",
     groupId: "name",
     columns: [
       {
-        headerName: "First Name",
+        headerName: "First name",
         field: "firstName",
       },
       {
@@ -91,7 +84,7 @@ const columns: (ColDef<Person> | GroupColDef<Person>)[] = [
         field: "age",
       },
       {
-        headerName: "status",
+        headerName: "Status",
         field: "status",
       },
       {
