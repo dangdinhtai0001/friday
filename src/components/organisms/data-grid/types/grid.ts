@@ -1,7 +1,7 @@
 import { ColDef, GroupColDef } from "./column";
 
 export interface UseDataGridOptions<TData> {
-  columns: ColDef<TData>[] | GroupColDef<TData>[];
+  columns: (ColDef<TData> | GroupColDef<TData>)[];
   data: TData[];
 }
 
