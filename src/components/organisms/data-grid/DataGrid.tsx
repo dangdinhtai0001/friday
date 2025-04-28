@@ -1,23 +1,23 @@
 import { DataGridProps } from "./types/grid";
 import useDataGrid from "./core/useDataGrid";
-import { HeaderContainer } from "./ui/header";
-import { Viewport } from "./ui/viewport";
+import { HeaderContainer, HeaderViewport } from "./ui/header";
+import { ContentViewport } from "./ui/content";
 
 function DataGrid<TData>(props: DataGridProps<TData>) {
   const { columns, data, className } = props;
 
   const table = useDataGrid<TData>({ columns, data });
 
-
-
   return (
     <div className="p-2">
       <div>
         {/* Header */}
         <HeaderContainer table={table} />
+        {/* <HeaderViewport table={table} /> */}
+
 
         {/* Viewport */}
-        <Viewport table={table} />
+        <ContentViewport table={table} />
 
         {/* Body */}
         {/* <div>
