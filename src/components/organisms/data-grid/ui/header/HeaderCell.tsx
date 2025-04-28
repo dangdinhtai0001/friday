@@ -19,8 +19,11 @@ function HeaderCell<TData>({ header }: HeaderCellProps<TData>) {
             className="header-cell border-b-1 border-black-20 py-2 px-3 typography-regular-12 text-black-40 w-full"
             style={{
                 width: `${headerWidth}px`,
-                flexShrink: 0,
+                flexShrink: 1,
                 flexGrow: 0,
+                minWidth: 100,
+                textOverflow: "ellipsis", // Hiển thị dấu "..." khi nội dung bị cắt
+                whiteSpace: "nowrap", // Ngăn nội dung xuống dòng
             }}
         >
             {header.isPlaceholder
