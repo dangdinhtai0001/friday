@@ -1,0 +1,29 @@
+<svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 100 100"
+    stroke-linejoin="round"
+    stroke-linecap="round"
+    fill="none"
+>
+    <!-- Checkmark Path -->
+    <path
+        d="M25,50 L45,70 L75,30"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="14"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-dasharray="80"
+        stroke-dashoffset="80"
+    >
+        <!-- Animation -->
+        <animate
+            attributeName="stroke-dashoffset"
+            from="80"
+            to="0"
+            dur="0.2s"
+            begin="0s"
+            fill="freeze"
+        />
+    </path>
+</svg>
