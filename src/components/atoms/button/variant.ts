@@ -27,10 +27,11 @@ const baseStyles = [
 // Variant styles
 const variantStyles = {
   borderless: "bg-transparent border-none hover:bg-black-5",
-  gray: "bg-black-5 hover:bg-black-20 disabled:bg-black-5",
+  default: "bg-black-5 hover:bg-black-20 disabled:bg-black-5",
   outline:
     "border-1 border-black-10 hover:bg-black-5 hover:border-black-20 disabled:border-black-10 disabled:bg-transparent",
-  filled: "bg-primary-brand text-white-100 hover:opacity-70 disabled:bg-black-5",
+  filled:
+    "bg-primary-brand text-white-100 hover:opacity-70 disabled:bg-black-5",
 };
 
 // Size styles
@@ -46,7 +47,7 @@ const buttonVariants = cva(baseStyles, {
     size: sizeStyles,
   },
   defaultVariants: {
-    variant: "gray",
+    variant: "default",
     size: "default",
   },
 });
