@@ -1,4 +1,5 @@
 import { flexRender, Header } from "@tanstack/react-table";
+import { DEFAULT_COLUMN_MIN_WIDTH } from "../../core/constants";
 
 export interface HeaderCellProps<TData> {
     header: Header<TData, unknown>;
@@ -7,7 +8,7 @@ export interface HeaderCellProps<TData> {
 function HeaderCell<TData>({ header }: HeaderCellProps<TData>) {
     // Kiểm tra nếu header là group header
     const leafColumns = header.column.getLeafColumns();
-    const isGroupHeader = leafColumns.length > 0;
+    const isGroupHeader = leafColumns.length > 1;
 
     // Tính toán độ rộng
     const headerWidth = isGroupHeader
@@ -16,19 +17,17 @@ function HeaderCell<TData>({ header }: HeaderCellProps<TData>) {
 
     return (
         <div
-            className="header-cell border-b-1 border-black-20 py-2 px-3 typography-regular-12 text-black-40 w-full"
+            className="header-cell border-b-1 border-black-20 py-2 px-3 typography-regular-12 text-black-40 w-full "
             style={{
                 width: `${headerWidth}px`,
-                flexShrink: 1,
-                flexGrow: 0,
-                minWidth: 100,
-                textOverflow: "ellipsis", // Hiển thị dấu "..." khi nội dung bị cắt
-                whiteSpace: "nowrap", // Ngăn nội dung xuống dòng
+                minWidth: isGroupHeader ? DEFAULT_COLUMN_MIN_WIDTH * leafColumns.length : DEFAULT_COLUMN_MIN_WIDTH,
             }}
         >
-            {header.isPlaceholder
-                ? null
-                : flexRender(header.column.columnDef.header, header.getContext())}
+            <div className="w-full text-ellipsis whitespace-nowrap">
+                {header.isPlaceholder
+                    ? null
+                    : flexRender(header.column.columnDef.header, header.getContext())}
+            </div>
         </div>
     );
 }

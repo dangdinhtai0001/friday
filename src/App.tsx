@@ -31,6 +31,10 @@ import {
   GroupColDef,
 } from "./components/organisms/data-grid";
 import { faker } from "@faker-js/faker";
+import { Checkbox } from "@/components/atoms/checkbox";
+import { Badge } from "./components/atoms/badge/index";
+import { MultiSelect } from "./components/molecules/multi-select";
+
 type Person = {
   firstName: string;
   lastName: string;
@@ -155,6 +159,19 @@ function App() {
 
   return (
     <>
+      <MultiSelect initialOptions={mockData(10)} mode="client" getLabel={(option) => (option.firstName + " " + option.lastName)}></MultiSelect>
+      <Badge className="bg-secondary-green">Default</Badge>
+      <div className="flex items-center space-x-2">
+        <Checkbox id="terms" />
+        <label
+          htmlFor="terms"
+          className="typography-regular-12 peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+        >
+          Accept terms and conditions
+        </label>
+      </div>
+      <DataGrid columns={columns} data={defaultData} />
+
       <EdgePanel>
         <EdgePanelTrigger>open</EdgePanelTrigger>
         <EdgePanelContent>
@@ -165,8 +182,6 @@ function App() {
           <EdgePanelFooter>Footer</EdgePanelFooter>
         </EdgePanelContent>
       </EdgePanel>
-
-      <DataGrid columns={columns} data={defaultData} />
 
       <DataViewLayout
         additionalEventBindings={{
