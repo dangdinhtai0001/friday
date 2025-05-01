@@ -1,5 +1,5 @@
 import { Command } from ".";
-import { DialogHeader, Dialog, DialogContent, DialogTitle, DialogDescription } from "@/components/molecules/dialog";
+import { DialogHeader, Dialog, DialogContent, DialogTitle, DialogDescription } from "@/components/organisms/dialog";
 
 function CommandDialog({
     title = "Command Palette",

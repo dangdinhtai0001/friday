@@ -6,7 +6,7 @@ import {
   DialogTrigger,
   Dialog,
   DialogDescription,
-} from "@/components/molecules/dialog";
+} from "@/components/organisms/dialog";
 import { Button } from "@/components/atoms/button";
 import { ButtonDialogProps } from "./types";
 import { useState } from "react";
