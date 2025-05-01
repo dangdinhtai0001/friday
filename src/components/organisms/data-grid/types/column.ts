@@ -7,6 +7,7 @@ export interface ColDef<TData> {
     | string
     | ((props: HeaderContext<TData, unknown>) => React.ReactNode);
   headerComponent?: React.ComponentType;
+  headerComponentParams?: unknown;
   contentComponent?: React.ComponentType;
 }
 

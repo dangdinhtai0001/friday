@@ -3,34 +3,13 @@ import {
   getCoreRowModel,
   HeaderContext,
   CellContext,
-  Cell,
-  ColumnDefTemplate,
+  ColumnOrderState,
 } from "@tanstack/react-table";
 import { type ColumnDef, type GroupColumnDef } from "@tanstack/react-table";
 import { ColDef, GroupColDef, UseDataGridOptions } from "../types";
-import HeaderCellComponent from "../ui/header/HeaderCellComponent";
+import { HeaderCellComponent } from "../ui/header";
 import React from "react";
-import { ContentComponent } from "../ui/content";
-import ContentCellComponent from "../ui/content/ContentCellComponent";
-function renderHeader<TData>(
-  header: string | ((props: HeaderContext<TData, unknown>) => React.ReactNode),
-): React.ReactNode {
-  if (typeof header === "string") {
-    return <HeaderCellComponent>{header}</HeaderCellComponent>;
-  } else {
-    return React.createElement(header);
-  }
-}
-
-function renderContent<TData>(
-  content: string | ((props: CellContext<TData, unknown>) => React.ReactNode),
-): React.ReactNode {
-  if (typeof content === "string") {
-    return <ContentComponent>{content}</ContentComponent>;
-  } else {
-    return React.createElement(content);
-  }
-}
+import { ContentCellComponent } from "../ui/content";
 
 function transformColumns<TData>(
   columns: (ColDef<TData> | GroupColDef<TData>)[],
@@ -44,18 +23,32 @@ function transformColumns<TData>(
         columns: transformColumns(column.columns),
       };
     } else {
-      // Xử lý ColDef
-      let header = column.headerName;
+      const header = (headerContext: HeaderContext<TData, unknown>) => {
+        if (column.headerComponent) {
+          // Tạo props bằng cách kết hợp các tham số
+          const componentProps = {
+            ...(column.headerComponentParams || {}),
+            headerContext, // Thêm context vào props
+          };
 
-      if (column.headerComponent) {
-        header = () => React.createElement(column.headerComponent!);
-      } else {
-        header = () => (
-          <HeaderCellComponent>
-            {renderHeader(column.headerName)}
-          </HeaderCellComponent>
-        );
-      }
+          // Sử dụng type assertion để tránh lỗi
+          return React.createElement(
+            column.headerComponent,
+            componentProps as unknown as object,
+          );
+        } else {
+          if (typeof column.headerName === "string") {
+            return (
+              <HeaderCellComponent headerContext={headerContext}>
+                {column.headerName}
+              </HeaderCellComponent>
+            );
+          }
+          if (typeof column.headerName === "function") {
+            return column.headerName(headerContext);
+          }
+        }
+      };
 
       // Xử lý ColDef
       return {
@@ -75,11 +68,22 @@ function transformColumns<TData>(
 
 function useDataGrid<TData>({ columns, data }: UseDataGridOptions<TData>) {
   const tableColumns = transformColumns(columns);
+  const [columnVisibility, setColumnVisibility] = React.useState({});
+  const [columnOrder, setColumnOrder] = React.useState<ColumnOrderState>([]);
 
   const table = useReactTable({
     data,
     columns: tableColumns as ColumnDef<TData>[],
+    state: {
+      columnVisibility,
+      columnOrder,
+    },
+    onColumnVisibilityChange: setColumnVisibility,
+    onColumnOrderChange: setColumnOrder,
     getCoreRowModel: getCoreRowModel(),
+    debugTable: true,
+    debugHeaders: true,
+    debugColumns: true,
   });
 
   return table;
