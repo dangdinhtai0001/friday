@@ -22,11 +22,11 @@ import { cva } from "class-variance-authority";
 // hover:opacity-70 disabled:opacity-70
 // Base styles
 const baseStyles = [
-  "rounded-8 gap-4 typography-regular-14 cursor-pointer transition-colors text-black-100 disabled:text-black-20 disabled:cursor-not-allowed",
+  "rounded-8 gap-4 typography-regular-14 cursor-pointer transition-colors text-black-100 disabled:text-black-20 disabled:cursor-not-allowed focus:ring-0 focus:ring-offset-0 disabled:pointer-events-none",
 ].join(" ");
 // Variant styles
 const variantStyles = {
-  borderless: "bg-transparent border-none hover:bg-black-5",
+  borderless: "bg-transparent border-none hover:bg-black-5 ",
   default: "bg-black-5 hover:bg-black-20 disabled:bg-black-5",
   outline:
     "border-1 border-black-10 hover:bg-black-5 hover:border-black-20 disabled:border-black-10 disabled:bg-transparent",
