@@ -31,8 +31,6 @@ import {
   GroupColDef,
 } from "./components/organisms/data-grid";
 import { faker } from "@faker-js/faker";
-import { Checkbox } from "@/components/atoms/checkbox";
-import { Badge } from "./components/atoms/badge/index";
 import { MultiSelect } from "./components/molecules/multi-select";
 
 type Person = {
@@ -159,17 +157,13 @@ function App() {
 
   return (
     <>
-      <MultiSelect initialOptions={mockData(10)} mode="client" getLabel={(option) => (option.firstName + " " + option.lastName)}></MultiSelect>
-      <Badge className="bg-secondary-green">Default</Badge>
-      <div className="flex items-center space-x-2">
-        <Checkbox id="terms" />
-        <label
-          htmlFor="terms"
-          className="typography-regular-12 peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-        >
-          Accept terms and conditions
-        </label>
-      </div>
+      <MultiSelect
+        initialOptions={mockData(40)}
+        mode="client"
+        getLabel={(option) => option.firstName + " " + option.lastName}
+        maxCount={7}
+        isDisabled={(option) => option.age < 30}
+      ></MultiSelect>
       <DataGrid columns={columns} data={defaultData} />
 
       <EdgePanel>
@@ -488,7 +482,7 @@ function App() {
             <input
               type="text"
               placeholder="Enter your username"
-              className="w-full rounded-md border px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+              className="w-full rounded-md border px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
             />
           </FieldController>
           <FieldController
@@ -504,7 +498,7 @@ function App() {
             <input
               type="text"
               placeholder="Enter your username"
-              className="w-full rounded-md border px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+              className="w-full rounded-md border px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
             />
           </FieldController>
           <FieldController

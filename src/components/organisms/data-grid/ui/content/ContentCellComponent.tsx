@@ -10,8 +10,10 @@ function ContentCellComponent<TData, TValue>({
   getValue,
 }: ContentCellComponentProps<TData, TValue>) {
   return (
-    <div className="content-component typography-regular-12 text-black-100 px-3 py-2">
-      {getValue() as unknown as ReactNode}
+    <div className="content-component typography-regular-12 text-black-100 flex px-4 py-2">
+      <div className="content-display-text">
+        {getValue() as unknown as ReactNode}
+      </div>
     </div>
   );
 }

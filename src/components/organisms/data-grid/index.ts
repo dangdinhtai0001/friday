@@ -1,2 +1,2 @@
-export { default as DataGrid } from "./DataGrid";
+export { DataGridProvider as DataGrid } from "./DataGrid";
 export * from "./types";
