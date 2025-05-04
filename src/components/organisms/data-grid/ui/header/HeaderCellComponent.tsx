@@ -16,6 +16,10 @@ import {
 import { DropdownMenuGroup } from "@radix-ui/react-dropdown-menu";
 import translate from "@/composables/lib/international";
 import { HeaderContext } from "@tanstack/react-table";
+import { EventBusInstance } from "@/composables/lib/EventBus";
+import { EVENT_NAME, EVENT_NAMESPACE } from "../../core/constants";
+import { resolveEventName } from "@/composables/lib/utils";
+import { useDataGridContext } from "../../context/DataGridContext";
 
 export interface HeaderCellComponentProps<TData> {
   children?: React.ReactNode;
@@ -25,6 +29,16 @@ export interface HeaderCellComponentProps<TData> {
 function HeaderCellComponent<TData>({
   children,
 }: HeaderCellComponentProps<TData>) {
+  const { state } = useDataGridContext();
+  const handleSelectChooseColumn = () => {
+    EventBusInstance.emit(
+      resolveEventName(
+        EVENT_NAMESPACE,
+        EVENT_NAME.OPEN_PANEL_CHOOSE_COLUMN,
+        state.id,
+      ),
+    );
+  };
   return (
     <>
       <div className="header-cell-comp flex items-center justify-between">
@@ -71,7 +85,10 @@ function HeaderCellComponent<TData>({
               </DropdownMenuGroup>
               <DropdownMenuSeparator />
               <DropdownMenuGroup>
-                <DropdownMenuItem className="flex items-center gap-2">
+                <DropdownMenuItem
+                  className="flex items-center gap-2"
+                  onSelect={handleSelectChooseColumn}
+                >
                   <IconLoader name="table-column" className="size-16" />
                   {translate("component.data-grid.header.menu.choose-column")}
                 </DropdownMenuItem>

@@ -54,6 +54,7 @@ function transformColumns<TData>(
       return {
         header: header,
         accessorKey: column.field,
+        size: column.size,
         cell: (props: CellContext<TData, unknown>): React.ReactNode => {
           if (column.contentComponent) {
             return <div>1</div>;
@@ -85,8 +86,16 @@ function useDataGrid<TData>({ columns, data }: UseDataGridOptions<TData>) {
     debugHeaders: true,
     debugColumns: true,
   });
+  
+  React.useEffect(() => {
+    if(table){
+      setColumnOrder(table.getAllLeafColumns().map((column) => column.id))
+    }
+  }, [table])
+
 
   return table;
 }
+
 
 export default useDataGrid;
