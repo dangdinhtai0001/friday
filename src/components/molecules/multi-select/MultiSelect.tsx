@@ -19,6 +19,7 @@ import { useSelect, UseSelectProps } from "@/composables/hooks/useSelect";
 import { IconLoader } from "@/components/atoms/icon-loader";
 import { Badge } from "@/components/atoms/badge";
 import { Checkbox } from "@/components/atoms/checkbox";
+
 export interface MultiSelectProps<TOption, TValue>
   extends UseSelectProps<TOption, TValue> {
   modalPopover?: boolean;
