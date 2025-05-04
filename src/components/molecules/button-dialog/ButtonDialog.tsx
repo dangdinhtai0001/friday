@@ -6,11 +6,11 @@ import {
   DialogTrigger,
   Dialog,
   DialogDescription,
-} from "@/components/organisms/dialog";
+} from "@/components/molecules/dialog";
 import { Button } from "@/components/atoms/button";
 import { ButtonDialogProps } from "./types";
 import { useState } from "react";
-import { BusyButton } from "@/components/molecules/busy-button";
+import { BusyButton } from "@/components/atoms/button";
 
 function ButtonDialog({
   label,
