@@ -17,6 +17,9 @@ const dictionary: Dictionary = {
         "select-all": "Chọn tất cả",
       },
       "data-grid": {
+        plugin: {
+          "choose-column-panel-header": "Chọn cột"
+        },
         header: {
           menu: {
             "sort-ascending": "Sắp xếp tăng dần",
