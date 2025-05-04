@@ -29,11 +29,12 @@ import {
   ColDef,
   DataGrid,
   GroupColDef,
-} from "./components/organisms/data-grid";
+} from "./components/organisms/data-grid2";
 import { faker } from "@faker-js/faker";
 import { MultiSelect } from "./components/molecules/multi-select";
 
 type Person = {
+  id: string;
   firstName: string;
   lastName: string;
   age: number;
@@ -48,6 +49,7 @@ function mockData(size: number): Person[] {
 
   for (let i = 0; i < size; i++) {
     data.push({
+      id: faker.database.mongodbObjectId(),
       firstName: faker.person.firstName(),
       lastName: faker.person.lastName(),
       age: faker.number.int({ min: 18, max: 80 }),
@@ -64,38 +66,46 @@ const defaultData: Person[] = mockData(1000);
 
 const columns: (ColDef<Person> | GroupColDef<Person>)[] = [
   {
-    headerName: "Name",
-    groupId: "name",
+    headerName: "hehe",
+    groupId: "hehe",
     columns: [
       {
-        headerName: "First name",
-        field: "firstName",
+        headerName: "Name",
+        groupId: "name",
+        columns: [
+          {
+            headerName: "First name",
+            field: "firstName",
+            size: 200
+          },
+          {
+            headerName: "Last Name",
+            field: "lastName",
+            size: 200
+          },
+        ],
       },
       {
-        headerName: "Last Name",
-        field: "lastName",
-      },
-    ],
-  },
-  {
-    headerName: "Info",
-    groupId: "info",
-    columns: [
-      {
-        headerName: "Age",
-        field: "age",
-      },
-      {
-        headerName: "Status",
-        field: "status",
-      },
-      {
-        headerName: "Progress",
-        field: "progress",
-      },
-      {
-        headerName: "Visits",
-        field: "visits",
+        headerName: "Info",
+        groupId: "info",
+        columns: [
+          {
+            headerName: "Age",
+            field: "age",
+          },
+          {
+            headerName: "Status",
+            field: "status",
+          },
+          {
+            headerName: "Progress",
+            field: "progress",
+          },
+          {
+            headerName: "Visits",
+            field: "visits",
+          },
+        ],
       },
     ],
   },
@@ -154,8 +164,7 @@ const validateFunction = async (
 function App() {
   const { formRef, resetForm, submitForm, validateForm, getFieldsError } =
     useFormController();
-
-  return (
+   return (
     <>
       <MultiSelect
         initialOptions={mockData(40)}
@@ -164,7 +173,7 @@ function App() {
         maxCount={7}
         isDisabled={(option) => option.age < 30}
       ></MultiSelect>
-      <DataGrid columns={columns} data={defaultData} />
+      <DataGrid columnDefs={columns} data={defaultData} />
 
       <EdgePanel>
         <EdgePanelTrigger>open</EdgePanelTrigger>

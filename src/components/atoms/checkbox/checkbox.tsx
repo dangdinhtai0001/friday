@@ -3,7 +3,7 @@ import * as CheckboxPrimitive from "@radix-ui/react-checkbox"
 import { cn } from "@/composables/lib/utils"
 import { IconLoader } from "../icon-loader"
 
-interface CheckboxProps extends React.ComponentProps<typeof CheckboxPrimitive.Root> {
+export interface CheckboxProps extends React.ComponentProps<typeof CheckboxPrimitive.Root> {
   animation?: boolean;
 }
 
