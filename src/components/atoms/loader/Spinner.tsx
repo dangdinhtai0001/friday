@@ -1,5 +1,9 @@
-import { SpinnerProps } from "./types";
 import { cn } from "@/composables/lib/utils";
+
+export interface SpinnerProps {
+    className?: string; // Optional additional CSS classes
+  }
+  
 
 const Spinner: React.FC<SpinnerProps> = ({ className }: SpinnerProps) => {
     return (
