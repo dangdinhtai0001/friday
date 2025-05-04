@@ -9,6 +9,7 @@ export interface ColDef<TData> {
   headerComponent?: React.ComponentType;
   headerComponentParams?: unknown;
   contentComponent?: React.ComponentType;
+  size?: number;
 }
 
 export interface GroupColDef<TData> {
