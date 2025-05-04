@@ -1,6 +1,9 @@
 import React from "react";
 import { Responsive, WidthProvider, ResponsiveProps } from "react-grid-layout";
-import type { FlexibleLayoutProps } from "./types";
+
+export interface FlexibleLayoutProps extends ResponsiveProps {
+  children: React.ReactNode;
+}
 
 // Sử dụng WidthProvider để tự động điều chỉnh chiều rộng
 const ResponsiveGridLayout = WidthProvider(Responsive);

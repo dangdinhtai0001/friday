@@ -1,2 +1,2 @@
 export { default as FlexibleLayout } from "./FlexibleLayout";
-export * from "./types.d";
+export type { FlexibleLayoutProps } from "./FlexibleLayout";
