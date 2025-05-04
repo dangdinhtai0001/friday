@@ -12,3 +12,5 @@ export { default as DropdownMenuSub } from "./DropdownMenuSub";
 export { default as DropdownMenuSubContent } from "./DropdownMenuSubContent";
 export { default as DropdownMenuSubTrigger } from "./DropdownMenuSubTrigger";
 export { default as DropdownMenuTrigger } from "./DropdownMenuTrigger";
+export { default as DropdownMenuGroup } from "./DropdownMenuGroup";
+
