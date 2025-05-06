@@ -8,7 +8,7 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import { DataGridProps } from "./types";
-import React, { PropsWithChildren } from "react";
+import React, { PropsWithChildren, useMemo } from "react";
 import { transformColumns } from "./utils";
 import {
   closestCenter,
@@ -127,15 +127,25 @@ function DataGrid<TData>({ columnDefs, data }: DataGridProps<TData>) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tableInstance]);
 
-  const defaultEventHandlers = {
-    [resolveEventName(
-      EVENT_NAMESPACE,
-      EVENT_NAME.OPEN_PANEL_CHOOSE_COLUMN,
-      state.id,
-    )]: () => {
-      setIsOpenChooseColumnPanel(true);
-    },
-  };
+  const defaultEventHandlers = useMemo(
+    () => ({
+      [resolveEventName(
+        EVENT_NAMESPACE,
+        EVENT_NAME.OPEN_PANEL_CHOOSE_COLUMN,
+        state.id,
+      )]: () => {
+        setIsOpenChooseColumnPanel(true);
+      },
+      [resolveEventName(
+        EVENT_NAMESPACE,
+        EVENT_NAME.CLOSE_PANEL_CHOOSE_COLUMN,
+        state.id,
+      )]: () => {
+        setIsOpenChooseColumnPanel(false);
+      },
+    }),
+    [state.id],
+  );
 
   useEventListeners(defaultEventHandlers, EventBusInstance);
 
@@ -153,7 +163,7 @@ function DataGrid<TData>({ columnDefs, data }: DataGridProps<TData>) {
             return (
               <div
                 key={rowIndex}
-                className="header-row flex w-fit"
+                className="header-row flex"
                 style={{ top: rowIndex * 30 }}
               >
                 <SortableContext
