@@ -4,6 +4,7 @@ import { CSS } from "@dnd-kit/utilities";
 import { DEFAULT_COLUMN_MIN_WIDTH } from "../constants";
 import { cn } from "@/composables/lib/utils";
 import HeaderCellMenu from "./HeaderCellMenu";
+import React from "react";
 
 interface HeaderCellCompProps<TData> {
   header: Header<TData, unknown>;
@@ -32,10 +33,15 @@ function HeaderCellComp<TData>({ header }: HeaderCellCompProps<TData>) {
     ? leafColumns.reduce((sum, col) => sum + col.getSize(), 0)
     : header.column.getSize();
 
+  console.log(header.column.getIsVisible());
+
   return (
     <div
       key={header.id}
-      className="header-cell border-black-20 typography-regular-12 text-black-40 w-fit border-b-1 px-4 py-2"
+      className={cn(
+        "header-cell border-black-20 typography-regular-12 text-black-40 w-fit border-b-1 px-4 py-2",
+        "",
+      )}
       style={{
         width: `${headerWidth}px`,
         minWidth: isGroupHeader
