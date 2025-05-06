@@ -1,12 +1,21 @@
-import { DndContext, DragEndEvent, useDraggable } from "@dnd-kit/core";
+import {
+  DndContext,
+  DragEndEvent,
+  PointerSensor,
+  useDraggable,
+  useSensor,
+  useSensors,
+} from "@dnd-kit/core";
 import React from "react";
-import { flexRender, Table } from "@tanstack/react-table";
+import { Table } from "@tanstack/react-table";
 import { CheckLabel } from "@/components/molecules/check-label";
 import { useDataGridContext } from "../context/DataGridContext";
 import translate from "@/composables/lib/international";
-import { cn } from "@/composables/lib/utils";
+import { cn, resolveEventName } from "@/composables/lib/utils";
 import { Button } from "@/components/atoms/button";
 import { IconLoader } from "@/components/atoms/icon-loader";
+import { EventBusInstance } from "@/composables/lib/EventBus";
+import { EVENT_NAME, EVENT_NAMESPACE } from "../constants";
 
 interface Position {
   x: number;
@@ -44,6 +53,16 @@ function ChooseColumnPanel<TData>({
   );
 
   const visibilityState = state.tableInstance!.getState().columnVisibility;
+
+  const handleClickClose = () => {
+    EventBusInstance.emit(
+      resolveEventName(
+        EVENT_NAMESPACE,
+        EVENT_NAME.CLOSE_PANEL_CHOOSE_COLUMN,
+        state.id,
+      ),
+    );
+  };
 
   const contentPanel = React.useMemo(() => {
     return state.tableInstance!.getAllLeafColumns().map((column) => {
@@ -85,7 +104,11 @@ function ChooseColumnPanel<TData>({
             {translate("component.data-grid.plugin.choose-column-panel-header")}
           </div>
           <div>
-            <Button variant="borderless" size="icon">
+            <Button
+              variant="borderless"
+              size="icon"
+              onClick={handleClickClose}
+            >
               <IconLoader name="x" />
             </Button>
           </div>
@@ -157,8 +180,17 @@ function ChooseColumnPanelProvider<TData>(
     setPosition({ x, y });
   }, []);
 
+  const sensors = useSensors(
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        delay: 100, // Delay 100ms
+        tolerance: 5, // Di chuyển tối thiểu 5px (tùy chọn)
+      },
+    }),
+  );
+
   return (
-    <DndContext onDragEnd={handleDragEnd}>
+    <DndContext onDragEnd={handleDragEnd} sensors={sensors}>
       <div
         ref={(el) => {
           parentRef.current = el?.parentElement || null;
