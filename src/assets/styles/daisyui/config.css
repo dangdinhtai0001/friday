@@ -1,6 +1,0 @@
-@import "./pastel-dark-theme.css";
-@import "./pastel-light-theme.css";
-
-@plugin "daisyui" {
-  themes: pastel-light --default, pastel-dark --prefersdark;
-}
