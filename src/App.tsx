@@ -32,6 +32,8 @@ import {
 } from "./components/organisms/data-grid2";
 import { faker } from "@faker-js/faker";
 import { MultiSelect } from "./components/molecules/multi-select";
+import React from "react";
+import { Reorder, useMotionValue } from "framer-motion";
 
 type Person = {
   id: string;
@@ -66,49 +68,76 @@ const defaultData: Person[] = mockData(1000);
 
 const columns: (ColDef<Person> | GroupColDef<Person>)[] = [
   {
-    headerName: "hehe",
-    groupId: "hehe",
-    columns: [
-      {
-        headerName: "Name",
-        groupId: "name",
-        columns: [
-          {
-            headerName: "First name",
-            field: "firstName",
-            size: 200
-          },
-          {
-            headerName: "Last Name",
-            field: "lastName",
-            size: 200
-          },
-        ],
-      },
-      {
-        headerName: "Info",
-        groupId: "info",
-        columns: [
-          {
-            headerName: "Age",
-            field: "age",
-          },
-          {
-            headerName: "Status",
-            field: "status",
-          },
-          {
-            headerName: "Progress",
-            field: "progress",
-          },
-          {
-            headerName: "Visits",
-            field: "visits",
-          },
-        ],
-      },
-    ],
+    headerName: "First name",
+    field: "firstName",
+    size: 200,
   },
+  {
+    headerName: "Last Name",
+    field: "lastName",
+    size: 200,
+  },
+  {
+    headerName: "Age",
+    field: "age",
+  },
+  {
+    headerName: "Status",
+    field: "status",
+  },
+  {
+    headerName: "Progress",
+    field: "progress",
+  },
+  {
+    headerName: "Visits",
+    field: "visits",
+  },
+
+  // {
+  //   headerName: "hehe",
+  //   groupId: "hehe",
+  //   columns: [
+  //     {
+  //       headerName: "Name",
+  //       groupId: "name",
+  //       columns: [
+  //         {
+  //           headerName: "First name",
+  //           field: "firstName",
+  //           size: 200
+  //         },
+  //         {
+  //           headerName: "Last Name",
+  //           field: "lastName",
+  //           size: 200
+  //         },
+  //       ],
+  //     },
+  //     {
+  //       headerName: "Info",
+  //       groupId: "info",
+  //       columns: [
+  //         {
+  //           headerName: "Age",
+  //           field: "age",
+  //         },
+  //         {
+  //           headerName: "Status",
+  //           field: "status",
+  //         },
+  //         {
+  //           headerName: "Progress",
+  //           field: "progress",
+  //         },
+  //         {
+  //           headerName: "Visits",
+  //           field: "visits",
+  //         },
+  //       ],
+  //     },
+  //   ],
+  // },
 ];
 
 interface FormData extends FieldValues {
@@ -163,8 +192,9 @@ const validateFunction = async (
 
 function App() {
   const { formRef, resetForm, submitForm, validateForm, getFieldsError } =
-    useFormController();
-   return (
+    useFormController()
+
+  return (
     <>
       <MultiSelect
         initialOptions={mockData(40)}

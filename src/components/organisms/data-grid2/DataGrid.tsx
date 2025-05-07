@@ -2,6 +2,8 @@ import {
   Cell,
   ColumnDef,
   ColumnOrderState,
+  ColumnResizeDirection,
+  ColumnResizeMode,
   flexRender,
   getCoreRowModel,
   Table,
@@ -37,6 +39,35 @@ import { useDataGridContext } from "./context/DataGridContext";
 import useEventListeners from "@/composables/hooks/useEventListeners";
 import { EventBusInstance } from "@/composables/lib/EventBus";
 import { ChooseColumnPanel } from "./plugins";
+import { motion, AnimatePresence } from "framer-motion";
+
+// Định nghĩa variants
+const columnVariants = {
+  initial: {
+    opacity: 0,
+    x: 50, // Trượt từ phải vào
+  },
+  animate: {
+    opacity: 1,
+    x: 0, // Về vị trí ban đầu
+    transition: {
+      type: "spring", // Sử dụng spring physics để tạo cảm giác thật hơn
+      stiffness: 120,
+      damping: 15,
+      duration: 0.1,
+    },
+  },
+  exit: {
+    opacity: 0,
+    x: -50, // Trượt sang trái khi bị xóa
+    transition: {
+      type: "spring",
+      stiffness: 120,
+      damping: 15,
+      duration: 0.1,
+    },
+  },
+};
 
 const createHeaderObjects = <TData,>(
   tableInstance: Table<TData>,
@@ -65,6 +96,10 @@ function DataGrid<TData>({ columnDefs, data }: DataGridProps<TData>) {
   const [isOpenChooseColumnPanel, setIsOpenChooseColumnPanel] =
     React.useState(false);
   const { state, actions } = useDataGridContext();
+  const [columnResizeMode, setColumnResizeMode] =
+    React.useState<ColumnResizeMode>("onChange");
+  const [columnResizeDirection, setColumnResizeDirection] =
+    React.useState<ColumnResizeDirection>("ltr");
 
   const tableInstance = useReactTable({
     data,
@@ -73,6 +108,8 @@ function DataGrid<TData>({ columnDefs, data }: DataGridProps<TData>) {
       columnVisibility,
       columnOrder,
     },
+    columnResizeMode,
+    columnResizeDirection,
     onColumnVisibilityChange: setColumnVisibility,
     onColumnOrderChange: setColumnOrder,
     getCoreRowModel: getCoreRowModel(),
@@ -170,9 +207,22 @@ function DataGrid<TData>({ columnDefs, data }: DataGridProps<TData>) {
                   items={columnOrder}
                   strategy={horizontalListSortingStrategy}
                 >
-                  {headerGroup.headers.map((header, rowIndex) => {
-                    return <HeaderCellComp header={header} key={rowIndex} />;
-                  })}
+                  <AnimatePresence>
+                    {headerGroup.headers.map((header, rowIndex) => {
+                      return (
+                        <motion.div
+                          key={header.id + "-" + rowIndex}
+                          variants={columnVariants}
+                          // initial="initial"
+                          animate="animate"
+                          exit="exit"
+                          layout
+                        >
+                          <HeaderCellComp header={header} />
+                        </motion.div>
+                      );
+                    })}
+                  </AnimatePresence>
                 </SortableContext>
               </div>
             );
@@ -200,7 +250,17 @@ function DataGrid<TData>({ columnDefs, data }: DataGridProps<TData>) {
                     items={columnOrder}
                     strategy={horizontalListSortingStrategy}
                   >
-                    <CellComponent cell={cell} />
+                    <AnimatePresence>
+                      <motion.div
+                        variants={columnVariants}
+                        // initial="initial"
+                        animate="animate"
+                        exit="exit"
+                        layout
+                      >
+                        <CellComponent cell={cell} />
+                      </motion.div>
+                    </AnimatePresence>
                   </SortableContext>
                 ))}
               </div>

@@ -5,6 +5,8 @@ import { DEFAULT_COLUMN_MIN_WIDTH } from "../constants";
 import { cn } from "@/composables/lib/utils";
 import HeaderCellMenu from "./HeaderCellMenu";
 import React from "react";
+import { useDataGridContext } from "../context/DataGridContext";
+import { motion } from "framer-motion";
 
 interface HeaderCellCompProps<TData> {
   header: Header<TData, unknown>;
@@ -33,13 +35,13 @@ function HeaderCellComp<TData>({ header }: HeaderCellCompProps<TData>) {
     ? leafColumns.reduce((sum, col) => sum + col.getSize(), 0)
     : header.column.getSize();
 
-  console.log(header.column.getIsVisible());
+  const { state } = useDataGridContext();
 
   return (
     <div
       key={header.id}
       className={cn(
-        "header-cell border-black-20 typography-regular-12 text-black-40 w-fit border-b-1 px-4 py-2",
+        "header-cell border-black-20 typography-regular-12 text-black-40 z-1 w-fit border-b-1 px-4 py-2",
         "",
       )}
       style={{
@@ -67,6 +69,7 @@ function HeaderCellComp<TData>({ header }: HeaderCellCompProps<TData>) {
         <div className="header-cell-comp-menu flex items-center">
           <HeaderCellMenu />
         </div>
+        
         {/* {!isGroupHeader && (
           <div
             {...attributes}

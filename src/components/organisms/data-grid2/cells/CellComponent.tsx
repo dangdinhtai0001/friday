@@ -2,6 +2,7 @@ import { useSortable } from "@dnd-kit/sortable";
 import { Cell, flexRender } from "@tanstack/react-table";
 import { CSS } from "@dnd-kit/utilities";
 import { DEFAULT_COLUMN_MIN_WIDTH } from "../constants";
+import { motion } from "framer-motion";
 
 interface CellComponentProps<TData> {
   cell: Cell<TData, unknown>;
@@ -22,17 +23,31 @@ function CellComponent<TData>({ cell }: CellComponentProps<TData>) {
   };
 
   return (
-    <div
+    <motion.div
       key={cell.id}
       className="viewport-cell border-black-5 text-black-100 typography-regular-12 flex items-center justify-start border-b-1 px-4 py-2"
       style={{
         minWidth: DEFAULT_COLUMN_MIN_WIDTH,
         ...style,
       }}
+      initial={{ width: cell.column.getSize() }}
+      animate={{ width: cell.column.getSize() }}
+      transition={{ duration: 0.5, ease: "easeInOut" }}
       ref={setNodeRef}
     >
       {flexRender(cell.column.columnDef.cell, cell.getContext())}
-    </div>
+    </motion.div>
+    // <div
+    //   key={cell.id}
+    //   className="viewport-cell border-black-5 text-black-100 typography-regular-12 flex items-center justify-start border-b-1 px-4 py-2"
+    //   style={{
+    //     minWidth: DEFAULT_COLUMN_MIN_WIDTH,
+    //     ...style,
+    //   }}
+    //   ref={setNodeRef}
+    // >
+    //   {flexRender(cell.column.columnDef.cell, cell.getContext())}
+    // </div>
   );
 }
 
