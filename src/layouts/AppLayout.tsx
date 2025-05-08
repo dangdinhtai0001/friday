@@ -1,16 +1,17 @@
-import { Outlet } from "react-router";
-import useRequireAuth from "@/composables/hooks/useRequireAuth"; // Đảm bảo đường dẫn này đúng
+import { Outlet, useLocation, useNavigation } from "react-router";
+import useRequireAuth from "@/composables/hooks/useRequireAuth";
 
-interface AppLayoutProps {
-  requiredRole?: string;
-}
-
-function AppLayout({ requiredRole }: AppLayoutProps) {
-  useRequireAuth({ requiredRole });
+function AppLayout() {
+  useRequireAuth();
+  const location = useLocation();
+  const navigation = useNavigation();
+  const isNavigating = Boolean(navigation.location);
 
   return (
     <>
       <div>main layout nè</div>
+      {isNavigating && <div>Đang navigating nè ...</div>}
+      <div>location: {location.pathname}</div>
       <Outlet />
     </>
   );

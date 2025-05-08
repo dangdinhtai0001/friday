@@ -1,22 +1,5 @@
 import { useNavigate } from "react-router";
-import { useAuthStore } from "@/store"; // Đảm bảo đường dẫn này đúng
-
-interface User {
-  id: string;
-  profile: {
-    name: string;
-    roles: string[];
-  };
-  authDetails: {
-    method: string;
-    identifier: string;
-  };
-}
-
-interface Tokens {
-  accessToken: string;
-  expiresAt: number;
-}
+import { useAuthStore, type User, type Tokens } from "@/store";
 
 function LoginPage() {
   const navigate = useNavigate();
@@ -24,19 +7,26 @@ function LoginPage() {
 
   const handleQuickLogin = () => {
     const fakeUser: User = {
-      id: "fakeUserId",
+      id: "123456789",
       profile: {
-        name: "Người dùng thử",
-        roles: ["user"],
+        name: "John Doe",
+        avatarUrl: "https://example.com/avatar.jpg",
+        roles: ["user", "admin"],
       },
       authDetails: {
-        method: "quick",
-        identifier: "test",
+        method: "google",
+        identifier: "johndoe@gmail.com",
+        metadata: {
+          phoneNumber: "+1234567890",
+          socialId: "9876543210987654321",
+          provider: "google",
+        },
       },
     };
 
     const fakeTokens: Tokens = {
-      accessToken: "fakeAccessToken123",
+      accessToken: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+      refreshToken: "def50200ae5f4e8dabaa6b...",
       expiresAt: Date.now() + 3600000, // Hết hạn sau 1 giờ
     };
 
@@ -47,7 +37,9 @@ function LoginPage() {
   return (
     <div>
       <div>login page nè</div>
-      <button onClick={handleQuickLogin} className="border-1">Đăng nhập nhanh</button>
+      <button onClick={handleQuickLogin} className="border-1">
+        Đăng nhập nhanh
+      </button>
     </div>
   );
 }
