@@ -1,6 +1,7 @@
 import { RouteObject } from "react-router";
 import { Applayout, AuthLayout, FallbackLayout } from "@/layouts";
 import { NotFound } from "@/pages/fallback";
+import { PATH_COMPONENT, PATH_PROFILE } from "@/composables/constants/paths";
 
 const routes: RouteObject[] = [
   {
@@ -10,7 +11,21 @@ const routes: RouteObject[] = [
         index: true,
         lazy: async () => {
           // await new Promise((resolve) => setTimeout(resolve, 3000));
-          const component = await import("@/pages/home");
+          const [component] = await Promise.all([import("@/pages/home")]);
+          return { Component: component.default };
+        },
+      },
+      {
+        path: PATH_PROFILE,
+        lazy: async () => {
+          const component = await import("@/pages/profile");
+          return { Component: component.default };
+        },
+      },
+      {
+        path: PATH_COMPONENT,
+        lazy: async () => {
+          const component = await import("@/pages/components");
           return { Component: component.default };
         },
       },
