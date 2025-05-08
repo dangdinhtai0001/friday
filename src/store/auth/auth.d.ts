@@ -48,3 +48,17 @@ export interface AuthError {
   message: string; // Human-readable error message
   details?: Record<string, unknown>; // Additional error details (optional)
 }
+
+// Define the actions that can be performed on the authentication state
+interface AuthActions {
+  login: (user: User, tokens: Tokens) => void;
+  logout: () => void;
+  setTokens: (tokens: Tokens) => void;
+  setError: (error: AuthError | undefined) => void;
+  setLoading: (isLoading: boolean) => void;
+  setUser: (user: User | undefined) => void;
+  resetAuth: () => void;
+}
+
+// Combine state and actions into a single type
+type AuthStore = AuthState & AuthActions;
