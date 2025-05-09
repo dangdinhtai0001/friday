@@ -5,16 +5,15 @@ import { IconLoader } from "@/components/atoms/icon-loader";
 import { LoadingCircleSpinner } from "@/components/atoms/spinner";
 import { motion } from "motion/react";
 
-export type IconButtonProps = ButtonProps & {
+export type DynamicButtonProps = ButtonProps & {
   leftIcon?: string | React.ReactNode;
   rightIcon?: string | React.ReactNode;
   isLoading?: boolean;
 };
 
-const MotionButton = motion.create(Button, { forwardMotionProps: true });
+const MotionButton = motion.create(Button, { forwardMotionProps: false });
 
-
-function getIconSize(size: IconButtonProps["size"]): string {
+function getIconSize(size: DynamicButtonProps["size"]): string {
   if (size === "large") return "size-24";
   if (size === "medium") return "size-20";
   if (size === "small") return "size-16";
@@ -22,7 +21,7 @@ function getIconSize(size: IconButtonProps["size"]): string {
   return "";
 }
 
-function IconButton({
+function DynamicButton({
   className,
   leftIcon,
   rightIcon,
@@ -31,7 +30,7 @@ function IconButton({
   disabled,
   size,
   ...props
-}: IconButtonProps) {
+}: DynamicButtonProps) {
   const renderIcon = (icon: string | React.ReactNode): React.ReactNode => {
     if (typeof icon === "string") {
       return <IconLoader name={icon} className={cn(getIconSize(size))} />;
@@ -42,8 +41,8 @@ function IconButton({
 
   return (
     <MotionButton
-      whileHover={{ scale: 1.1 }}
-      whileTap={{ scale: 0.9 }}
+      whileHover={{ scale: 1.08 }}
+      whileTap={{ scale: 0.92 }}
       className={cn("flex items-center", className)}
       disabled={disabled || isLoading}
       size={size}
@@ -61,4 +60,4 @@ function IconButton({
   );
 }
 
-export default IconButton;
+export default DynamicButton;

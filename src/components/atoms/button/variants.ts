@@ -13,9 +13,9 @@ export const buttonVariants = cva(
         icon: "",
       },
       size: {
-        small: "px-8 py-4 typography-regular-14 gap-4",
-        medium: "px-16 py-8 typography-regular-16 gap-8",
-        large: "px-24 py-12 typography-regular-18 gap-8",
+        small: "px-8 py-4 typography-regular-14 gap-4 h-28",
+        medium: "px-16 py-8 typography-regular-16 gap-8 h-40",
+        large: "px-24 py-12 typography-regular-18 gap-8 h-[56px]",
       },
     },
     defaultVariants: {
