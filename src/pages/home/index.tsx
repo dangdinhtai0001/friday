@@ -1,4 +1,4 @@
-import { PATH_COMPONENT, PATH_LOGOUT } from "@/composables/constants/paths";
+import { PATH_LOGOUT } from "@/composables/constants/paths";
 import { useAuthStore } from "../../store";
 import { Link } from "react-router";
 
@@ -18,8 +18,11 @@ function HomePage() {
         </Link>
       )}
 
-      <Link to={PATH_COMPONENT}>
-        <button>/components</button>
+      <Link to={"/components/button"}>
+        <button>/components/button</button>
+      </Link>
+      <Link to={"/components/form-control"}>
+        <button>/components/form-control</button>
       </Link>
     </div>
   );

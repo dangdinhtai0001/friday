@@ -1,7 +1,7 @@
 import { RouteObject } from "react-router";
 import { Applayout, AuthLayout, FallbackLayout } from "@/layouts";
 import { NotFound } from "@/pages/fallback";
-import { PATH_COMPONENT, PATH_PROFILE } from "@/composables/constants/paths";
+import { PATH_PROFILE } from "@/composables/constants/paths";
 
 const routes: RouteObject[] = [
   {
@@ -23,9 +23,16 @@ const routes: RouteObject[] = [
         },
       },
       {
-        path: PATH_COMPONENT,
+        path: "/components/button",
         lazy: async () => {
-          const component = await import("@/pages/components");
+          const component = await import("@/pages/components/button");
+          return { Component: component.default };
+        },
+      },
+      {
+        path: "/components/form-control",
+        lazy: async () => {
+          const component = await import("@/pages/components/form-control");
           return { Component: component.default };
         },
       },
