@@ -1,0 +1,52 @@
+import React, { PropsWithChildren, useMemo, useState } from "react";
+import {
+  {{actionsType}},
+  {{contextValueType}},
+  {{propsType}},
+  {{stateType}},
+} from "{{typesImportPath}}";
+import { {{contextName}}Context, default{{contextName}}ContextValue } from "./{{contextName}}Context";
+{{#if hasTanstackTableImport}}
+import { Table } from "@tanstack/react-table";
+{{/if}}
+
+interface {{contextName}}ProviderProps<TData> extends PropsWithChildren<{{propsType}}<TData>> {}
+
+function {{contextName}}Provider<TData extends Record<string, any>>({
+  children,
+  {{#each providerProps}}
+  {{this.name}},
+  {{/each}}
+}: {{contextName}}ProviderProps<TData>) {
+  // Initialize state with default values
+  const [state, setState] = useState<{{stateType}}<TData>>({
+    ...(default{{contextName}}ContextValue.state as {{stateType}}<TData>),
+  });
+
+  // Define actions for the context
+  // Memoize actions to stabilize their references
+  const actions = useMemo<{{actionsType}}<TData>>(
+    () => ({
+{{#each actions}}
+      {{this.name}}: {{this.implementation}},
+{{/each}}
+    }),
+    [{{actionsDependencies}}],
+  ); // Dependency array for actions
+
+  // Memoize the context value to prevent unnecessary re-renders
+  const contextValue = useMemo<{{contextValueType}}<TData>>(
+    () => ({ state, actions }),
+    [state, actions], // Only update when state or actions change
+  );
+
+  return (
+    <{{contextName}}Context.Provider
+      value={contextValue as {{contextValueType}}<unknown>}
+    >
+      {children}
+    </{{contextName}}Context.Provider>
+  );
+}
+
+export default {{contextName}}Provider;

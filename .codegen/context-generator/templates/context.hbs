@@ -1,0 +1,39 @@
+import React from "react";
+import { v4 as uuidv4 } from "uuid";
+import { {{stateType}}, {{actionsType}}, {{contextValueType}} } from "{{typesImportPath}}";
+
+// Create a generic context
+export const {{contextName}}Context = React.createContext<
+  {{contextValueType}}<unknown> | undefined
+>(undefined);
+
+// Define a generic initial state
+function createInitialState<TData extends {{stateType}}>(): TData {
+  return {
+    id: uuidv4(),
+    ...({{initialState}} as Partial<TData>),
+  };
+}
+
+// Helper function to create no-op implementations for actions
+const createNoOpActions = <TData extends {{actionsType}}>(): TData => ({
+{{#each actions}}
+  {{this.name}}: () => {},
+{{/each}}
+});
+
+// Custom hook to use the context
+export function use{{contextName}}Context<TContext extends {{contextValueType}}>() {
+  const context = React.useContext({{contextName}}Context) as TContext;
+
+  if (!context) {
+    throw new Error("use{{contextName}}Context must be used within a {{contextName}}Provider");
+  }
+  return context;
+}
+
+// Export a default context with no-op actions and initial state
+export const default{{contextName}}ContextValue = {
+  state: createInitialState(),
+  actions: createNoOpActions(),
+};
