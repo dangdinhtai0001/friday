@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "generate-context": "ts-node .codegen/context-generator/index.ts",
+    "generate-context": "ts-node --project .codegen/context-generator/tsconfig.json .codegen/context-generator/index.ts",
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
