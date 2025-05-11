@@ -20,7 +20,7 @@ export const textFieldVariants = cva(
 
 export const addonVariant = cva(
   [
-    "border-black-10 rounded-8 border-[0.5px] hover:border-black-40 group-hover:border-black-40",
+    "border-black-10 rounded-8 border-[0.5px] group-hover:border-black-40 ",
   ].join(" "),
   {
     variants: {

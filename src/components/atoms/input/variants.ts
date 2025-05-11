@@ -6,6 +6,7 @@ export const inputVariants = cva(
     "hover:border-black-40",
     "disabled:bg-black-100/4 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 disabled:text-black-20",
     "focus-visible:border-ring focus-visible:ring-black-5 focus-visible:ring-4",
+    "placeholder:text-black-20",
   ].join(" "),
   {
     variants: {
