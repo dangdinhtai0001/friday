@@ -1,4 +1,4 @@
-import { DynamicButton, type ButtonProps } from "@/components/atoms/button";
+import { MCButton, type ButtonProps } from "@/components/atoms/button";
 // Define the variants for the buttons
 const variants: ButtonProps["variant"][] = [
   "borderless",
@@ -41,7 +41,7 @@ function Page() {
                     return (
                       <div className="flex flex-col gap-8" key={stateIndex}>
                         {variants.map((variant, variantIndex) => (
-                          <DynamicButton
+                          <MCButton
                             key={variantIndex}
                             variant={variant}
                             size={size}
@@ -51,7 +51,7 @@ function Page() {
                             isLoading={isLoading}
                           >
                             {button.children}
-                          </DynamicButton>
+                          </MCButton>
                         ))}
                       </div>
                     );
@@ -78,7 +78,7 @@ function Page() {
                     return (
                       <div className="flex flex-col gap-8" key={stateIndex}>
                         {variants.map((variant, variantIndex) => (
-                          <DynamicButton
+                          <MCButton
                             key={variantIndex}
                             variant={variant}
                             size={size}
@@ -88,7 +88,7 @@ function Page() {
                             isLoading={isLoading}
                           >
                             {button.children}
-                          </DynamicButton>
+                          </MCButton>
                         ))}
                       </div>
                     );
