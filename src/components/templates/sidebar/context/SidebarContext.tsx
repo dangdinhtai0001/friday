@@ -4,6 +4,7 @@ import {
   SidebarActions,
   SidebarContextValue,
 } from "../sidebar.type";
+import { SIDEBAR_EXPANDED_WIDTH, SIDEBAR_COLLAPSED_WIDTH } from "../constants";
 
 // Create a generic context
 export const SidebarContext = React.createContext<
@@ -15,7 +16,11 @@ function createInitialState(): SidebarState {
   return {
     open: false,
     openMobile: false,
-    state: "expanded",
+    side: "left",
+    variant: "sidebar",
+    collapsible: "icon",
+    expandedWidth: SIDEBAR_EXPANDED_WIDTH,
+    collapsedWidth: SIDEBAR_COLLAPSED_WIDTH,
   };
 }
 
