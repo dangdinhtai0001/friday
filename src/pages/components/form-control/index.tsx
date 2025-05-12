@@ -12,14 +12,14 @@ import {
 import { Button } from "@/components/atoms/button";
 import { Skeleton } from "@/components/atoms/skeleton";
 import {
-  Sheet,
-  SheetClose,
+  MCSheet,
+  MCSheetClose,
   MCSheetContent,
   MCSheetDescription,
   MCSheetFooter,
   MCSheetHeader,
   MCSheetTitle,
-  SheetTrigger,
+  MCSheetTrigger,
 } from "@/components/organisms/sheet";
 
 function Page() {
@@ -27,10 +27,10 @@ function Page() {
     <>
       <div>Form control component nè</div>
 
-      <Sheet>
-        <SheetTrigger asChild>
+      <MCSheet>
+        <MCSheetTrigger asChild>
           <Button variant="outline">Open</Button>
-        </SheetTrigger>
+        </MCSheetTrigger>
         <MCSheetContent>
           <MCSheetHeader>
             <MCSheetTitle>Edit profile</MCSheetTitle>
@@ -53,12 +53,12 @@ function Page() {
             </div>
           </div>
           <MCSheetFooter>
-            <SheetClose asChild>
+            <MCSheetClose asChild>
               <Button type="submit">Save changes</Button>
-            </SheetClose>
+            </MCSheetClose>
           </MCSheetFooter>
         </MCSheetContent>
-      </Sheet>
+      </MCSheet>
 
       <TooltipProvider>
         <Tooltip>
