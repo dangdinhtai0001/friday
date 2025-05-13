@@ -5,7 +5,12 @@ import { IconLoader } from "@/components/atoms/icon-loader";
 import { motion } from "motion/react";
 import { SIDEBAR_TRANSITION_DURATION } from "../constants";
 
-const iconTransition = { duration: SIDEBAR_TRANSITION_DURATION, type: "spring", stiffness: 200, damping: 20 };
+const iconTransition = {
+  duration: SIDEBAR_TRANSITION_DURATION,
+  type: "spring",
+  stiffness: 200,
+  damping: 20,
+};
 
 const rotationVariants = {
   open: { rotate: 180 },
@@ -23,7 +28,8 @@ function SidebarTrigger({
     <Button
       data-sidebar="trigger"
       data-slot="sidebar-trigger"
-      className={cn("", className)}
+      variant="icon"
+      className={cn("size-28 flex items-center justify-center", className)}
       onClick={(event) => {
         onClick?.(event);
         actions.toggleSidebar();
@@ -34,8 +40,9 @@ function SidebarTrigger({
         variants={rotationVariants}
         animate={state.open ? "open" : "closed"}
         transition={iconTransition}
+        className=""
       >
-        <IconLoader name="layout-sidebar-right-collapse" />
+        <IconLoader name="layout-sidebar-right-collapse" className="size-28" />
       </motion.div>
     </Button>
   );
