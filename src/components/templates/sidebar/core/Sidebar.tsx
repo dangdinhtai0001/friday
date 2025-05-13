@@ -16,9 +16,7 @@ function Sidebar({ children }: PropsWithChildren<SidebarProps>) {
 
   return (
     <motion.aside
-      className={cn(
-        "rounded-16 bg-background-2 fixed top-0 z-10 h-screen px-16 py-28",
-      )}
+      className={cn("fixed top-0 z-10 h-screen")}
       variants={sidebarWidthVariants}
       animate={open ? "expanded" : "collapsed"}
       transition={{
@@ -27,7 +25,13 @@ function Sidebar({ children }: PropsWithChildren<SidebarProps>) {
         ease: "easeInOut",
       }}
     >
-      {children}
+      <div
+        data-sidebar="sidebar"
+        data-slot="sidebar-inner"
+        className="bg-background-2 flex h-full w-full flex-col px-16 pb-28"
+      >
+        {children}
+      </div>
     </motion.aside>
   );
 }
