@@ -10,7 +10,7 @@ import {
   TooltipTrigger,
 } from "@/components/organisms/tooltip";
 import { Button } from "@/components/atoms/button";
-import { Skeleton } from "@/components/atoms/skeleton";
+import { MCSkeleton } from "@/components/atoms/skeleton";
 import {
   MCSheet,
   MCSheetClose,
@@ -96,10 +96,10 @@ function Page() {
       <div className="h-8"></div>
 
       <div className="flex items-center space-x-4">
-        <Skeleton className="h-48 w-48 rounded-full" />
+        <MCSkeleton className="h-48 w-48 rounded-full" />
         <div className="space-y-2">
-          <Skeleton className="h-24 w-[250px]" />
-          <Skeleton className="h-24 w-[200px]" />
+          <MCSkeleton className="h-24 w-[250px]" />
+          <MCSkeleton className="h-24 w-[200px]" />
         </div>
       </div>
 
