@@ -1,11 +1,12 @@
 import { RouteObject } from "react-router";
-import { Applayout, AuthLayout, FallbackLayout } from "@/layouts";
+import { AuthLayout, FallbackLayout } from "@/layouts";
+import { AppLayout } from "@/layouts/app-layout";
 import { NotFound } from "@/pages/fallback";
 import { PATH_PROFILE } from "@/composables/constants/paths";
 
 const routes: RouteObject[] = [
   {
-    Component: Applayout,
+    Component: AppLayout,
     children: [
       {
         index: true,
