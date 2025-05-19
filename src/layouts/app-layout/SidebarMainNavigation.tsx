@@ -9,12 +9,16 @@ import {
   MCSidebarMenu,
   MCSidebarMenuButton,
   MCSidebarMenuItem,
-} from "@/components/templates/sidebar";
+} from "@/components/organisms/sidebar";
+import SidebarItemContent from "./SidebarItemContent";
+import { motion } from "motion/react";
 
 const items = [
   {
     title: "Getting Started",
     url: "#",
+    icon: "rocket",
+    tooltip: "Getting Started",
     items: [
       {
         title: "Installation",
@@ -29,6 +33,8 @@ const items = [
   {
     title: "Building Your Application",
     url: "#",
+    icon: "apps",
+    tooltip: "Building Your Application",
     items: [
       {
         title: "Routing",
@@ -139,7 +145,13 @@ const items = [
   },
 ];
 
-function SidebarMainNavigation() {
+export type SidebarMainNavigationProps = {
+  isSidebarExpanded: boolean;
+};
+
+function SidebarMainNavigation({
+  isSidebarExpanded,
+}: SidebarMainNavigationProps) {
   return (
     <MCSidebarGroup>
       <MCSidebarMenu>
@@ -147,9 +159,16 @@ function SidebarMainNavigation() {
           <MCDropdownMenu key={index}>
             <MCSidebarMenuItem>
               {/* -------------- */}
-              <MCDropdownMenuTrigger asChild>
-                <MCSidebarMenuButton className="flex w-full justify-start">
-                  {item.title} --
+              <MCDropdownMenuTrigger asChild className="">
+                <MCSidebarMenuButton
+                  className="flex w-full items-center justify-start gap-8"
+                  tooltip={isSidebarExpanded ? undefined : item.tooltip}
+                >
+                  <SidebarItemContent
+                    icon={item.icon}
+                    title={item.title}
+                    isExpanded={isSidebarExpanded}
+                  />
                 </MCSidebarMenuButton>
               </MCDropdownMenuTrigger>
               {/* -------------- */}
@@ -157,11 +176,17 @@ function SidebarMainNavigation() {
                 <MCDropdownMenuContent
                   side="right"
                   align="start"
+                  sideOffset={16}
                   className="rounded-16 flex flex-col"
                 >
                   {item.items.map((item2, index2) => (
                     <MCDropdownMenuItem asChild key={index2}>
-                      <a href={item2.url}>{item2.title}</a>
+                      <motion.div
+                        whileHover={{x: 8}}
+                        transition={{type: "spring", stiffness: 300, damping: 20}}
+                      >
+                        <a href={item2.url}>{item2.title}</a>
+                      </motion.div>
                     </MCDropdownMenuItem>
                   ))}
                 </MCDropdownMenuContent>
