@@ -17,11 +17,13 @@ function DropdownMenuPortal({
 }
 
 function DropdownMenuTrigger({
+  className,
   ...props
 }: React.ComponentProps<typeof DropdownMenuPrimitive.Trigger>) {
   return (
     <DropdownMenuPrimitive.Trigger
       data-slot="dropdown-menu-trigger"
+      className={cn("focus:ring-0 focus:outline-none", className)}
       {...props}
     />
   );
@@ -49,7 +51,10 @@ function DropdownMenuItem({
       data-slot="dropdown-menu-item"
       data-inset={inset}
       data-variant={variant}
-      className={cn("hover:bg-black-5 rounded-8 px-8 py-4", className)}
+      className={cn(
+        "hover:bg-black-5 rounded-8 p-8 focus:ring-0 focus:outline-none typography-regular-14",
+        className,
+      )}
       {...props}
     />
   );

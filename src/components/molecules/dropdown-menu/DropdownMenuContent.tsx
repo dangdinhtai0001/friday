@@ -33,11 +33,11 @@ function DropdownMenuContent({
   const motionVariants = getMotionVariants(side);
 
   return (
-    <DropdownMenuPrimitive.Portal>
+    <DropdownMenuPrimitive.Portal >
       <DropdownMenuPrimitive.Content
         data-slot="dropdown-menu-content"
         sideOffset={sideOffset}
-        className={cn("z-50", className)}
+        className={cn("z-50 ", className)}
         side={side}
         {...props}
       >
@@ -47,7 +47,7 @@ function DropdownMenuContent({
           animate="visible"
           exit="hidden"
           className={cn(
-            "rounded-16 bg-white-80 shadow-black-100/1 backdrop-blur-40 p-16 shadow-lg",
+            "rounded-16 bg-white-80 backdrop-blur-40 p-16 shadow-lg",
             className,
           )}
         >
