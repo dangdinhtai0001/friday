@@ -6,7 +6,7 @@ function SidebarFooter({ className, ...props }: React.ComponentProps<"div">) {
       data-slot="sidebar-footer"
       data-sidebar="footer"
       className={cn(
-        "sticky bottom-0 flex w-full flex-col items-center justify-center bg-gray-100 p-4 dark:bg-gray-800",
+        "sticky bottom-0 flex w-full flex-col items-center justify-center",
         className,
       )}
       {...props}

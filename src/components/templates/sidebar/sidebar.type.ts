@@ -12,6 +12,7 @@ export type SidebarState = {
   collapsible: Collapsible;
   expandedWidth: string;
   collapsedWidth: string;
+  headerHeight: string;
 };
 
 export type SidebarActions = {
@@ -29,6 +30,7 @@ export interface SidebarRootProps {
   defaultOpen?: boolean;
   expandedWidth?: string;
   collapsedWidth?: string;
+  headerHeight?: string;
   side?: Side;
   variant?: Variant;
   collapsible?: Collapsible;
@@ -39,7 +41,6 @@ export interface SidebarProps extends React.ComponentProps<"aside"> {
   side?: Side;
   variant?: Variant;
   collapsible?: Collapsible;
-  sidebarWidth?: string;
 }
 
 export interface SidebarContentProps extends React.ComponentProps<"div"> {}

@@ -26,7 +26,7 @@ function AppLayout() {
             </div>
           </MCSidebarHeader>
           <MCSidebarContent>
-            <MCSkeleton className="h-full w-full" />
+            <MCSkeleton className="h-full w-full bg-red-300" />
           </MCSidebarContent>
           <MCSidebarFooter>
             <MCSkeleton className="h-10 w-full" />
