@@ -4,11 +4,11 @@ import { Label } from "@/components/atoms/label";
 import { MCTextFiled } from "@/components/atoms/text-field";
 import { Separator } from "@/components/atoms/separator";
 import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/organisms/tooltip";
+  MCTooltip,
+  MCTooltipContent,
+  MCTooltipProvider,
+  MCTooltipTrigger,
+} from "@/components/molecules/tooltip";
 import { Button } from "@/components/atoms/button";
 import { MCSkeleton } from "@/components/atoms/skeleton";
 import {
@@ -21,11 +21,26 @@ import {
   MCSheetTitle,
   MCSheetTrigger,
 } from "@/components/organisms/sheet";
+import {
+  MCDropdownMenu,
+  MCDropdownMenuContent,
+  MCDropdownMenuLabel,
+  MCDropdownMenuTrigger,
+} from "@/components/molecules/dropdown-menu";
 
 function Page() {
   return (
     <>
       <div>Form control component nè</div>
+      <MCDropdownMenu >
+        <MCDropdownMenuTrigger>
+          <Button variant="outline">Open dropdown menu</Button>
+        </MCDropdownMenuTrigger>
+        <MCDropdownMenuContent className="w-56" side="right">
+          <MCDropdownMenuLabel>Appearance</MCDropdownMenuLabel>
+        </MCDropdownMenuContent>
+      </MCDropdownMenu>
+      <div className="h-8 w-full"></div>
 
       <MCSheet>
         <MCSheetTrigger asChild>
@@ -60,38 +75,38 @@ function Page() {
         </MCSheetContent>
       </MCSheet>
 
-      <TooltipProvider>
-        <Tooltip>
-          <TooltipTrigger asChild>
+      <MCTooltipProvider>
+        <MCTooltip>
+          <MCTooltipTrigger asChild>
             <Button variant="outline">Hover</Button>
-          </TooltipTrigger>
-          <TooltipContent side="top">
+          </MCTooltipTrigger>
+          <MCTooltipContent side="top">
             <p>Add to library</p>
-          </TooltipContent>
-        </Tooltip>
-      </TooltipProvider>
+          </MCTooltipContent>
+        </MCTooltip>
+      </MCTooltipProvider>
 
-      <TooltipProvider>
-        <Tooltip>
-          <TooltipTrigger asChild>
+      <MCTooltipProvider>
+        <MCTooltip>
+          <MCTooltipTrigger asChild>
             <Button variant="outline">Hover</Button>
-          </TooltipTrigger>
-          <TooltipContent side="bottom">
+          </MCTooltipTrigger>
+          <MCTooltipContent side="bottom">
             <p>Add to library</p>
-          </TooltipContent>
-        </Tooltip>
-      </TooltipProvider>
+          </MCTooltipContent>
+        </MCTooltip>
+      </MCTooltipProvider>
 
-      <TooltipProvider>
-        <Tooltip>
-          <TooltipTrigger asChild>
+      <MCTooltipProvider>
+        <MCTooltip>
+          <MCTooltipTrigger asChild>
             <Button variant="outline">Hover</Button>
-          </TooltipTrigger>
-          <TooltipContent side="right">
+          </MCTooltipTrigger>
+          <MCTooltipContent side="right">
             <p>Add to library</p>
-          </TooltipContent>
-        </Tooltip>
-      </TooltipProvider>
+          </MCTooltipContent>
+        </MCTooltip>
+      </MCTooltipProvider>
 
       <div className="h-8"></div>
 
