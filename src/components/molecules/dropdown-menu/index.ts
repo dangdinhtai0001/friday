@@ -15,3 +15,4 @@ export { default as MCDropdownMenuShortcut } from "./DropdownMenuShortcut";
 export { default as MCDropdownMenuContent } from "./DropdownMenuContent";
 export { default as MCDropdownMenuSubContent } from "./DropdownMenuSubContent";
 export { default as MCDropdownMenuSubTrigger } from "./DropdownMenuSubTrigger";
+export { default as ECCascadingMenu } from "./CascadingMenu";
