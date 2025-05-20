@@ -2,7 +2,7 @@ import { IconLoader } from "@/components/atoms/icon-loader";
 import { Input } from "@/components/atoms/input";
 import { Label } from "@/components/atoms/label";
 import { MCTextFiled } from "@/components/atoms/text-field";
-import { Separator } from "@/components/atoms/separator";
+import { MCSeparator } from "@/components/atoms/separator";
 import {
   MCTooltip,
   MCTooltipContent,
@@ -454,7 +454,7 @@ function Page() {
       </div>
 
       <Label>Label</Label>
-      <Separator />
+      <MCSeparator />
     </>
   );
 }
