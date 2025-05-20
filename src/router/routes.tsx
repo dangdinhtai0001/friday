@@ -1,6 +1,7 @@
 import { RouteObject } from "react-router";
 import { AuthLayout, FallbackLayout } from "@/layouts";
-import { AppLayout } from "@/layouts/app-layout";
+// import { AppLayout } from "@/layouts/app-layout";
+import { AppLayout } from "@/components/templates/app-layout";
 import { NotFound } from "@/pages/fallback";
 import { PATH_PROFILE } from "@/composables/constants/paths";
 
