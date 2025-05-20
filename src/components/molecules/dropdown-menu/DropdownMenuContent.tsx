@@ -1,27 +1,7 @@
 import { cn } from "@/composables/utils/shadcn";
 import * as DropdownMenuPrimitive from "@radix-ui/react-dropdown-menu";
 import { motion } from "motion/react";
-
-const getMotionVariants = (
-  side: React.ComponentProps<typeof DropdownMenuPrimitive.Content>["side"],
-) => ({
-  hidden: {
-    opacity: 0,
-    ...(side === "left" && { x: 8 }), // Slide từ phải sang trái
-    ...(side === "right" && { x: -8 }), // Slide từ trái sang phải
-    ...(side === "top" && { y: 8 }), // Slide từ dưới lên
-    ...(side === "bottom" && { y: -8 }), // Slide từ trên xuống
-  },
-  visible: {
-    opacity: 1,
-    x: 0,
-    y: 0,
-    transition: {
-      duration: 0.25,
-      ease: "easeOut",
-    },
-  },
-});
+import { getMenuContentVariants } from "./MotionVariant";
 
 function DropdownMenuContent({
   className,
@@ -30,14 +10,14 @@ function DropdownMenuContent({
   children,
   ...props
 }: React.ComponentProps<typeof DropdownMenuPrimitive.Content>) {
-  const motionVariants = getMotionVariants(side);
+  const motionVariants = getMenuContentVariants(side);
 
   return (
     <DropdownMenuPrimitive.Portal >
       <DropdownMenuPrimitive.Content
         data-slot="dropdown-menu-content"
         sideOffset={sideOffset}
-        className={cn("z-50 ", className)}
+        className={cn("z-50", className)}
         side={side}
         {...props}
       >
@@ -47,7 +27,7 @@ function DropdownMenuContent({
           animate="visible"
           exit="hidden"
           className={cn(
-            "rounded-16 bg-white-80 backdrop-blur-40 p-16 shadow-lg",
+            "rounded-16 bg-white-80 backdrop-blur-40 p-8 shadow-lg",
             className,
           )}
         >
