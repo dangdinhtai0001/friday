@@ -1,6 +1,6 @@
 import { cn } from "@/composables/utils/shadcn";
 import * as DropdownMenuPrimitive from "@radix-ui/react-dropdown-menu";
-import { CheckIcon, ChevronRightIcon, CircleIcon } from "lucide-react";
+import { CheckIcon, CircleIcon } from "lucide-react";
 
 function DropdownMenu({
   ...props
@@ -52,7 +52,7 @@ function DropdownMenuItem({
       data-inset={inset}
       data-variant={variant}
       className={cn(
-        "hover:bg-black-5 rounded-8 p-8 focus:ring-0 focus:outline-none typography-regular-14",
+        "hover:bg-black-5 rounded-8 typography-regular-14 flex cursor-pointer items-center justify-between gap-8 px-8 py-4 focus:ring-0 focus:outline-none",
         className,
       )}
       {...props}
@@ -126,7 +126,7 @@ function DropdownMenuLabel({
     <DropdownMenuPrimitive.Label
       data-slot="dropdown-menu-label"
       data-inset={inset}
-      className={cn("", className)}
+      className={cn("typography-regular-14", className)}
       {...props}
     />
   );
@@ -139,7 +139,7 @@ function DropdownMenuSeparator({
   return (
     <DropdownMenuPrimitive.Separator
       data-slot="dropdown-menu-separator"
-      className={cn("", className)}
+      className={cn("border-black-5 -mx-1 my-1 h-px border-[0.5px]", className)}
       {...props}
     />
   );
@@ -149,40 +149,6 @@ function DropdownMenuSub({
   ...props
 }: React.ComponentProps<typeof DropdownMenuPrimitive.Sub>) {
   return <DropdownMenuPrimitive.Sub data-slot="dropdown-menu-sub" {...props} />;
-}
-
-function DropdownMenuSubContent({
-  className,
-  ...props
-}: React.ComponentProps<typeof DropdownMenuPrimitive.SubContent>) {
-  return (
-    <DropdownMenuPrimitive.SubContent
-      data-slot="dropdown-menu-sub-content"
-      className={cn("", className)}
-      {...props}
-    />
-  );
-}
-
-function DropdownMenuSubTrigger({
-  className,
-  inset,
-  children,
-  ...props
-}: React.ComponentProps<typeof DropdownMenuPrimitive.SubTrigger> & {
-  inset?: boolean;
-}) {
-  return (
-    <DropdownMenuPrimitive.SubTrigger
-      data-slot="dropdown-menu-sub-trigger"
-      data-inset={inset}
-      className={cn("", className)}
-      {...props}
-    >
-      {children}
-      <ChevronRightIcon className="ml-auto size-4" />
-    </DropdownMenuPrimitive.SubTrigger>
-  );
 }
 
 export {
@@ -197,6 +163,4 @@ export {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuSub,
-  DropdownMenuSubContent,
-  DropdownMenuSubTrigger,
 };
