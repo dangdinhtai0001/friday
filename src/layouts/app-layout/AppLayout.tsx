@@ -32,7 +32,7 @@ function AppLayout() {
       <MCSidebarRoot defaultOpen={true}>
         <MCSidebar>
           <MCSidebarHeader>
-            <div className="flex w-full items-center justify-start gap-8 h-[68px] typography-regular-24">
+            <div className="flex w-full items-center justify-start gap-12 h-[68px] typography-regular-24">
               <SidebarItemContent
                 icon={
                   <img src={logo} className="app-logo size-32" alt="logo" />
