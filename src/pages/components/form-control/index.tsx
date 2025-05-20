@@ -24,7 +24,15 @@ import {
 import {
   MCDropdownMenu,
   MCDropdownMenuContent,
+  MCDropdownMenuGroup,
+  MCDropdownMenuItem,
   MCDropdownMenuLabel,
+  MCDropdownMenuPortal,
+  MCDropdownMenuSeparator,
+  MCDropdownMenuShortcut,
+  MCDropdownMenuSub,
+  MCDropdownMenuSubContent,
+  MCDropdownMenuSubTrigger,
   MCDropdownMenuTrigger,
 } from "@/components/molecules/dropdown-menu";
 
@@ -32,12 +40,41 @@ function Page() {
   return (
     <>
       <div>Form control component nè</div>
-      <MCDropdownMenu >
+      <MCDropdownMenu>
         <MCDropdownMenuTrigger>
           <Button variant="outline">Open dropdown menu</Button>
         </MCDropdownMenuTrigger>
         <MCDropdownMenuContent className="w-56" side="right">
-          <MCDropdownMenuLabel>Appearance</MCDropdownMenuLabel>
+          <MCDropdownMenuLabel>My Account</MCDropdownMenuLabel>
+          <MCDropdownMenuSeparator />
+          <MCDropdownMenuGroup>
+            <MCDropdownMenuItem>
+              Profile
+              <MCDropdownMenuShortcut>⇧⌘P</MCDropdownMenuShortcut>
+            </MCDropdownMenuItem>
+            <MCDropdownMenuItem>
+              Billing
+              <MCDropdownMenuShortcut>⌘B</MCDropdownMenuShortcut>
+            </MCDropdownMenuItem>
+            <MCDropdownMenuItem>
+              Settings
+              <MCDropdownMenuShortcut>⌘S</MCDropdownMenuShortcut>
+            </MCDropdownMenuItem>
+          </MCDropdownMenuGroup>
+          <MCDropdownMenuGroup>
+            <MCDropdownMenuItem>Team</MCDropdownMenuItem>
+            <MCDropdownMenuSub>
+              <MCDropdownMenuSubTrigger>Invite users</MCDropdownMenuSubTrigger>
+              <MCDropdownMenuPortal>
+                <MCDropdownMenuSubContent>
+                  <MCDropdownMenuItem>Email</MCDropdownMenuItem>
+                  <MCDropdownMenuItem>Message</MCDropdownMenuItem>
+                  <MCDropdownMenuSeparator />
+                  <MCDropdownMenuItem>More...</MCDropdownMenuItem>
+                </MCDropdownMenuSubContent>
+              </MCDropdownMenuPortal>
+            </MCDropdownMenuSub>
+          </MCDropdownMenuGroup>
         </MCDropdownMenuContent>
       </MCDropdownMenu>
       <div className="h-8 w-full"></div>
