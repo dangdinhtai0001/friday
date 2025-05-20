@@ -17,6 +17,8 @@ const rotationVariants = {
   closed: { rotate: 0 },
 };
 
+const MotionButton = motion.create(Button);
+
 export type SidebarTriggerProps = Omit<
   React.ComponentProps<typeof Button>,
   "onClick"
@@ -26,32 +28,31 @@ export type SidebarTriggerProps = Omit<
 
 function SidebarTrigger({
   className,
+  children,
   onToggleSidebar,
   ...props
 }: SidebarTriggerProps) {
   const { state, actions } = useSidebarContext();
 
   return (
-    <Button
+    <MotionButton
       data-sidebar="trigger"
       data-slot="sidebar-trigger"
       variant="icon"
-      className={cn("flex size-28 items-center justify-center", className)}
+      className={cn("flex items-center justify-center", className)}
       onClick={(event) => {
         onToggleSidebar?.(event);
         actions.toggleSidebar();
       }}
+      variants={rotationVariants}
+      animate={state.open ? "open" : "closed"}
+      transition={iconTransition}
       {...props}
     >
-      <motion.div
-        variants={rotationVariants}
-        animate={state.open ? "open" : "closed"}
-        transition={iconTransition}
-        className=""
-      >
-        <IconLoader name="layout-sidebar-right-collapse" className="size-28" />
-      </motion.div>
-    </Button>
+      {children ?? (
+        <IconLoader name="layout-sidebar-right-collapse" className="size-24" />
+      )}
+    </MotionButton>
   );
 }
 
