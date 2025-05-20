@@ -12,7 +12,6 @@ function SidebarProvider({
   children,
   expandedWidth: expandedWidthProp,
   collapsedWidth: collapsedWidthProp,
-  headerHeight: headerHeightProp,
   side: sideProp,
   variant: variantProp,
   collapsible: collapsibleProp,
@@ -44,10 +43,6 @@ function SidebarProvider({
           collapsedWidthProp !== undefined
             ? collapsedWidthProp
             : defaultContextValue.state.collapsedWidth,
-        headerHeight:
-          headerHeightProp !== undefined
-            ? headerHeightProp
-            : defaultContextValue.state.headerHeight,
       }) as Omit<SidebarState, "state">,
   );
 
