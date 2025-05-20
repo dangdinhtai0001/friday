@@ -9,11 +9,6 @@ import {
   MCSidebarHeader,
   MCSidebarFooter,
   MCSidebarGroup,
-  MCSidebarGroupLabel,
-  MCSidebarGroupContent,
-  MCSidebarMenu,
-  MCSidebarMenuItem,
-  MCSidebarMenuButton,
 } from "@/components/organisms/sidebar";
 import { cn } from "@/composables/utils/shadcn";
 import logo from "@/assets/images/vite.svg";
@@ -21,18 +16,27 @@ import { MCSkeleton } from "@/components/atoms/skeleton";
 import SidebarMainNavigation from "./SidebarMainNavigation";
 import React from "react";
 import SidebarItemContent from "./SidebarItemContent";
+import { useAuthStore } from "@/store";
+import {
+  MCAvatar,
+  MCAvatarFallback,
+  MCAvatarImage,
+} from "@/components/atoms/avatar";
+import { IconLoader } from "@/components/atoms/icon-loader";
 
 function AppLayout() {
   useRequireAuth();
 
+  const { user } = useAuthStore();
   const [isSidebarExpanded, setIsSidebarExpanded] = React.useState(true);
 
   return (
     <>
       <MCSidebarRoot defaultOpen={true}>
         <MCSidebar>
+          {/* ------------------------------------------------ sidebar:header section ------------------------------------------------ */}
           <MCSidebarHeader>
-            <div className="flex w-full items-center justify-start gap-12 h-[68px] typography-regular-24">
+            <div className="typography-regular-24 flex h-[68px] w-full items-center justify-start gap-12">
               <SidebarItemContent
                 icon={
                   <img src={logo} className="app-logo size-32" alt="logo" />
@@ -42,37 +46,49 @@ function AppLayout() {
               />
             </div>
           </MCSidebarHeader>
+          {/* ------------------------------------------------ sidebar:header section ------------------------------------------------ */}
           <MCSidebarContent>
+            {/* ------------------------ sidebar:content::main section ------------------------ */}
             <MCSidebarGroup>
-              <MCSidebarGroupLabel>group 1</MCSidebarGroupLabel>
-              <MCSidebarGroupContent>
-                <MCSidebarMenu>
-                  <MCSidebarMenuItem>
-                    <MCSidebarMenuButton asChild isActive tooltip="hehehe">
-                      <a>hello</a>
-                    </MCSidebarMenuButton>
-                  </MCSidebarMenuItem>
-                </MCSidebarMenu>
-              </MCSidebarGroupContent>
+              <SidebarMainNavigation isSidebarExpanded={isSidebarExpanded} />
             </MCSidebarGroup>
-            <SidebarMainNavigation isSidebarExpanded={isSidebarExpanded} />
+            {/* ------------------------ sidebar:content::main section ------------------------ */}
           </MCSidebarContent>
+          {/* ------------------------------------------------ sidebar:footer section ------------------------------------------------ */}
           <MCSidebarFooter>
-            <MCSkeleton className="h-10 w-full" />
+            <div className="typography-regular-14 flex h-[68px] w-full items-center justify-start gap-12">
+              <SidebarItemContent
+                icon={
+                  <MCAvatar className="size-24">
+                    <MCAvatarImage src={user?.profile?.avatarUrl} />
+                    <MCAvatarFallback>
+                      <MCSkeleton className="size-24 rounded-full" />
+                    </MCAvatarFallback>
+                  </MCAvatar>
+                }
+                title={user?.profile.name}
+                isExpanded={isSidebarExpanded}
+              />
+            </div>
           </MCSidebarFooter>
+          {/* ------------------------------------------------ sidebar:footer section ------------------------------------------------ */}
         </MCSidebar>
         <MCSidebarInset>
           <div
             className={cn(
-              "border-black-5 flex h-[68px] items-center gap-4 border-b-[0.5px] px-28 py-20",
+              "bg-background-2 flex h-[68px] items-center gap-4 px-28 py-20",
             )}
           >
             <MCSidebarTrigger
-              className=""
               onToggleSidebar={() => {
                 setIsSidebarExpanded(!isSidebarExpanded);
               }}
-            />
+            >
+              <IconLoader
+                name="layout-sidebar-right-collapse"
+                className="size-24"
+              />
+            </MCSidebarTrigger>
           </div>
           <div className="px-28 py-20">
             <Outlet />

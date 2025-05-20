@@ -1,201 +1,133 @@
 import {
+  ECCascadingMenu,
   MCDropdownMenu,
   MCDropdownMenuContent,
+  MCDropdownMenuGroup,
   MCDropdownMenuItem,
+  MCDropdownMenuLabel,
+  MCDropdownMenuSeparator,
+  MCDropdownMenuShortcut,
   MCDropdownMenuTrigger,
 } from "@/components/molecules/dropdown-menu";
 import {
-  MCSidebarGroup,
   MCSidebarMenu,
   MCSidebarMenuButton,
   MCSidebarMenuItem,
 } from "@/components/organisms/sidebar";
 import SidebarItemContent from "./SidebarItemContent";
 import { motion } from "motion/react";
-
-const items = [
-  {
-    title: "Getting Started",
-    url: "#",
-    icon: "rocket",
-    tooltip: "Getting Started",
-    items: [
-      {
-        title: "Installation",
-        url: "#",
-      },
-      {
-        title: "Project Structure",
-        url: "#",
-      },
-    ],
-  },
-  {
-    title: "Building Your Application",
-    url: "#",
-    icon: "apps",
-    tooltip: "Building Your Application",
-    items: [
-      {
-        title: "Routing",
-        url: "#",
-      },
-      {
-        title: "Data Fetching",
-        url: "#",
-        isActive: true,
-      },
-      {
-        title: "Rendering",
-        url: "#",
-      },
-      {
-        title: "Caching",
-        url: "#",
-      },
-      {
-        title: "Styling",
-        url: "#",
-      },
-      {
-        title: "Optimizing",
-        url: "#",
-      },
-      {
-        title: "Configuring",
-        url: "#",
-      },
-      {
-        title: "Testing",
-        url: "#",
-      },
-      {
-        title: "Authentication",
-        url: "#",
-      },
-      {
-        title: "Deploying",
-        url: "#",
-      },
-      {
-        title: "Upgrading",
-        url: "#",
-      },
-      {
-        title: "Examples",
-        url: "#",
-      },
-    ],
-  },
-  {
-    title: "API Reference",
-    url: "#",
-    items: [
-      {
-        title: "Components",
-        url: "#",
-      },
-      {
-        title: "File Conventions",
-        url: "#",
-      },
-      {
-        title: "Functions",
-        url: "#",
-      },
-      {
-        title: "next.config.js Options",
-        url: "#",
-      },
-      {
-        title: "CLI",
-        url: "#",
-      },
-      {
-        title: "Edge Runtime",
-        url: "#",
-      },
-    ],
-  },
-  {
-    title: "Architecture",
-    url: "#",
-    items: [
-      {
-        title: "Accessibility",
-        url: "#",
-      },
-      {
-        title: "Fast Refresh",
-        url: "#",
-      },
-      {
-        title: "Next.js Compiler",
-        url: "#",
-      },
-      {
-        title: "Supported Browsers",
-        url: "#",
-      },
-      {
-        title: "Turbopack",
-        url: "#",
-      },
-    ],
-  },
-];
+import sidebarNavigationData, { DropdownMenuChild } from "./config";
+import { Link } from "react-router";
 
 export type SidebarMainNavigationProps = {
   isSidebarExpanded: boolean;
+};
+
+const MotionMCDropdownMenuItem = motion.create(MCDropdownMenuItem);
+
+const renderDropdownChildren = (
+  items: DropdownMenuChild[],
+): React.ReactNode[] => {
+  return items.map((item, index) => {
+    switch (item.type) {
+      case "item":
+        return (
+          <MotionMCDropdownMenuItem
+            className="min-w-[212px] p-12"
+            key={index}
+            onClick={item.onClick}
+            inset={item.inset}
+            variant={item.variant}
+            whileHover={{ x: 4 }}
+            transition={{ type: "spring", stiffness: 300, damping: 20 }}
+          >
+            <Link to={item.url || "/123"}>
+              {item.label}
+              {item.shortcut && (
+                <MCDropdownMenuShortcut>{item.shortcut}</MCDropdownMenuShortcut>
+              )}
+            </Link>
+          </MotionMCDropdownMenuItem>
+        );
+      case "label":
+        return (
+          <MCDropdownMenuLabel key={index} inset={item.inset} className="p-12">
+            {item.label}
+          </MCDropdownMenuLabel>
+        );
+      case "separator":
+        return <MCDropdownMenuSeparator key={index} />;
+      case "group":
+        return (
+          <MCDropdownMenuGroup key={index}>
+            {renderDropdownChildren(item.items)}
+            {/* Gọi đệ quy cho các mục trong group */}
+          </MCDropdownMenuGroup>
+        );
+      case "submenu":
+        return (
+          <ECCascadingMenu
+            key={index}
+            trigger={item.trigger}
+            inset={item.inset}
+            sideOffset={16}
+          >
+            {renderDropdownChildren(item.items)}
+            {/* Gọi đệ quy cho các mục trong submenu */}
+          </ECCascadingMenu>
+        );
+      default:
+        return null;
+    }
+  });
 };
 
 function SidebarMainNavigation({
   isSidebarExpanded,
 }: SidebarMainNavigationProps) {
   return (
-    <MCSidebarGroup>
+    <>
       <MCSidebarMenu>
-        {items.map((item, index) => (
-          <MCDropdownMenu key={index}>
-            <MCSidebarMenuItem>
-              {/* -------------- */}
-              <MCDropdownMenuTrigger asChild className="">
-                <MCSidebarMenuButton
-                  className="flex w-full items-center justify-start gap-8"
-                  tooltip={isSidebarExpanded ? undefined : item.tooltip}
-                >
-                  <SidebarItemContent
-                    icon={item.icon}
-                    title={item.title}
-                    isExpanded={isSidebarExpanded}
-                  />
-                </MCSidebarMenuButton>
-              </MCDropdownMenuTrigger>
-              {/* -------------- */}
-              {item.items?.length ? (
-                <MCDropdownMenuContent
-                  side="right"
-                  align="start"
-                  sideOffset={16}
-                  className="rounded-16 flex flex-col"
-                >
-                  {item.items.map((item2, index2) => (
-                    <MCDropdownMenuItem asChild key={index2}>
-                      <motion.div
-                        whileHover={{x: 8}}
-                        transition={{type: "spring", stiffness: 300, damping: 20}}
-                      >
-                        <a href={item2.url}>{item2.title}</a>
-                      </motion.div>
-                    </MCDropdownMenuItem>
-                  ))}
+        {sidebarNavigationData.map((item, index) => (
+          <MCSidebarMenuItem key={index}>
+            {/* Nếu mục có 'content', nó sẽ trở thành một dropdown/submenu */}
+            {item.content && item.content.length > 0 ? (
+              <MCDropdownMenu>
+                <MCDropdownMenuTrigger asChild>
+                  <MCSidebarMenuButton
+                    className="flex w-full items-center justify-start gap-8"
+                    tooltip={isSidebarExpanded ? undefined : item.tooltip}
+                  >
+                    <SidebarItemContent
+                      icon={item.icon}
+                      title={item.title}
+                      isExpanded={isSidebarExpanded}
+                      showNavigationIcon
+                    />
+                  </MCSidebarMenuButton>
+                </MCDropdownMenuTrigger>
+                <MCDropdownMenuContent className="min-w-[150px]" side="right">
+                  {renderDropdownChildren(item.content)}
                 </MCDropdownMenuContent>
-              ) : null}
-            </MCSidebarMenuItem>
-          </MCDropdownMenu>
+              </MCDropdownMenu>
+            ) : (
+              // Nếu không có 'content', đây là một mục sidebar đơn giản
+              <MCSidebarMenuButton
+                className="flex w-full items-center justify-start gap-8"
+                tooltip={isSidebarExpanded ? undefined : item.tooltip}
+              >
+                <SidebarItemContent
+                  icon={item.icon}
+                  title={item.title}
+                  isExpanded={isSidebarExpanded}
+                  url={item.url}
+                />
+              </MCSidebarMenuButton>
+            )}
+          </MCSidebarMenuItem>
         ))}
       </MCSidebarMenu>
-    </MCSidebarGroup>
+    </>
   );
 }
 
