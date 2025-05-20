@@ -10,7 +10,7 @@ function LoginPage() {
       id: "123456789",
       profile: {
         name: "John Doe",
-        avatarUrl: "https://example.com/avatar.jpg",
+        avatarUrl: "https://i.pravatar.cc",
         roles: ["user", "admin"],
       },
       authDetails: {
