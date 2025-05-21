@@ -29,11 +29,9 @@ function Sidebar({
   const { state: sidebarState, actions } = useSidebarContext();
   const isMobile = useIsMobile();
 
-  // ĐÃ SỬA LỖI: Lấy openMobile từ sidebarState, setOpenMobile từ actions
   const { openMobile } = sidebarState;
   const { setOpenMobile } = actions;
 
-  // Lấy trạng thái từ context
   const { state, expandedWidth, collapsedWidth } = sidebarState;
 
   // Render khi collapsible là 'none' (luôn mở, không thu gọn)
@@ -47,7 +45,7 @@ function Sidebar({
         )}
         style={
           {
-            width: expandedWidth,
+            width: expandedWidth, // Dùng style prop ở đây
           } as React.CSSProperties
         }
         {...props}
@@ -68,10 +66,11 @@ function Sidebar({
           className="bg-sidebar text-sidebar-foreground p-0 [&>button]:hidden"
           style={
             {
-              "--sidebar-width": `var(--sidebar-width-mobile, ${sidebarState.expandedWidth})`, // Sử dụng chiều rộng mobile từ constant nếu có, hoặc expandedWidth
+              // Sử dụng CSS Custom Property (biến CSS) để dễ quản lý hơn
+              "--sidebar-width": `var(--sidebar-width-mobile, ${expandedWidth})`,
             } as React.CSSProperties
           }
-          side={side} // Sử dụng side prop
+          side={side}
         >
           <MCSheetHeader className="sr-only">
             <MCSheetTitle>Sidebar</MCSheetTitle>
@@ -94,10 +93,14 @@ function Sidebar({
       data-variant={variant} // "sidebar" | "floating" | "inset"
       data-side={side} // "left" | "right"
       data-slot="sidebar"
-      style={
+      style={ // Sử dụng style prop trên container chính
         {
           "--sidebar-width": expandedWidth,
-          "--sidebar-width-icon": collapsedWidth, // Chiều rộng khi thu gọn kiểu icon
+          "--sidebar-width-icon": collapsedWidth,
+          // Định nghĩa các biến CSS để sử dụng trong các child elements
+          width: state === "expanded" ? expandedWidth : (collapsible === "icon" ? collapsedWidth : "0px"), // Fallback logic cho width chính
+          // Các biến CSS custom property có thể được truyền xuống con
+          // Để dễ dàng điều khiển khoảng trống và container
         } as React.CSSProperties
       }
     >
@@ -106,28 +109,38 @@ function Sidebar({
         data-slot="sidebar-gap"
         className={cn(
           "relative bg-transparent transition-[width] duration-200 ease-linear",
-          `w-[${expandedWidth}]`, // Mặc định là chiều rộng mở rộng
           "group-data-[collapsible=offcanvas]:w-0", // Khi offcanvas, gap = 0
           "group-data-[side=right]:rotate-180", // Xoay để đối xứng với right sidebar
-          variant === "floating" || variant === "inset"
-            ? `group-data-[collapsible=icon]:w-[calc(${collapsedWidth}+theme(spacing.4))]` // Width icon + padding
-            : `group-data-[collapsible=icon]:w-[${collapsedWidth}]`, // Chỉ width icon
         )}
+        style={ // Dùng style prop ở đây
+          {
+            width: variant === "floating" || variant === "inset"
+              ? (state === "expanded" ? expandedWidth : `calc(${collapsedWidth}+theme(spacing.4))`)
+              : (state === "expanded" ? expandedWidth : collapsedWidth),
+          } as React.CSSProperties
+        }
       />
       <div
         data-slot="sidebar-container"
         className={cn(
           "fixed inset-y-0 z-10 hidden h-svh transition-[left,right,width] duration-200 ease-linear md:flex",
-          `w-[${expandedWidth}]`, // Mặc định là chiều rộng mở rộng
+          // Điều chỉnh left/right dựa trên side và collapsible
           side === "left"
-            ? `left-0 group-data-[collapsible=offcanvas]:left-[calc(${expandedWidth}*-1)]` // Kéo ra ngoài màn hình
-            : `right-0 group-data-[collapsible=offcanvas]:right-[calc(${expandedWidth}*-1)]`,
+            ? `left-0 group-data-[collapsible=offcanvas]:left-[calc(var(--sidebar-width)*-1)]`
+            : `right-0 group-data-[collapsible=offcanvas]:right-[calc(var(--sidebar-width)*-1)]`,
           // Điều chỉnh padding cho floating và inset variants.
           variant === "floating" || variant === "inset"
-            ? `p-2 group-data-[collapsible=icon]:w-[calc(${collapsedWidth}+theme(spacing.4)+2px)]` // Width icon + padding + border
-            : `group-data-[collapsible=icon]:w-[${collapsedWidth}] group-data-[side=left]:border-r group-data-[side=right]:border-l`,
+            ? `p-2`
+            : `group-data-[side=left]:border-r group-data-[side=right]:border-l`, // Chỉ thêm border khi variant là sidebar
           className,
         )}
+        style={ // Dùng style prop ở đây
+          {
+            width: variant === "floating" || variant === "inset"
+              ? (state === "expanded" ? expandedWidth : `calc(${collapsedWidth}+theme(spacing.4)+2px)`) // Width icon + padding + border
+              : (state === "expanded" ? expandedWidth : collapsedWidth), // Chỉ width icon
+          } as React.CSSProperties
+        }
         {...props}
       >
         <div
