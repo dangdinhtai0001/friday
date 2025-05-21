@@ -31,3 +31,8 @@ export const SIDEBAR_COLLAPSED_WIDTH = "3rem";
  * (Ví dụ: 'b' cho Ctrl/Cmd + B)
  */
 export const SIDEBAR_KEYBOARD_SHORTCUT = "b";
+
+/**
+ * Thời gian chuyển động mặc định cho sidebar và các thành phần liên quan (tính bằng giây).
+ */
+export const SIDEBAR_TRANSITION_DURATION = 0.2; // 0.2 giây
