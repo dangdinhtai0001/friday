@@ -1,98 +1,48 @@
 // src/components/organisms/sidebar2/menu/SidebarMenuButton.tsx
 
 import * as React from "react";
-import { cva, type VariantProps } from "class-variance-authority"; // Giả định đường dẫn
-import { cn } from "@/composables/utils/shadcn"; // Giả định đường dẫn
+import { Slot } from "@radix-ui/react-slot"; // Cần cài đặt @radix-ui/react-slot nếu chưa có
+import { cn } from "@/composables/utils/shadcn"; // Đảm bảo đường dẫn này chính xác
 
-import { useSidebarContext } from "../context/SidebarContext"; // Import hook context
-import { SidebarMenuButtonProps } from "../types"; // Import props đã định nghĩa
-import { MCTooltip, MCTooltipContent, MCTooltipTrigger } from "@/components/molecules/tooltip"; // Import Tooltip components
-
-// Định nghĩa các biến thể cho nút menu
-const sidebarMenuButtonVariants = cva(
-  "inline-flex w-full items-center justify-start whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50",
-  {
-    variants: {
-      variant: {
-        default:
-          "bg-transparent text-sidebar-foreground hover:bg-muted active:bg-muted-foreground/10",
-        outline:
-          "border border-input bg-background hover:bg-accent hover:text-accent-foreground",
-      },
-      size: {
-        default: "h-8 px-2",
-        sm: "h-7 px-2",
-        lg: "h-9 px-3",
-      },
-      isActive: {
-        true: "bg-muted font-semibold", // Kiểu khi mục đang hoạt động (active)
-      },
-    },
-    defaultVariants: {
-      variant: "default",
-      size: "default",
-    },
-  },
-);
-
-interface SidebarMenuButtonInternalProps
-  extends SidebarMenuButtonProps,
-    VariantProps<typeof sidebarMenuButtonVariants> {}
+interface SidebarMenuButtonProps extends React.ComponentProps<"button"> {
+  asChild?: boolean;
+  isActive?: boolean;
+  // Bạn có thể thêm các props khác nếu cần, ví dụ: icon, text
+  // icon?: React.ReactNode;
+  // text?: string;
+}
 
 const SidebarMenuButton = React.forwardRef<
-  HTMLButtonElement,
-  SidebarMenuButtonInternalProps
->(({ className, variant, size, isActive, tooltip, children, ...props }, ref) => {
-  const {
-    state: { state: sidebarState }, // Lấy 'state' (expanded/collapsed) từ context
-  } = useSidebarContext();
+  HTMLButtonElement, // Đảm bảo ref type là HTMLButtonElement
+  SidebarMenuButtonProps
+>(({ className, asChild = false, isActive = false, children, ...props }, ref) => {
+  const Comp = asChild ? Slot : "button";
 
-  const buttonContent = (
-    <button
-      ref={ref}
+  return (
+    <Comp
+      ref={ref} // Đảm bảo ref được truyền xuống
+      data-slot="sidebar-menu-button"
+      data-sidebar="menu-button"
+      data-active={isActive} // Dùng data-active để xử lý style khi active
       className={cn(
-        sidebarMenuButtonVariants({ variant, size, className }),
-        isActive && sidebarMenuButtonVariants({ isActive: true }), // Áp dụng kiểu active
-        "group-data-[state=collapsed]:justify-center group-data-[state=collapsed]:px-0",
-        // Ẩn nội dung khi collapsed và không phải tooltip
-        sidebarState === "collapsed" && !tooltip
-          ? "group-data-[state=collapsed]:w-8 group-data-[state=collapsed]:h-8 group-data-[state=collapsed]:p-0"
-          : "",
+        "flex w-full items-center gap-2 overflow-hidden rounded-md p-2 text-left text-sm", // CSS cơ bản
+        "outline-none ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2", // Focus ring cơ bản
+        "hover:bg-muted/50 transition-colors", // Hiệu ứng hover cơ bản
+        "disabled:pointer-events-none disabled:opacity-50", // Trạng thái disabled
+        "data-[active=true]:bg-accent data-[active=true]:text-accent-foreground", // Style khi active
+        className, // Các lớp CSS tùy chỉnh từ props
       )}
       {...props}
     >
-      {/* Ẩn văn bản khi collapsed, chỉ hiển thị nếu sidebar expanded */}
-      <span
-        className={cn(
-          "group-data-[state=collapsed]:hidden", // Ẩn văn bản khi collapsed
-          "flex-1", // Để icon/text chiếm hết không gian
-        )}
-      >
-        {children}
-      </span>
-    </button>
+      {/* Bạn có thể đặt logic hiển thị icon/text trực tiếp ở đây 
+        nếu bạn muốn SidebarMenuButton tự quyết định dựa trên một prop
+        Ví dụ: {icon} {text && <span>{text}</span>}
+      */}
+      {children} {/* Children sẽ là nội dung của nút */}
+    </Comp>
   );
-
-  // Nếu sidebar collapsed và có tooltip, bọc nút bằng Tooltip
-  if (sidebarState === "collapsed" && tooltip) {
-    return (
-      <MCTooltip>
-        <MCTooltipTrigger asChild>{buttonContent}</MCTooltipTrigger>
-        <MCTooltipContent
-          side="right"
-          className="animate-none"
-          sideOffset={8}
-          align="center"
-        >
-          {tooltip}
-        </MCTooltipContent>
-      </MCTooltip>
-    );
-  }
-
-  return buttonContent;
 });
 
 SidebarMenuButton.displayName = "SidebarMenuButton";
 
-export { SidebarMenuButton, sidebarMenuButtonVariants };
+export { SidebarMenuButton };
