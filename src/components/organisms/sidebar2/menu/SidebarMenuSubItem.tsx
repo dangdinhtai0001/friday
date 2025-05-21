@@ -13,7 +13,7 @@ const SidebarMenuSubItem = React.forwardRef<
       ref={ref}
       data-slot="sidebar-menu-sub-item"
       className={cn(
-        "relative flex h-7 items-center gap-2 overflow-hidden rounded-md pl-4", // pl-4 để tạo indent
+        "relative flex items-center overflow-hidden", // pl-4 để tạo indent
         className,
       )}
       {...props}
