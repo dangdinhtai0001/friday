@@ -24,7 +24,7 @@ export const SIDEBAR_WIDTH_MOBILE = "18rem";
 /**
  * Chiều rộng mặc định của sidebar khi ở trạng thái thu gọn chỉ còn biểu tượng (icon).
  */
-export const SIDEBAR_COLLAPSED_WIDTH = "3rem";
+export const SIDEBAR_COLLAPSED_WIDTH = "80px";
 
 /**
  * Phím tắt (shortcut) để chuyển đổi trạng thái của sidebar.
