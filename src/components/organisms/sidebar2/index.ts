@@ -35,3 +35,9 @@ export * from "./menu/SidebarMenuSkeleton";
 export * from "./menu/SidebarMenuSub";
 export * from "./menu/SidebarMenuSubItem";
 export * from "./menu/SidebarMenuSubButton";
+
+// Export các Group Components
+export * from "./groups/SidebarGroup";
+export * from "./groups/SidebarGroupLabel";
+export * from "./groups/SidebarGroupAction";
+export * from "./groups/SidebarGroupContent";
