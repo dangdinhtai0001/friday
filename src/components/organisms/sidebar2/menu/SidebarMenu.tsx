@@ -8,7 +8,7 @@ const SidebarMenu = React.forwardRef<HTMLDivElement, BaseSidebarComponentProps>(
       <div
         ref={ref}
         data-slot="sidebar-menu"
-        className={cn("flex flex-col gap-1 px-4", className)}
+        className={cn("flex flex-col", className)}
         {...props}
       >
         {children}
