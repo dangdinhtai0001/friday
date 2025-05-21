@@ -14,26 +14,23 @@ function AppLayout() {
   return (
     <>
       <SidebarProvider defaultOpen={true} variant="sidebar">
-        <AppSidebar />
-        <SidebarInset>
-          <div
-            className={cn(
-              "bg-background-2 sticky top-0 flex h-[68px] items-center gap-4 px-28 py-20",
-            )}
-          >
-            <SidebarTrigger
-              onClick={() => setIsSidebarExpanded(!isSidebarExpanded)}
+        <div className="flex h-screen w-screen flex-row">
+          <AppSidebar />
+          <SidebarInset>
+            <div
+              className={cn(
+                "bg-background-2 sticky top-0 flex h-[68px] items-center gap-4 px-28 py-20",
+              )}
             >
-              <IconLoader
-                name="layout-sidebar-right-collapse"
-                className="size-24"
+              <SidebarTrigger
+                onToggleSidebar={() => setIsSidebarExpanded(!isSidebarExpanded)}
               />
-            </SidebarTrigger>
-          </div>
-          <div className="px-28 py-20">
-            <Outlet />
-          </div>
-        </SidebarInset>
+            </div>
+            <div className="px-28 py-20">
+              <Outlet />
+            </div>
+          </SidebarInset>
+        </div>
       </SidebarProvider>
     </>
   );
