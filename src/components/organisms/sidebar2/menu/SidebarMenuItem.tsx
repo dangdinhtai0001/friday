@@ -26,8 +26,8 @@ const SidebarMenuItem = React.forwardRef<
       ref={ref}
       data-slot="sidebar-menu-item"
       className={cn(
-        "relative flex h-8 items-center gap-2 overflow-hidden rounded-md px-2",
-        "group-data-[state=collapsed]:justify-center group-data-[state=collapsed]:px-0",
+        // "relative flex h-8 items-center gap-2 overflow-hidden rounded-md px-2",
+        // "group-data-[state=collapsed]:justify-center group-data-[state=collapsed]:px-0",
         className,
       )}
       {...props}
