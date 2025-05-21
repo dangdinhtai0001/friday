@@ -14,7 +14,7 @@ function AppLayout() {
     <>
       <SidebarProvider defaultOpen={true} variant="sidebar">
         <div className="flex h-screen w-screen flex-row">
-          <AppSidebar />
+          <AppSidebar isSidebarExpanded={isSidebarExpanded}/>
           <SidebarInset>
             <div
               className={cn(
