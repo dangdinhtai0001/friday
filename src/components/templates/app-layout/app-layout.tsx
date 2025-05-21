@@ -6,7 +6,6 @@ import {
 import { Outlet } from "react-router";
 import AppSidebar from "./app-sidebar";
 import { cn } from "@/composables/utils/shadcn";
-import { IconLoader } from "@/components/atoms/icon-loader";
 import React from "react";
 
 function AppLayout() {
