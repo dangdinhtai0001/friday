@@ -13,6 +13,17 @@ import {
   MCSheetTitle,
 } from "@/components/organisms/sheet";
 import { MCTooltipProvider } from "@/components/molecules/tooltip";
+import { motion } from "motion/react";
+import { SIDEBAR_TRANSITION_DURATION } from "../constants";
+
+type SidebarProps = Omit<
+  React.ComponentProps<"div">,
+  "onAnimationStart" | "onDrag" | "onDragStart" | "onDragEnd"
+> & {
+  side?: "left" | "right";
+  variant?: "sidebar" | "floating" | "inset";
+  collapsible?: "offcanvas" | "icon" | "none";
+};
 
 function Sidebar({
   side = "left",
@@ -20,12 +31,8 @@ function Sidebar({
   collapsible = "icon",
   className,
   children,
-  ...props
-}: React.ComponentProps<"div"> & {
-  side?: "left" | "right";
-  variant?: "sidebar" | "floating" | "inset";
-  collapsible?: "offcanvas" | "icon" | "none";
-}) {
+  ...props // Giữ lại props ở đây
+}: SidebarProps) {
   const { state: sidebarState, actions } = useSidebarContext();
   const isMobile = useIsMobile();
 
@@ -33,6 +40,59 @@ function Sidebar({
   const { setOpenMobile } = actions;
 
   const { state, expandedWidth, collapsedWidth } = sidebarState;
+
+  // Định nghĩa transition chung cho các animation
+  const sidebarTransition = {
+    duration: SIDEBAR_TRANSITION_DURATION,
+    ease: "linear", // Sử dụng ease linear hoặc custom easing nếu bạn muốn
+  };
+
+  // **********************************************
+  // * Logic cho các variants animation của desktop *
+  // **********************************************
+
+  // Variants cho sidebar-gap (width)
+  const gapVariants = {
+    // Trạng thái "expanded" của gap
+    expanded: {
+      width: expandedWidth,
+      // Khi offcanvas, gap không có chiều rộng, nên nó sẽ bị ẩn đi
+      // Dùng animation 'opacity' để chuyển đổi mượt mà hơn nếu cần
+      opacity: collapsible === "offcanvas" ? 0 : 1,
+    },
+    // Trạng thái "collapsed" của gap
+    collapsed: {
+      width:
+        collapsible === "offcanvas"
+          ? "0px" // offcanvas: gap = 0
+          : variant === "floating" || variant === "inset"
+            ? `calc(${collapsedWidth} + 1rem)` // Giả sử theme(spacing.4) là 1rem (16px)
+            : collapsedWidth,
+      opacity: collapsible === "offcanvas" ? 0 : 1,
+    },
+  };
+
+  // Variants cho sidebar-container (width và left/right)
+  const containerVariants = {
+    // Trạng thái "expanded" của container
+    expanded: {
+      width: expandedWidth,
+      // Đặt vị trí dựa trên side
+      [side === "left" ? "left" : "right"]: 0,
+    },
+    // Trạng thái "collapsed" của container
+    collapsed: {
+      width:
+        variant === "floating" || variant === "inset"
+          ? `calc(${collapsedWidth} + 1rem + 2px)` // Giả sử theme(spacing.4) là 1rem (16px) và 2px border
+          : collapsedWidth,
+      // Đặt vị trí dựa trên side và collapsible type
+      [side === "left" ? "left" : "right"]:
+        collapsible === "offcanvas"
+          ? `calc(${expandedWidth} * -1)` // Kéo ra ngoài màn hình
+          : 0, // Vẫn ở vị trí 0 nếu không phải offcanvas
+    },
+  };
 
   // Render khi collapsible là 'none' (luôn mở, không thu gọn)
   if (collapsible === "none") {
@@ -45,7 +105,7 @@ function Sidebar({
         )}
         style={
           {
-            width: expandedWidth, // Dùng style prop ở đây
+            width: expandedWidth,
           } as React.CSSProperties
         }
         {...props}
@@ -66,7 +126,6 @@ function Sidebar({
           className="bg-sidebar text-sidebar-foreground p-0 [&>button]:hidden"
           style={
             {
-              // Sử dụng CSS Custom Property (biến CSS) để dễ quản lý hơn
               "--sidebar-width": `var(--sidebar-width-mobile, ${expandedWidth})`,
             } as React.CSSProperties
           }
@@ -88,59 +147,52 @@ function Sidebar({
   return (
     <div
       className="group peer text-sidebar-foreground hidden md:block"
-      data-state={state} // "expanded" | "collapsed"
-      data-collapsible={state === "collapsed" ? collapsible : ""} // Chỉ có giá trị khi collapsed
-      data-variant={variant} // "sidebar" | "floating" | "inset"
-      data-side={side} // "left" | "right"
+      data-state={state}
+      data-collapsible={state === "collapsed" ? collapsible : ""}
+      data-variant={variant}
+      data-side={side}
       data-slot="sidebar"
-      style={ // Sử dụng style prop trên container chính
+      // Loại bỏ style width trực tiếp ở đây, để Framer Motion quản lý
+      // Hoặc chỉ giữ các biến CSS nếu các component con khác vẫn dùng chúng
+      style={
         {
           "--sidebar-width": expandedWidth,
           "--sidebar-width-icon": collapsedWidth,
-          // Định nghĩa các biến CSS để sử dụng trong các child elements
-          width: state === "expanded" ? expandedWidth : (collapsible === "icon" ? collapsedWidth : "0px"), // Fallback logic cho width chính
-          // Các biến CSS custom property có thể được truyền xuống con
-          // Để dễ dàng điều khiển khoảng trống và container
         } as React.CSSProperties
       }
     >
       {/* Đây là phần xử lý khoảng trống của sidebar trên desktop */}
-      <div
+      <motion.div
         data-slot="sidebar-gap"
         className={cn(
-          "relative bg-transparent transition-[width] duration-200 ease-linear",
-          "group-data-[collapsible=offcanvas]:w-0", // Khi offcanvas, gap = 0
-          "group-data-[side=right]:rotate-180", // Xoay để đối xứng với right sidebar
+          "relative bg-transparent",
+          // Loại bỏ group-data-[collapsible=offcanvas]:w-0 vì logic này nằm trong variants
+          "group-data-[side=right]:rotate-180", // Vẫn giữ các lớp Tailwind tĩnh
         )}
-        style={ // Dùng style prop ở đây
-          {
-            width: variant === "floating" || variant === "inset"
-              ? (state === "expanded" ? expandedWidth : `calc(${collapsedWidth}+theme(spacing.4))`)
-              : (state === "expanded" ? expandedWidth : collapsedWidth),
-          } as React.CSSProperties
-        }
+        variants={gapVariants}
+        // state là "expanded" hoặc "collapsed" -> sẽ tự động khớp với keys trong gapVariants
+        animate={state}
+        transition={sidebarTransition}
       />
-      <div
+      <motion.div
         data-slot="sidebar-container"
         className={cn(
-          "fixed inset-y-0 z-10 hidden h-svh transition-[left,right,width] duration-200 ease-linear md:flex",
-          // Điều chỉnh left/right dựa trên side và collapsible
-          side === "left"
-            ? `left-0 group-data-[collapsible=offcanvas]:left-[calc(var(--sidebar-width)*-1)]`
-            : `right-0 group-data-[collapsible=offcanvas]:right-[calc(var(--sidebar-width)*-1)]`,
-          // Điều chỉnh padding cho floating và inset variants.
+          "fixed inset-y-0 z-10 hidden h-svh md:flex",
+          // Các lớp liên quan đến position (left-0, right-0) cũng nên được Framer Motion quản lý
+          // để có animation mượt mà. Loại bỏ 'transition-[left,right,width]'
+          // và các lớp 'left-0'/'right-0' nếu bạn muốn animate chúng hoàn toàn bằng FM.
+          // Tuy nhiên, để khởi đầu đơn giản, ta giữ chúng và chỉ animate left/right trong variants.
           variant === "floating" || variant === "inset"
             ? `p-2`
-            : `group-data-[side=left]:border-r group-data-[side=right]:border-l`, // Chỉ thêm border khi variant là sidebar
+            : `group-data-[side=left]:border-r group-data-[side=right]:border-l`,
           className,
         )}
-        style={ // Dùng style prop ở đây
-          {
-            width: variant === "floating" || variant === "inset"
-              ? (state === "expanded" ? expandedWidth : `calc(${collapsedWidth}+theme(spacing.4)+2px)`) // Width icon + padding + border
-              : (state === "expanded" ? expandedWidth : collapsedWidth), // Chỉ width icon
-          } as React.CSSProperties
-        }
+        variants={containerVariants}
+        // state là "expanded" hoặc "collapsed" -> sẽ tự động khớp với keys trong containerVariants
+        animate={state}
+        transition={sidebarTransition}
+        // Loại bỏ {...props} ở đây để tránh ghi đè các props mà Framer Motion đang kiểm soát
+        // Nếu bạn muốn truyền props xuống container, hãy lọc chúng hoặc đảm bảo chúng không xung đột
         {...props}
       >
         <div
@@ -150,7 +202,7 @@ function Sidebar({
         >
           <MCTooltipProvider delayDuration={0}>{children}</MCTooltipProvider>
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 }
