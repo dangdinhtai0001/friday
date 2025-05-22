@@ -11,16 +11,22 @@ import { SIDEBAR_COOKIE_NAME, SIDEBAR_COOKIE_MAX_AGE } from "../constants";
  * @returns {[boolean, React.Dispatch<React.SetStateAction<boolean>>]} Một tuple chứa trạng thái mở hiện tại và hàm setter.
  */
 export function useSidebarState(
-  defaultOpen: boolean,
+  defaultOpen?: boolean,
   onOpenChange?: (open: boolean) => void,
 ): [boolean, (value: boolean | ((value: boolean) => boolean)) => void] {
   // Lấy trạng thái open ban đầu từ cookie hoặc sử dụng giá trị mặc định
   const initialOpenState = React.useMemo(() => {
     const cookieState = getCookie(SIDEBAR_COOKIE_NAME);
-    if (cookieState !== undefined) {
+
+    if (defaultOpen !== undefined && defaultOpen !== null) {
+      return defaultOpen;
+    }
+
+    if (cookieState !== undefined && cookieState !== null) {
       return cookieState === "true";
     }
-    return defaultOpen;
+
+    return true;
   }, [defaultOpen]);
 
   // State nội bộ cho trạng thái mở của sidebar
