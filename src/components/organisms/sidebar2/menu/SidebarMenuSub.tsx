@@ -16,7 +16,7 @@ const SidebarMenuSub = React.forwardRef<
       data-slot="sidebar-menu-sub"
       className={cn(
         "flex w-full flex-col", // CSS cơ bản: cột, có khoảng cách giữa các mục con
-        "border-l border-black-100/4 ml-4 pl-4",
+        "border-l border-black-100/4 ml-8 pl-4",
         className, // Các lớp CSS tùy chỉnh
       )}
       {...props}
