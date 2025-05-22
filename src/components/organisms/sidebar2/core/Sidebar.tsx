@@ -184,7 +184,7 @@ function Sidebar({
           // Tuy nhiên, để khởi đầu đơn giản, ta giữ chúng và chỉ animate left/right trong variants.
           variant === "floating" || variant === "inset"
             ? `p-2`
-            : `group-data-[side=left]:border-r group-data-[side=right]:border-l`,
+            : `group-data-[side=left]:border-r group-data-[side=right]:border-l border-black-100/4`,
           className,
         )}
         variants={containerVariants}
