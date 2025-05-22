@@ -14,7 +14,7 @@ import { useSidebarState } from "../hooks/use-sidebar-state";
 import { useSidebarKeyboardShortcut } from "../hooks/use-sidebar-keyboard-shortcut"; // Import hook đã sửa
 
 function SidebarProvider({
-  defaultOpen = true,
+  defaultOpen,
   children,
   expandedWidth: expandedWidthProp,
   collapsedWidth: collapsedWidthProp,
