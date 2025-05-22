@@ -12,9 +12,15 @@ function AppLayout() {
   const [isSidebarExpanded, setIsSidebarExpanded] = React.useState(true);
   return (
     <>
-      <SidebarProvider defaultOpen={true} variant="sidebar">
+      <SidebarProvider
+        defaultOpen
+        variant="sidebar"
+        onOpenChange={(open) => {
+          setIsSidebarExpanded(open);
+        }}
+      >
         <div className="flex h-screen w-screen flex-row">
-          <AppSidebar isSidebarExpanded={isSidebarExpanded}/>
+          <AppSidebar isSidebarExpanded={isSidebarExpanded} />
           <SidebarInset>
             <div
               className={cn(
