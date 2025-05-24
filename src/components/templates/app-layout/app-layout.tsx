@@ -31,7 +31,7 @@ function AppLayout() {
                 onToggleSidebar={() => setIsSidebarExpanded(!isSidebarExpanded)}
               />
             </div>
-            <div className="px-28 py-20">
+            <div className="px-28 py-20 overflow-auto">
               <Outlet />
             </div>
           </SidebarInset>
