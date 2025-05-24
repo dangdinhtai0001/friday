@@ -7,6 +7,14 @@ import {
 import CollapsedSidebarContent from "./collapse/CollapsedSidebarContent";
 import ExpandedSidebarContent from "./expand/ExpandedSidebarContent";
 import { motion, AnimatePresence } from "motion/react";
+import {
+  MCAvatar,
+  MCAvatarFallback,
+  MCAvatarImage,
+} from "@/components/atoms/avatar";
+import { MCSkeleton } from "@/components/atoms/skeleton";
+import logo from "@/assets/images/vite.svg";
+import { Link } from "react-router";
 
 // --- Cấu hình animation variants ---
 
@@ -33,13 +41,23 @@ function AppSidebar({
 }: React.ComponentProps<typeof Sidebar> & { isSidebarExpanded: boolean }) {
   return (
     <Sidebar {...props} className="bg-background-2">
-      <SidebarHeader>
-        <div className="typography-regular-24 flex h-[68px] w-full items-center justify-start gap-12">
-          HEADER
-        </div>
-      </SidebarHeader>
+      <Link to="/">
+        <SidebarHeader className="typography-regular-24 rounded-8 flex h-[68px] w-full cursor-pointer items-center justify-start gap-12 px-8">
+          <MCAvatar className="size-32">
+            <MCAvatarImage src={logo} />
+            <MCAvatarFallback>
+              <MCSkeleton className="size-32 rounded-full" />
+            </MCAvatarFallback>
+          </MCAvatar>
+          {isSidebarExpanded && (
+            <span className="overflow-hidden text-ellipsis whitespace-nowrap">
+              Friday
+            </span>
+          )}
+        </SidebarHeader>
+      </Link>
 
-      <SidebarContent className="relative h-[200px] overflow-hidden">
+      <SidebarContent className="relative">
         <AnimatePresence initial={false} mode="popLayout">
           {isSidebarExpanded ? (
             <motion.div
@@ -69,7 +87,9 @@ function AppSidebar({
         </AnimatePresence>
       </SidebarContent>
 
-      <SidebarFooter>footer</SidebarFooter>
+      <SidebarFooter className="flex items-center justify-center ">
+        {/* <span className="typography-regular-12 text-black-100">0.0.0</span> */}
+      </SidebarFooter>
     </Sidebar>
   );
 }
