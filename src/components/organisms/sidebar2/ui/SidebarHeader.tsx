@@ -11,7 +11,7 @@ const SidebarHeader = React.forwardRef<
       ref={ref}
       data-slot="sidebar-header"
       className={cn(
-        "flex h-14 items-center justify-between p-4",
+        "flex items-center justify-between h-14 p-4",
         "group-data-[state=collapsed]:justify-center", // Căn giữa khi collapsed
         className,
       )}
