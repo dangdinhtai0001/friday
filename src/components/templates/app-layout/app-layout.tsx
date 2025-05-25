@@ -1,9 +1,9 @@
 import { SidebarInset, SidebarProvider } from "@/components/organisms/sidebar2";
 import { Outlet } from "react-router";
-import AppSidebar from "./app-sidebar";
 import AppHeader from "./app-header";
 import AppLayoutProvider from "./context/app-layout-provider";
 import { CollapsedSidebarItem, ExpandedSidebarItem } from ".";
+import AppSidebar from "./sidebar/app-sidebar";
 
 export type AppLayoutProps = {
   defaultSidebarExpanded?: boolean;
