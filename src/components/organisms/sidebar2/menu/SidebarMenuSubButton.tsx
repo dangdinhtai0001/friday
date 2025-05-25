@@ -45,7 +45,7 @@ const SidebarMenuSubButton = React.forwardRef<
     const renderText = () => {
       if (!text) return null;
 
-      const textContent = typeof text === "string" ? <span>{text}</span> : text;
+      const textContent = typeof text === "string" ? <span className="w-full justify-start flex">{text}</span> : text;
 
       return link ? <Link to={link}>{textContent}</Link> : textContent;
     };

@@ -44,9 +44,9 @@ const SidebarMenuButton = React.forwardRef<
     const renderText = () => {
       if (!text) return null;
 
-      const textContent = typeof text === "string" ? <span>{text}</span> : text;
+      const textContent = typeof text === "string" ? <span className="w-full justify-start flex">{text}</span> : text;
 
-      return link ? <Link to={link}>{textContent}</Link> : textContent;
+      return link ? <Link to={link} >{textContent}</Link> : textContent;
     };
 
     return (
@@ -55,7 +55,7 @@ const SidebarMenuButton = React.forwardRef<
         data-slot="sidebar-menu-button"
         data-sidebar="menu-button"
         data-active={isActive} // Dùng data-active để xử lý style khi active
-        className={cn("flex cursor-pointer items-center gap-8", className)}
+        className={cn("flex cursor-pointer items-center gap-8 w-full", className)}
         {...props}
       >
         {renderIcon()}
