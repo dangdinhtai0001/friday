@@ -1,42 +1,55 @@
-import {
-  SidebarInset,
-  SidebarProvider,
-  SidebarTrigger,
-} from "@/components/organisms/sidebar2";
+import { SidebarInset, SidebarProvider } from "@/components/organisms/sidebar2";
 import { Outlet } from "react-router";
 import AppSidebar from "./app-sidebar";
-import { cn } from "@/composables/utils/shadcn";
-import React from "react";
+import AppHeader from "./app-header";
+import AppLayoutProvider from "./context/app-layout-provider";
+import { CollapsedSidebarItem, ExpandedSidebarItem } from ".";
 
-function AppLayout() {
-  const [isSidebarExpanded, setIsSidebarExpanded] = React.useState(true);
+export type AppLayoutProps = {
+  defaultSidebarExpanded?: boolean;
+  defaultSidebarExpanedWidth?: string;
+  defaultHeaderHeight?: string;
+  defaultSidebarCollapsedWidth?: string;
+  collapsedSidebarItemsData?: CollapsedSidebarItem[];
+  expandedSidebarItemsData?: ExpandedSidebarItem[];
+};
+
+function AppLayout({
+  defaultSidebarExpanded,
+  defaultSidebarExpanedWidth: defaultSidebarWidth,
+  defaultHeaderHeight,
+  defaultSidebarCollapsedWidth: defaultCollapsedWidth,
+  collapsedSidebarItemsData,
+  expandedSidebarItemsData,
+}: AppLayoutProps) {
+  
   return (
     <>
-      <SidebarProvider
-        defaultOpen
-        variant="sidebar"
-        onOpenChange={(open) => {
-          setIsSidebarExpanded(open);
-        }}
+      <AppLayoutProvider
+        defaultSidebarExpanded={defaultSidebarExpanded}
+        defaultSidebarWidth={defaultSidebarWidth}
+        defaultHeaderHeight={defaultHeaderHeight}
+        defaultCollapsedWidth={defaultCollapsedWidth}
+        collapsedSidebarItemsData={collapsedSidebarItemsData}
+        expandedSidebarItemsData={expandedSidebarItemsData}
       >
-        <div className="flex h-screen w-screen flex-row">
-          <AppSidebar isSidebarExpanded={isSidebarExpanded} />
-          <SidebarInset>
-            <div
-              className={cn(
-                "bg-background-2 sticky top-0 flex h-[68px] items-center gap-4 px-28 py-20",
-              )}
-            >
-              <SidebarTrigger
-                onToggleSidebar={() => setIsSidebarExpanded(!isSidebarExpanded)}
-              />
-            </div>
-            <div className="px-28 py-20 overflow-auto">
-              <Outlet />
-            </div>
-          </SidebarInset>
-        </div>
-      </SidebarProvider>
+        <SidebarProvider
+          defaultOpen
+          variant="sidebar"
+          collapsedWidth={defaultCollapsedWidth}
+          expandedWidth={defaultSidebarWidth}
+        >
+          <div className="flex h-screen w-screen flex-row">
+            <AppSidebar />
+            <SidebarInset>
+              <AppHeader />
+              <div className="overflow-auto px-28 py-20">
+                <Outlet />
+              </div>
+            </SidebarInset>
+          </div>
+        </SidebarProvider>
+      </AppLayoutProvider>
     </>
   );
 }
