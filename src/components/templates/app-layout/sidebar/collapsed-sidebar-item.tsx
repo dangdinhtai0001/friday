@@ -1,5 +1,3 @@
-import React from "react";
-import { IconLoader } from "@/components/atoms/icon-loader";
 import {
   ECCascadingMenu,
   MCDropdownMenu,
@@ -21,55 +19,14 @@ import {
   SidebarMenuItem,
 } from "@/components/organisms/sidebar2";
 import { useAppLayoutContext } from "../context/app-layout-context";
-import { Link } from "react-router";
-
-// Interface for a simple dropdown link item
-export interface DropdownLink {
-  type: "link";
-  text: string;
-  icon?: string | React.ReactNode;
-  link?: string;
-  shortcut?: string;
-}
-
-// Interface for a dropdown submenu trigger item
-export interface DropdownSubmenu {
-  type: "submenu";
-  text: string;
-  icon?: string | React.ReactNode;
-  submenuItems: DropdownItemType[]; // Array of child items, can be links or other submenus
-}
-
-// Interface for a dropdown separator
-export interface DropdownSeparatorItem {
-  type: "separator";
-}
-
-// Interface for a dropdown label
-export interface DropdownLabelItem {
-  type: "label";
-  text: string;
-}
-
-// Unified type for any item in the dropdown menu
-export type DropdownItemType =
-  | DropdownLink
-  | DropdownSubmenu
-  | DropdownSeparatorItem
-  | DropdownLabelItem;
-
-/**
- * @interface SidebarDropdownProps
- * @description Defines the props for the SidebarDropdown component.
- * @property {string} iconName - The name of the icon to display on the main dropdown trigger button.
- * @property {string | React.ReactNode} [tooltip] - Optional tooltip text or element to display on hover.
- * @property {DropdownItemType[]} dropdownItems - An array of items to render within the dropdown menu.
- */
-interface SidebarDropdownProps {
-  iconName: string | React.ReactNode;
-  tooltip?: string | React.ReactNode;
-  dropdownItems: DropdownItemType[];
-}
+import {
+  DropdownItemType,
+  DropdownLabelItem,
+  DropdownLink,
+  DropdownMenuListProps,
+  DropdownSubmenu,
+  SidebarDropdownProps,
+} from "../types/sidebar-menu.types";
 
 /**
  * Renders a single item within the dropdown menu based on its type.
@@ -109,10 +66,6 @@ function DropdownItem({ item }: { item: DropdownItemType }) {
   }
 }
 
-interface DropdownMenuListProps {
-  items: DropdownItemType[];
-}
-
 /**
  * Renders the list of items within a dropdown menu.
  */
@@ -144,13 +97,7 @@ function SidebarDropdownItem({
       className="rounded-12 flex w-full justify-center"
     >
       <SidebarMenuButton
-        icon={
-          typeof iconName === "string" ? (
-            <IconLoader name={iconName} className="size-24" />
-          ) : (
-            iconName
-          )
-        }
+        icon={iconName}
         className="hover:bg-black-100/4 aspect-square w-full"
         style={{ maxWidth: `calc(${collapsedWidth} - 24px)` }}
       />

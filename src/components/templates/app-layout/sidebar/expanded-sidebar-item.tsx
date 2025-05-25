@@ -1,4 +1,3 @@
-import React from "react";
 import {
   MCCollapsiable,
   MCCollapsibleContent,
@@ -11,42 +10,12 @@ import {
   SidebarMenuSubButton,
   SidebarMenuSubItem,
 } from "@/components/organisms/sidebar2";
-
-// Interface for a nested collapsible menu item
-export interface NestedCollapsibleMenuItem {
-  type: "collapsible";
-  text: string;
-  icon?: string | React.ReactNode;
-  nestedItems: SidebarSubMenuItem[]; // An array of SidebarSubMenuItem, allowing for unlimited nesting
-}
-
-// Interface for a simple link menu item
-export interface LinkMenuItem {
-  type: "link";
-  text: string;
-  link: string;
-  icon?: string | React.ReactNode;
-}
-
-// Type for all possible sidebar submenu items: either a link or a nested collapsible item
-export type SidebarSubMenuItem = LinkMenuItem | NestedCollapsibleMenuItem;
-
-/**
- * @interface SidebarCollapsibleProps
- * @description Defines the props for the SidebarCollapsible component.
- * @property {string} mainIcon - The name or element for the icon of the main trigger button.
- * @property {string} mainText - The text label for the main trigger button.
- * @property {SidebarSubMenuItem[]} subItems - An array of submenu items (links or nested collapsibles).
- */
-interface SidebarCollapsibleProps {
-  mainIcon: string | React.ReactNode;
-  mainText: string;
-  subItems: SidebarSubMenuItem[];
-}
-
-interface SidebarSubMenuItemProps {
-  item: SidebarSubMenuItem;
-}
+import {
+  LinkMenuItem,
+  NestedCollapsibleMenuItem,
+  SidebarCollapsibleProps,
+  SidebarSubMenuItemProps,
+} from "../types/sidebar-menu.types";
 
 /**
  * Renders a single submenu item, which can be either a link or a nested collapsible.

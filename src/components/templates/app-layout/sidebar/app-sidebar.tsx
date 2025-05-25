@@ -4,8 +4,8 @@ import {
   SidebarFooter,
   SidebarHeader,
 } from "@/components/organisms/sidebar2";
-import CollapsedSidebarContent from "./collapse/collapsed-sidebar-content";
-import ExpandedSidebarContent from "./expand/expanded-sidebar-content";
+import CollapsedSidebarContent from "./collapsed-sidebar-content";
+import ExpandedSidebarContent from "./expanded-sidebar-content";
 import { motion, AnimatePresence } from "motion/react";
 import {
   MCAvatar,
@@ -15,7 +15,7 @@ import {
 import { MCSkeleton } from "@/components/atoms/skeleton";
 import logo from "@/assets/images/vite.svg";
 import { Link } from "react-router";
-import { useAppLayoutContext } from "./context/app-layout-context";
+import { useAppLayoutContext } from "../context/app-layout-context";
 
 // --- Cấu hình animation variants ---
 
