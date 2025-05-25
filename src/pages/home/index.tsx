@@ -1,10 +1,20 @@
 import { PATH_LOGOUT } from "@/composables/constants/paths";
 import { useAuthStore } from "../../store";
-import { Link } from "react-router";
+import { Link, useMatches } from "react-router";
+import { useEffect } from "react";
 
 function HomePage() {
   const { isAuthenticated, user, tokens } = useAuthStore();
+  const matches = useMatches();
+  const currentRoute = matches[matches.length - 1]; // Lấy route cuối cùng khớp
 
+  useEffect(() => {
+    if (currentRoute && currentRoute.handle) {
+      document.title = currentRoute.handle.title || "Ứng dụng của tôi";
+      // Bạn có thể sử dụng metadata khác ở đây, ví dụ: cập nhật meta tags
+      console.log("Metadata của trang chủ:", currentRoute.handle);
+    }
+  }, [currentRoute]);
   return (
     <div>
       <div>Home page ne</div>
