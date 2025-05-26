@@ -23,7 +23,6 @@ function ExpandedSidebarContent() {
       <SidebarMenu>
         {expandedSidebarItemsData.map((item) => {
           if (item.type === "link") {
-            // Render là một liên kết trực tiếp
             return (
               <SidebarMenuItem
                 key={item.id}
@@ -41,7 +40,6 @@ function ExpandedSidebarContent() {
               </SidebarMenuItem>
             );
           } else if (item.type === "collapsible") {
-            // Render là một mục có thể thu gọn
             return (
               <SidebarCollapsibleItem
                 key={item.id}
