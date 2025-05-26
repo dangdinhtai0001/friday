@@ -3,7 +3,7 @@ import {
   AppLayoutState,
   AppLayoutActions,
   AppLayoutContextValue,
-} from "../types";
+} from "..";
 
 // Create a generic context
 export const AppLayoutContext = React.createContext<
