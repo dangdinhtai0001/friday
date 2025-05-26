@@ -16,6 +16,7 @@ import {
   SidebarCollapsibleProps,
   SidebarSubMenuItemProps,
 } from "../types/sidebar-menu.types";
+import { IconLoader } from "@/components/atoms/icon-loader";
 
 /**
  * Renders a single submenu item, which can be either a link or a nested collapsible.
@@ -85,6 +86,7 @@ function SidebarCollapsible({
             asChild
             className="hover:bg-black-100/4 rounded-12 w-full gap-4 p-8 cursor-pointer "
             iconPosition="start"
+            customIcon={<IconLoader name={"chevron-right"} className="size-16 text-black-20" />}
           >
             <SidebarMenuButton icon={mainIcon} text={mainText} />
           </MCCollapsibleTrigger>
