@@ -9,12 +9,6 @@ import {
   MCDropdownMenuTrigger,
 } from "@/components/molecules/dropdown-menu";
 import {
-  MCTooltip,
-  MCTooltipContent,
-  MCTooltipProvider,
-  MCTooltipTrigger,
-} from "@/components/molecules/tooltip";
-import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/organisms/sidebar2";
@@ -27,6 +21,7 @@ import {
   DropdownSubmenu,
   SidebarDropdownProps,
 } from "../types/sidebar-menu.types";
+import CollapsedSidebarItemTrigger from "./collapsed-sidebar-item-trigger";
 
 /**
  * Renders a single item within the dropdown menu based on its type.
@@ -91,40 +86,24 @@ function SidebarDropdownItem({
     state: { collapsedWidth },
   } = useAppLayoutContext();
 
-  const MainDropdownTrigger = () => (
-    <MCDropdownMenuTrigger
-      asChild
-      className="rounded-12 flex w-full justify-center"
-    >
-      <SidebarMenuButton
-        icon={iconName}
-        className="hover:bg-black-100/4 aspect-square w-full"
-        style={{ maxWidth: `calc(${collapsedWidth} - 24px)` }}
-      />
-    </MCDropdownMenuTrigger>
-  );
-
-  const TriggerWithTooltip = () => {
-    if (tooltip) {
-      return (
-        <MCTooltipProvider>
-          <MCTooltip>
-            <MCTooltipTrigger asChild>
-              <MainDropdownTrigger />
-            </MCTooltipTrigger>
-            <MCTooltipContent side="right">{tooltip}</MCTooltipContent>
-          </MCTooltip>
-        </MCTooltipProvider>
-      );
-    }
-    return <MainDropdownTrigger />;
-  };
-
   return (
     <>
       <MCDropdownMenu>
         <SidebarMenuItem>
-          <TriggerWithTooltip />
+          {/* <TriggerWithTooltip /> */}
+          <CollapsedSidebarItemTrigger tooltip={tooltip}>
+            <MCDropdownMenuTrigger
+              asChild
+              className="rounded-12 flex w-full justify-center"
+            >
+              <SidebarMenuButton
+                icon={iconName}
+                className="hover:bg-black-100/4 aspect-square w-full"
+                style={{ maxWidth: `calc(${collapsedWidth} - 24px)` }}
+              />
+            </MCDropdownMenuTrigger>
+          </CollapsedSidebarItemTrigger>
+
           <MCDropdownMenuContent className="w-56" side="right">
             {/* USING THE RECURSIVE RENDER COMPONENT HERE */}
             <DropdownMenuList items={dropdownItems} />

@@ -6,6 +6,7 @@ import {
 } from "@/components/organisms/sidebar2";
 import { useAppLayoutContext } from "../context/app-layout-context";
 import SidebarDropdownItem from "./collapsed-sidebar-item";
+import CollapsedSidebarItemTrigger from "./collapsed-sidebar-item-trigger";
 
 /**
  * @component CollapsedSidebarContent
@@ -21,15 +22,15 @@ function CollapsedSidebarContent() {
       <SidebarMenu>
         {collapsedSidebarItemsData.map((item) => {
           if (item.type === "link") {
-            // Render là một nút liên kết trực tiếp
             return (
               <SidebarMenuItem key={item.id}>
-                <SidebarMenuButton
-                  className="hover:bg-black-100/4 rounded-12 flex aspect-square w-full justify-center"
-                  // text={item.tooltip}
-                  link={item.link}
-                  icon={item.iconName}
-                />
+                <CollapsedSidebarItemTrigger tooltip={item.tooltip}>
+                  <SidebarMenuButton
+                    className="hover:bg-black-100/4 rounded-12 flex aspect-square w-full justify-center"
+                    link={item.link}
+                    icon={item.iconName}
+                  />
+                </CollapsedSidebarItemTrigger>
               </SidebarMenuItem>
             );
           } else if (item.type === "dropdown") {
