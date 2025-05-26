@@ -36,3 +36,29 @@ export type CollapsibleProps = React.ComponentProps<
   defaultOpen?: boolean;
   onOpenChange?: (open: boolean) => void;
 };
+
+// Định nghĩa kiểu cho props của CollapsibleTrigger
+export type CollapsibleTriggerProps = React.ComponentProps<
+  typeof CollapsiblePrimitive.CollapsibleTrigger
+> & {
+  /**
+   * Quyết định có hiển thị icon hay không. Mặc định là true.
+   */
+  showIcon?: boolean;
+  /**
+   * Vị trí của icon: "start" (đầu) hoặc "end" (cuối). Mặc định là "end".
+   */
+  iconPosition?: "start" | "end";
+  /**
+   * Tên của icon khi sử dụng IconLoader. Mặc định là "chevron-right".
+   */
+  iconName?: string;
+  /**
+   * Component hoặc ReactNode tùy chỉnh để sử dụng làm icon, sẽ ưu tiên hơn iconName.
+   */
+  customIcon?: React.ReactNode;
+  /**
+   * Kích hoạt animation xoay cho icon khi trạng thái Collapsible thay đổi. Mặc định là true.
+   */
+  enableIconAnimation?: boolean; // Đổi tên biến để rõ ràng hơn
+};

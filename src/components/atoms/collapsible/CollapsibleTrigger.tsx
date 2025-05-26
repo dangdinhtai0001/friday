@@ -3,32 +3,7 @@ import { useCollapsibleContext } from "./context/CollapsibleContext";
 import { cn } from "@/composables/utils/shadcn";
 import { IconLoader } from "../icon-loader"; // Đảm bảo đường dẫn đúng
 import { motion } from "motion/react";
-
-// Định nghĩa kiểu cho props của CollapsibleTrigger
-type CollapsibleTriggerProps = React.ComponentProps<
-  typeof CollapsiblePrimitive.CollapsibleTrigger
-> & {
-  /**
-   * Quyết định có hiển thị icon hay không. Mặc định là true.
-   */
-  showIcon?: boolean;
-  /**
-   * Vị trí của icon: "start" (đầu) hoặc "end" (cuối). Mặc định là "end".
-   */
-  iconPosition?: "start" | "end";
-  /**
-   * Tên của icon khi sử dụng IconLoader. Mặc định là "chevron-right".
-   */
-  iconName?: string;
-  /**
-   * Component hoặc ReactNode tùy chỉnh để sử dụng làm icon, sẽ ưu tiên hơn iconName.
-   */
-  customIcon?: React.ReactNode;
-  /**
-   * Kích hoạt animation xoay cho icon khi trạng thái Collapsible thay đổi. Mặc định là true.
-   */
-  enableIconAnimation?: boolean; // Đổi tên biến để rõ ràng hơn
-};
+import { CollapsibleTriggerProps } from "./types";
 
 // Định nghĩa các biến thể và chuyển đổi cho animation của icon
 const ICON_ROTATION_VARIANTS = {
@@ -79,24 +54,6 @@ function CollapsibleTrigger({
       iconContent // Không có animation, chỉ hiển thị icon gốc
     );
 
-  // return (
-  //   <CollapsiblePrimitive.CollapsibleTrigger
-  //     data-slot="collapsible-trigger"
-  //     onClick={toggle}
-  //     {...props}
-  //   >
-  //     <div className={cn("flex items-center gap-4", className)}>
-  //       {/* Hiển thị icon ở vị trí "start" nếu được yêu cầu */}
-  //       {iconPosition === "start" && animatedIcon}
-
-  //       {children}
-
-  //       {/* Hiển thị icon ở vị trí "end" nếu được yêu cầu */}
-  //       {iconPosition === "end" && animatedIcon}
-  //     </div>
-  //   </CollapsiblePrimitive.CollapsibleTrigger>
-  // );
-
   return (
     <CollapsiblePrimitive.CollapsibleTrigger
       data-slot="collapsible-trigger"
@@ -108,15 +65,20 @@ function CollapsibleTrigger({
         để đảm bảo children luôn ở giữa hoặc sát bên trái nếu không có icon "start".
         Hoặc dùng flex-grow cho children để nó lấp đầy không gian.
       */}
-      <div className={cn("flex items-center justify-between gap-4", className)}>
-        {/* Container cho icon start và children */}
-        <div className="flex items-center gap-4">
-          {/* Giảm gap nếu cần cho icon và children */}
-          {iconPosition === "start" && animatedIcon}
-          {children}
-        </div>
+      <div
+        className={cn(
+          "flex items-center gap-4",
+          showIcon && children ? "justify-between" : "",
+          className,
+        )}
+      >
+        {/* Icon Start */}
+        {iconPosition === "start" && animatedIcon}
 
-        {/* Container cho icon end (luôn nằm ở cuối) */}
+        {/* Children - sử dụng flex-grow để nó lấp đầy không gian còn lại */}
+        <div className="flex-grow">{children}</div>
+
+        {/* Icon End */}
         {iconPosition === "end" && animatedIcon}
       </div>
     </CollapsiblePrimitive.CollapsibleTrigger>
