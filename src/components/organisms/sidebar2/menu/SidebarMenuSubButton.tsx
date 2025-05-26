@@ -38,7 +38,7 @@ const SidebarMenuSubButton = React.forwardRef<
     // Xử lý icon: Nếu là string thì dùng IconLoader, nếu không thì render trực tiếp
     const renderIcon = () => {
       if (!icon) return null;
-      return typeof icon === "string" ? <IconLoader name={icon}  className="size-24"/> : icon;
+      return typeof icon === "string" ? <IconLoader name={icon} className="size-20"/> : icon;
     };
 
     // Xử lý text: Nếu có link thì wrap vào <Link>, nếu không thì render trực tiếp

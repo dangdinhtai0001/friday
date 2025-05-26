@@ -37,7 +37,7 @@ const SidebarMenuButton = React.forwardRef<
     const renderIcon = () => {
       if (!icon) return null;
       return typeof icon === "string" ? (
-        <IconLoader name={icon} className="size-24" />
+        <IconLoader name={icon} className="size-20"/>
       ) : (
         icon
       );
@@ -47,7 +47,7 @@ const SidebarMenuButton = React.forwardRef<
     const renderText = () => {
       if (!text) return null;
       return typeof text === "string" ? (
-        <span className="flex w-full justify-start">{text}</span>
+        <span >{text}</span>
       ) : (
         text
       );
