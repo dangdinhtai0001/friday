@@ -28,7 +28,7 @@ function RenderSidebarSubMenuItem({ item }: SidebarSubMenuItemProps) {
       <SidebarMenuSubItem>
         <SidebarMenuSubButton
           asChild
-          className="hover:bg-black-100/4 rounded-12 w-full gap-4 p-8"
+          className="hover:bg-black-100/4 rounded-12 w-full gap-4 p-8 "
           text={linkItem.text}
           link={linkItem.link}
           icon={linkItem.icon}
@@ -83,14 +83,14 @@ function SidebarCollapsible({
         <SidebarMenuItem className="flex flex-col items-start">
           <MCCollapsibleTrigger
             asChild
-            className="hover:bg-black-100/4 rounded-12 w-full gap-4 p-8"
+            className="hover:bg-black-100/4 rounded-12 w-full gap-4 p-8 cursor-pointer "
             iconPosition="start"
           >
-            <SidebarMenuButton className="w-full" icon={mainIcon} text={mainText} />
+            <SidebarMenuButton icon={mainIcon} text={mainText} />
           </MCCollapsibleTrigger>
 
-          <MCCollapsibleContent className="px-1">
-            <SidebarMenuSub className="gap-4">
+          <MCCollapsibleContent className="px-4">
+            <SidebarMenuSub className="gap-4 px-4">
               {subItems.map((item, index) => (
                 <RenderSidebarSubMenuItem key={index} item={item} />
               ))}
