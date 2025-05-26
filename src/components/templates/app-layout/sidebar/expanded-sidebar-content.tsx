@@ -1,5 +1,6 @@
 import {
   SidebarGroup,
+  SidebarGroupLabel,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
@@ -47,6 +48,13 @@ function ExpandedSidebarContent() {
                 mainText={item.mainText}
                 subItems={item.subItems || []}
               />
+            );
+          } else if (item.type === "label") {
+            // Render label
+            return (
+              <SidebarGroupLabel key={item.id}>
+                {item.mainText}
+              </SidebarGroupLabel>
             );
           }
           return null; // Không render nếu type không khớp

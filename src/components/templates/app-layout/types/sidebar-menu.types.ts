@@ -114,7 +114,7 @@ export interface SidebarSubMenuItemProps {
 export interface ExpandedSidebarItem {
   mainIcon: string | React.ReactNode;
   mainText: string;
-  type: "link" | "collapsible"; // Thêm thuộc tính type
+  type: "link" | "collapsible" | "label"; // Thêm thuộc tính type
   link?: string; // Thêm thuộc tính link, chỉ dùng khi type là "link"
   subItems?: SidebarSubMenuItem[]; // subItems là tùy chọn, chỉ dùng khi type là "collapsible"
   id: string; // Thêm ID để làm key, quan trọng cho React

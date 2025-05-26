@@ -56,6 +56,11 @@ export const initialUnifiedRoutes: UnifiedSidebarRouteItem[] = [
     ],
   },
   {
+    id: "components-label", // ID cho label
+    text: "Components & UI", // Text cho label
+    type: "label", // Đây là một label
+  },
+  {
     id: "components",
     text: "Components",
     icon: "puzzle", // Icon cho nhóm Components
@@ -85,6 +90,11 @@ export const initialUnifiedRoutes: UnifiedSidebarRouteItem[] = [
         tooltip: "Thư viện biểu tượng", // Đã bổ sung tooltip
       },
     ],
+  },
+  {
+    id: "pages-label", // ID cho label
+    text: "Pages", // Text cho label
+    type: "label", // Đây là một label
   },
   {
     id: "system-status",

@@ -167,33 +167,38 @@ export function convertUnifiedToExpandedSidebarItems(
       continue;
     }
 
-    // Mỗi item cấp cao nhất có text và icon sẽ trở thành một ExpandedSidebarItem
-    if (item.text && item.icon) {
-      if (item.type === "collapsible") {
-        const subItems = convertToSidebarSubMenuItems(item.children || []);
+    if (item.type === "collapsible" && item.text) {
+      // Collapsible items cần text
+      const subItems = convertToSidebarSubMenuItems(item.children || []);
+      if (subItems.length > 0) {
         // Chỉ thêm nhóm nếu có ít nhất một mục con hợp lệ
-        if (subItems.length > 0) {
-          expandedSidebarItems.push({
-            id: item.id, // Thêm ID
-            mainIcon: item.icon,
-            mainText: item.text,
-            type: "collapsible",
-            subItems: subItems,
-          });
-        }
-      } else if (item.type === "link" && (item.link || item.path)) {
-        // Đây là một liên kết cấp cao nhất
         expandedSidebarItems.push({
-          id: item.id, // Thêm ID
-          mainIcon: item.icon,
+          id: item.id,
+          mainIcon: item.icon, // icon có thể là undefined nếu không có
           mainText: item.text,
-          type: "link",
-          link: item.link || item.path, // Cung cấp link trực tiếp
-          // Không có subItems cho type "link"
+          type: "collapsible",
+          subItems: subItems,
         });
       }
-      // Các type khác như 'separator', 'label' ở cấp top-level sẽ bị bỏ qua
+    } else if (item.type === "link" && item.path && item.text) {
+      // Link items cần path, text
+      expandedSidebarItems.push({
+        id: item.id,
+        mainIcon: item.icon, // icon có thể là undefined
+        mainText: item.text,
+        type: "link",
+        link: item.link || item.path,
+      });
+    } else if (item.type === "label" && item.text) {
+      // Label items chỉ cần text
+      expandedSidebarItems.push({
+        id: item.id,
+        mainIcon: item.icon, // icon của label có thể là undefined
+        mainText: item.text,
+        type: "label",
+      });
     }
+    // Các type khác như 'separator' ở cấp top-level sẽ bị bỏ qua
   }
 
   return expandedSidebarItems;
@@ -273,7 +278,9 @@ function convertToDropdownItems(
  * @param {UnifiedSidebarRouteItem[]} unifiedItems - Mảng các mục điều hướng thống nhất.
  * @returns {CollapsedSidebarItem[]} Mảng các CollapsedSidebarItem.
  */
-export function convertUnifiedToCollapsedSidebarItems(unifiedItems: UnifiedSidebarRouteItem[]): CollapsedSidebarItem[] {
+export function convertUnifiedToCollapsedSidebarItems(
+  unifiedItems: UnifiedSidebarRouteItem[],
+): CollapsedSidebarItem[] {
   const collapsedSidebarItems: CollapsedSidebarItem[] = [];
 
   for (const item of unifiedItems) {
@@ -283,7 +290,7 @@ export function convertUnifiedToCollapsedSidebarItems(unifiedItems: UnifiedSideb
 
     // Mỗi item cấp cao nhất có icon và text sẽ trở thành một CollapsedSidebarItem
     if (item.icon && item.text) {
-      if (item.type === 'link' && (item.link || item.path)) {
+      if (item.type === "link" && (item.link || item.path)) {
         // Đây là một liên kết cấp cao nhất, sẽ là một nút trực tiếp
         collapsedSidebarItems.push({
           id: item.id, // Thêm ID
@@ -293,7 +300,7 @@ export function convertUnifiedToCollapsedSidebarItems(unifiedItems: UnifiedSideb
           link: item.link || item.path,
           // Không có dropdownItems cho type "link"
         });
-      } else if (item.type === 'collapsible' || item.type === 'submenu') {
+      } else if (item.type === "collapsible" || item.type === "submenu") {
         // Đây là một mục nhóm/submenu, sẽ là một dropdown
         const dropdownItems = convertToDropdownItems(item.children || []);
         // Chỉ thêm dropdown nếu có ít nhất một mục con hợp lệ
