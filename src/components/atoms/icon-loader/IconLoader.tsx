@@ -31,7 +31,7 @@ const IconLoader = ({ name, className }: IconLoaderProps) => {
 
   return (
     <div
-      className={cn("icon-loader h-16 w-16 text-center", className)}
+      className={cn("icon-loader h-16 w-16 text-center flex", className)}
       dangerouslySetInnerHTML={{ __html: iconContent }}
     />
   );
