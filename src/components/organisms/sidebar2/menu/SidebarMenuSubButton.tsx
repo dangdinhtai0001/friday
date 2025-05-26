@@ -38,16 +38,16 @@ const SidebarMenuSubButton = React.forwardRef<
     // Xử lý icon: Nếu là string thì dùng IconLoader, nếu không thì render trực tiếp
     const renderIcon = () => {
       if (!icon) return null;
-      return typeof icon === "string" ? <IconLoader name={icon} /> : icon;
+      return typeof icon === "string" ? <IconLoader name={icon}  className="size-24"/> : icon;
     };
 
     // Xử lý text: Nếu có link thì wrap vào <Link>, nếu không thì render trực tiếp
     const renderText = () => {
       if (!text) return null;
 
-      const textContent = typeof text === "string" ? <span className="w-full justify-start flex">{text}</span> : text;
+      const textContent = typeof text === "string" ? <span className="w-full justify-start flex" >{text}</span> : text;
 
-      return link ? <Link to={link}>{textContent}</Link> : textContent;
+      return link ? <Link to={link} className="block w-full">{textContent}</Link> : textContent;
     };
 
     return (
@@ -61,7 +61,7 @@ const SidebarMenuSubButton = React.forwardRef<
         )}
         {...props}
       >
-        <div className="flex cursor-pointer items-center justify-start gap-4">
+        <div className="flex cursor-pointer items-center justify-start gap-4 ">
           {renderIcon()}
           {renderText()}
           {children}

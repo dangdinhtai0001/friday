@@ -9,14 +9,13 @@ import { Link } from "react-router";
 interface SidebarMenuButtonProps extends React.ComponentProps<"button"> {
   asChild?: boolean;
   isActive?: boolean;
-  // Bạn có thể thêm các props khác nếu cần, ví dụ: icon, text
   icon?: React.ReactNode | string;
   text?: string | React.ReactNode;
   link?: string;
 }
 
 const SidebarMenuButton = React.forwardRef<
-  HTMLButtonElement, // Đảm bảo ref type là HTMLButtonElement
+  HTMLButtonElement,
   SidebarMenuButtonProps
 >(
   (
@@ -37,17 +36,33 @@ const SidebarMenuButton = React.forwardRef<
     // Xử lý icon: Nếu là string thì dùng IconLoader, nếu không thì render trực tiếp
     const renderIcon = () => {
       if (!icon) return null;
-      return typeof icon === "string" ? <IconLoader name={icon} /> : icon;
+      return typeof icon === "string" ? (
+        <IconLoader name={icon} className="size-24" />
+      ) : (
+        icon
+      );
     };
 
     // Xử lý text: Nếu có link thì wrap vào <Link>, nếu không thì render trực tiếp
     const renderText = () => {
       if (!text) return null;
-
-      const textContent = typeof text === "string" ? <span className="w-full justify-start flex">{text}</span> : text;
-
-      return link ? <Link to={link} >{textContent}</Link> : textContent;
+      return typeof text === "string" ? (
+        <span className="flex w-full justify-start">{text}</span>
+      ) : (
+        text
+      );
     };
+
+    const buttonContent = (
+      <div className={cn(
+          "flex w-full cursor-pointer items-center gap-8",
+          className,
+        )}>
+        {renderIcon()}
+        {renderText()}
+        {children}
+      </div>
+    );
 
     return (
       <Comp
@@ -55,12 +70,22 @@ const SidebarMenuButton = React.forwardRef<
         data-slot="sidebar-menu-button"
         data-sidebar="menu-button"
         data-active={isActive} // Dùng data-active để xử lý style khi active
-        className={cn("flex cursor-pointer items-center gap-8 w-full", className)}
+        className={cn(
+          "flex w-full cursor-pointer items-center gap-8",
+          className,
+        )}
         {...props}
       >
-        {renderIcon()}
-        {renderText()}
-        {children}
+        {link ? (
+          <Link
+            className="flex h-full w-full items-center justify-center"
+            to={link}
+          >
+            {buttonContent}
+          </Link>
+        ) : (
+          buttonContent
+        )}
       </Comp>
     );
   },
