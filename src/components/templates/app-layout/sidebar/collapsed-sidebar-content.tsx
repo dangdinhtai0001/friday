@@ -3,7 +3,7 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-} from "@/components/organisms/sidebar2";
+} from "@/components/organisms/sidebar";
 import { useAppLayoutContext } from "../context/app-layout-context";
 import SidebarDropdownItem from "./collapsed-sidebar-item";
 import CollapsedSidebarItemTrigger from "./collapsed-sidebar-item-trigger";

@@ -4,7 +4,7 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-} from "@/components/organisms/sidebar2";
+} from "@/components/organisms/sidebar";
 import SidebarCollapsibleItem from "./expanded-sidebar-item";
 import { useAppLayoutContext } from "../context/app-layout-context";
 import { cn } from "@/composables/utils/shadcn";
