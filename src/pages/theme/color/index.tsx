@@ -1,155 +1,348 @@
+import {
+  MCTooltip,
+  MCTooltipContent,
+  MCTooltipProvider,
+  MCTooltipTrigger,
+} from "@/components/molecules/tooltip";
+import {
+  MCCard,
+  MCCardContent,
+  MCCardHeader,
+  MCCardTitle,
+} from "@/components/organisms/card";
+import { useLanguage } from "@/composables/hooks/use-language";
 import { useTheme } from "@/composables/hooks/use-theme";
 import { cn } from "@/composables/utils/shadcn";
-import { Theme } from "@/store";
-
-const colors = {
-  "pastel-light": {
-    black: [
-      { name: "Black 100%", value: "#000000", className: "bg-black-100" },
-      { name: "Black 80%", value: "#262626", className: "bg-black-80" },
-      { name: "Black 40%", value: "#595959", className: "bg-black-40" },
-      { name: "Black 20%", value: "#737373", className: "bg-black-20" },
-      { name: "Black 10%", value: "#ebebeb", className: "bg-black-10" },
-      { name: "Black 4%", value: "#f5f5f5", className: "bg-black-4" },
-    ],
-    white: [
-      { name: "White 100%", value: "#ffffff", className: "bg-white-100" },
-      { name: "White 80%", value: "#d9d9d9", className: "bg-white-80" },
-      { name: "White 40%", value: "#b3b3b3", className: "bg-white-40" },
-      { name: "White 20%", value: "#8c8c8c", className: "bg-white-20" },
-      { name: "White 10%", value: "#595959", className: "bg-white-10" },
-      { name: "White 4%", value: "#262626", className: "bg-white-4" },
-    ],
-    primary: [
-      { name: "Brand", value: "#000000", className: "bg-brand" }, // Màu chính trong chế độ sáng (đen)
-    ],
-    secondary: [
-      { name: "Purple", value: "#6a51ae", className: "bg-purple" },
-      { name: "Indigo", value: "#5662f2", className: "bg-indigo" },
-      { name: "Blue", value: "#2196f3", className: "bg-blue" },
-      { name: "Cyan", value: "#00bcd4", className: "bg-cyan" },
-      { name: "Mint", value: "#26de81", className: "bg-mint" },
-      { name: "Green", value: "#4caf50", className: "bg-green" },
-      { name: "Yellow", value: "#ffeb3b", className: "bg-yellow" },
-      { name: "Orange", value: "#ff9800", className: "bg-orange" },
-      { name: "Red", value: "#f44336", className: "bg-red" },
-    ],
-    background: [
-      { name: "BG1", value: "#ffffff", className: "bg-bg1" },
-      { name: "BG2", value: "#f5f5f5", className: "bg-bg2" },
-      { name: "BG3", value: "#ebebeb", className: "bg-bg3" },
-      { name: "BG4", value: "#b3b3b3", className: "bg-bg4" },
-      { name: "BG5", value: "#737373", className: "bg-bg5" },
-    ],
-  },
-  "pastel-dark": {
-    black: [
-      { name: "Black 100%", value: "#000000", className: "bg-black-100" },
-      { name: "Black 80%", value: "#262626", className: "bg-black-80" },
-      { name: "Black 40%", value: "#595959", className: "bg-black-40" },
-      { name: "Black 20%", value: "#737373", className: "bg-black-20" },
-      { name: "Black 10%", value: "#ebebeb", className: "bg-black-10" },
-      { name: "Black 4%", value: "#f5f5f5", className: "bg-black-4" },
-    ],
-    white: [
-      { name: "White 100%", value: "#ffffff", className: "bg-white-100" },
-      { name: "White 80%", value: "#d9d9d9", className: "bg-white-80" },
-      { name: "White 40%", value: "#b3b3b3", className: "bg-white-40" },
-      { name: "White 20%", value: "#8c8c8c", className: "bg-white-20" },
-      { name: "White 10%", value: "#595959", className: "bg-white-10" },
-      { name: "White 4%", value: "#262626", className: "bg-white-4" },
-    ],
-    primary: [
-      { name: "Brand", value: "#6a51ae", className: "bg-brand" }, // Màu chính trong chế độ tối (tím)
-    ],
-    secondary: [
-      { name: "Purple", value: "#6a51ae", className: "bg-purple" },
-      { name: "Indigo", value: "#5662f2", className: "bg-indigo" },
-      { name: "Blue", value: "#2196f3", className: "bg-blue" },
-      { name: "Cyan", value: "#00bcd4", className: "bg-cyan" },
-      { name: "Mint", value: "#26de81", className: "bg-mint" },
-      { name: "Green", value: "#4caf50", className: "bg-green" },
-      { name: "Yellow", value: "#ffeb3b", className: "bg-yellow" },
-      { name: "Orange", value: "#ff9800", className: "bg-orange" },
-      { name: "Red", value: "#f44336", className: "bg-red" },
-    ],
-    background: [
-      { name: "BG1", value: "#000000", className: "bg-bg1" },
-      { name: "BG2", value: "#262626", className: "bg-bg2" },
-      { name: "BG3", value: "#595959", className: "bg-bg3" },
-      { name: "BG4", value: "#8c8c8c", className: "bg-bg4" },
-      { name: "BG5", value: "#595959", className: "bg-bg5" },
-    ],
-  },
-};
 
 function Page() {
   const { theme } = useTheme();
+  const {  t, currentLanguage} = useLanguage();
+
+  console.log(t("pages/theme-color:heading"), currentLanguage);
+  
 
   const currentThemeColors = colors[theme];
 
   return (
-    <div className="">
+    <div className="rounded-8 flex flex-col gap-8">
       <div className="typography-regular-24 text-black-100">
-        Bảng màu ({theme})
+        {t("pages/theme-color:heading")} ({theme})
       </div>
-      <div className="">
-        {Object.entries(currentThemeColors).map(([category, colorArray]) => (
-          <div key={category} className="p-4 shadow-md">
-            <div className="typography-regular-14 text-black-100">
-              {category}
-            </div>
 
-            <div className="flex gap-12">
+      <div className="flex flex-col gap-8">
+        {Object.entries(currentThemeColors).map(([category, colorArray]) => (
+          <MCCard className="" key={category}>
+            <MCCardHeader>
+              <MCCardTitle>{category}</MCCardTitle>
+            </MCCardHeader>
+
+            <MCCardContent className="flex items-center gap-8">
               {colorArray.map((color) => (
-                <div key={color.name} className="flex flex-col items-center gap-8">
-                  <div
-                    className={cn(
-                      "size-64 rounded-12 border border-gray-300",
-                      color.className,
-                    )}
-                  ></div>
-                  <p className="text-center typography-regular-14">{color.name}</p>
+                <div
+                  key={color.name}
+                  className="flex flex-col items-center gap-8"
+                >
+                  <MCTooltip>
+                    <MCTooltipProvider>
+                      <MCTooltipTrigger>
+                        <div
+                          className={cn(
+                            "rounded-12 border-black-20 size-80 border",
+                            "transition-all duration-300 ease-in-out hover:scale-105",
+                            color.className,
+                          )}
+                        />
+                      </MCTooltipTrigger>
+
+                      <MCTooltipContent side="right">
+                        {color.value}
+                      </MCTooltipContent>
+                    </MCTooltipProvider>
+                  </MCTooltip>
+
+                  {/* ------ */}
+                  <div className="flex flex-col items-center gap-1">
+                    <div className="typography-regular-14 text-black-100 flex items-center justify-start gap-1">
+                      <div>{color.name}</div>
+                      <div
+                        className="border-black-20 rounded-4 size-16 border"
+                        style={{ backgroundColor: color.value }}
+                      />
+                    </div>
+                  </div>
                 </div>
               ))}
-            </div>
-          </div>
+            </MCCardContent>
+          </MCCard>
         ))}
       </div>
     </div>
   );
-
-  //   return (
-  //     <div className="">
-  //       <h1 className="typography-regular-24 text-black-100">Bảng màu ({theme})</h1>
-  //       <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
-  //         {Object.entries(currentThemeColors).map(([category, colorArray]) => (
-  //           <div key={category} className="rounded-lg border p-4 shadow-md">
-  //             <h2 className="mb-4 text-xl font-semibold capitalize">
-  //               {category}
-  //             </h2>
-  //             <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
-  //               {colorArray.map((color) => (
-  //                 <div
-  //                   key={color.name}
-  //                   className="flex flex-col items-center rounded-md border p-2"
-  //                 >
-  //                   <div
-  //                     className="mb-2 h-16 w-16 rounded-md border border-gray-300"
-  //                     style={{ backgroundColor: color.value }}
-  //                   ></div>
-  //                   <p className="text-center text-sm font-medium">
-  //                     {color.name}
-  //                   </p>
-  //                   <p className="text-xs text-gray-500">{color.value}</p>
-  //                 </div>
-  //               ))}
-  //             </div>
-  //           </div>
-  //         ))}
-  //       </div>
-  //     </div>
-  //   );
 }
+
+const colors = {
+  "pastel-light": {
+    black: [
+      {
+        name: "Black 100%",
+        value: "rgba(0,0,0,1)",
+        className: "bg-black-100",
+      },
+      {
+        name: "Black 80%",
+        value: "rgba(0,0,0,0.8)",
+        className: "bg-black-80",
+      },
+      {
+        name: "Black 40%",
+        value: "rgba(0,0,0,0.4)",
+        className: "bg-black-40",
+      },
+      {
+        name: "Black 20%",
+        value: "rgba(0,0,0,0.2)",
+        className: "bg-black-20",
+      },
+      {
+        name: "Black 10%",
+        value: "rgba(0,0,0,0.1)",
+        className: "bg-black-10",
+      },
+      {
+        name: "Black 4%",
+        value: "rgba(0,0,0,0.04)",
+        className: "bg-black-4",
+      },
+    ],
+    white: [
+      {
+        name: "White 100%",
+        value: "rgba(255,255,255,1)",
+        className: "bg-white-100",
+      },
+      {
+        name: "White 80%",
+        value: "rgba(255,255,255,0.8)",
+        className: "bg-white-80",
+      },
+      {
+        name: "White 40%",
+        value: "rgba(255,255,255,0.4)",
+        className: "bg-white-40",
+      },
+      {
+        name: "White 20%",
+        value: "rgba(255,255,255,0.2)",
+        className: "bg-white-20",
+      },
+      {
+        name: "White 10%",
+        value: "rgba(255,255,255,0.1)",
+        className: "bg-white-10",
+      },
+      {
+        name: "White 4%",
+        value: "rgba(255,255,255,0.04)",
+        className: "bg-white-4",
+      },
+    ],
+    primary: [
+      {
+        name: "Brand",
+        value: "rgba(0,0,0,1)",
+        className: "bg-primary-brand",
+      },
+    ],
+    secondary: [
+      {
+        name: "purple",
+        value: "rgba(201,179,237,1)",
+        className: "bg-secondary-purple",
+      },
+      {
+        name: "indigo",
+        value: "rgba(159,159,248,1)",
+        className: "bg-secondary-indigo",
+      },
+      {
+        name: "blue",
+        value: "rgba(146,191,255,1)",
+        className: "bg-secondary-blue",
+      },
+      {
+        name: "cyan",
+        value: "rgba(174,199,237,1)",
+        className: "bg-secondary-cyan",
+      },
+      {
+        name: "mint",
+        value: "rgba(150,226,214,1)",
+        className: "bg-secondary-mint",
+      },
+      {
+        name: "green",
+        value: "rgba(148,233,184,1)",
+        className: "bg-secondary-green",
+      },
+      {
+        name: "yellow",
+        value: "rgba(255,219,86,1)",
+        className: "bg-secondary-yellow",
+      },
+      {
+        name: "orange",
+        value: "rgba(255,181,91,1)",
+        className: "bg-secondary-orange",
+      },
+      {
+        name: "red",
+        value: "rgba(255,71,71,1)",
+        className: "bg-secondary-red",
+      },
+    ],
+    background: [
+      {
+        name: "BG1",
+        value: "rgba(255,255,255,1)",
+        className: "bg-background-1",
+      },
+      {
+        name: "BG2",
+        value: "rgba(249,249,250,1)",
+        className: "bg-background-2",
+      },
+      {
+        name: "BG3",
+        value: "rgba(230,241,253,1)",
+        className: "bg-background-3",
+      },
+      {
+        name: "BG4",
+        value: "rgba(237,238,252,1)",
+        className: "bg-background-4",
+      },
+      {
+        name: "BG5",
+        value: "rgba(255,255,255,0.8)",
+        className: "bg-background-5",
+      },
+    ],
+  },
+  "pastel-dark": {
+    black: [
+      {
+        name: "Black 100%",
+        value: "rgba(255,255,255,1)",
+        className: "bg-black-100",
+      },
+      {
+        name: "Black 80%",
+        value: "rgba(255,255,255,0.8)",
+        className: "bg-black-80",
+      },
+      {
+        name: "Black 40%",
+        value: "rgba(255,255,255,0.4)",
+        className: "bg-black-40",
+      },
+      {
+        name: "Black 20%",
+        value: "rgba(255,255,255,0.2)",
+        className: "bg-black-20",
+      },
+      {
+        name: "Black 10%",
+        value: "rgba(255,255,255,0.1)",
+        className: "bg-black-10",
+      },
+      {
+        name: "Black 4%",
+        value: "rgba(255,255,255,0.04)",
+        className: "bg-black-4",
+      },
+    ],
+    white: [
+      { name: "White 100%", value: "rgba(0,0,0,1)", className: "bg-white-100" },
+      { name: "White 80%", value: "rgba(0,0,0,0.8)", className: "bg-white-80" },
+      { name: "White 40%", value: "rgba(0,0,0,0.4)", className: "bg-white-40" },
+      { name: "White 20%", value: "rgba(0,0,0,0.2)", className: "bg-white-20" },
+      { name: "White 10%", value: "rgba(0,0,0,0.1)", className: "bg-white-10" },
+      { name: "White 4%", value: "rgba(0,0,0,0.04)", className: "bg-white-4" },
+    ],
+    primary: [
+      {
+        name: "Brand",
+        value: "rgba(159,159,248,1)",
+        className: "bg-primary-brand",
+      },
+    ],
+    secondary: [
+      {
+        name: "purple",
+        value: "rgba(201,179,237,1)",
+        className: "bg-secondary-purple",
+      },
+      {
+        name: "indigo",
+        value: "rgba(159,159,248,1)",
+        className: "bg-secondary-indigo",
+      },
+      {
+        name: "blue",
+        value: "rgba(146,191,255,1)",
+        className: "bg-secondary-blue",
+      },
+      {
+        name: "cyan",
+        value: "rgba(174,199,237,1)",
+        className: "bg-secondary-cyan",
+      },
+      {
+        name: "mint",
+        value: "rgba(150,226,214,1)",
+        className: "bg-secondary-mint",
+      },
+      {
+        name: "green",
+        value: "rgba(148,233,184,1)",
+        className: "bg-secondary-green",
+      },
+      {
+        name: "yellow",
+        value: "rgba(255,219,86,1)",
+        className: "bg-secondary-yellow",
+      },
+      {
+        name: "orange",
+        value: "rgba(255,181,91,1)",
+        className: "bg-secondary-orange",
+      },
+      {
+        name: "red",
+        value: "rgba(255,71,71,1)",
+        className: "bg-secondary-red",
+      },
+    ],
+    background: [
+      { name: "BG1", value: "rgba(42,42,42,1)", className: "bg-background-1" },
+      {
+        name: "BG2",
+        value: "rgba(255,255,255,0.04)",
+        className: "bg-background-2",
+      },
+      {
+        name: "BG3",
+        value: "rgba(230,241,253,1)",
+        className: "bg-background-3",
+      },
+      {
+        name: "BG4",
+        value: "rgba(237,238,252,1)",
+        className: "bg-background-4",
+      },
+      { name: "BG5", value: "rgba(0,0,0,0.1)", className: "bg-background-5" },
+    ],
+  },
+};
 
 export default Page;
