@@ -10,6 +10,7 @@ import { SidebarTrigger } from "@/components/organisms/sidebar";
 import React from "react";
 import { useAppLayoutContext } from "./context/app-layout-context";
 import { Link, useMatches } from "react-router";
+import { ECThemeSwitcher } from "@/components/molecules/theme-switcher";
 
 function AppHeader() {
   const matches = useMatches(); // Sử dụng useMatches để lấy tất cả các route khớp
@@ -27,14 +28,14 @@ function AppHeader() {
       let breadcrumbText = match.handle.breadcrumb;
       // Ví dụ: Nếu đường dẫn là /products/:productId, hiển thị tên sản phẩm động
       // Bạn có thể cần một hàm helper hoặc gọi API để lấy tên sản phẩm thực tế
-      if (match.pathname.includes('/products/') && match.params.productId) {
-         // Đây là một ví dụ đơn giản. Trong ứng dụng thực tế, bạn có thể:
-         // 1. Fetch tên sản phẩm dựa trên match.params.productId
-         // 2. Truyền tên sản phẩm vào handle từ loader của route đó
-         breadcrumbText = `Product: ${match.params.productId}`;
+      if (match.pathname.includes("/products/") && match.params.productId) {
+        // Đây là một ví dụ đơn giản. Trong ứng dụng thực tế, bạn có thể:
+        // 1. Fetch tên sản phẩm dựa trên match.params.productId
+        // 2. Truyền tên sản phẩm vào handle từ loader của route đó
+        breadcrumbText = `Product: ${match.params.productId}`;
       } else if (match.params.someOtherId) {
-          // Xử lý các tuyến đường động khác
-          breadcrumbText = `Item: ${match.params.someOtherId}`;
+        // Xử lý các tuyến đường động khác
+        breadcrumbText = `Item: ${match.params.someOtherId}`;
       }
       // Bạn có thể thêm các logic phức tạp hơn ở đây nếu cần
 
@@ -47,40 +48,46 @@ function AppHeader() {
 
   return (
     <div
-      className="bg-background-2 sticky top-0 flex items-center gap-4 px-28 py-20"
+      className="bg-background-2 sticky top-0 flex items-center gap-4 px-28 py-20 justify-between"
       style={{ height: headerHeight }}
     >
-      <SidebarTrigger
-        onToggleSidebar={() => setIsSidebarExpanded(!isSidebarExpanded)}
-      />
-      <MCBreadcrumb>
-        <MCBreadcrumbList className="gap-0">
-          {/* Breadcrumb cho Home */}
-          <MCBreadcrumbItem>
-            <MCBreadcrumbLink className="text-black-100/40">
-              <Link to={"/"}>Home</Link>
-            </MCBreadcrumbLink>
-          </MCBreadcrumbItem>
+      <div className="flex items-center justify-start gap-4">
+        <SidebarTrigger
+          onToggleSidebar={() => setIsSidebarExpanded(!isSidebarExpanded)}
+        />
 
-          {/* Các breadcrumb từ tuyến đường khớp */}
-          {crumbs.map((crumb, index) => (
-            <React.Fragment key={crumb.path}>
-              <MCBreadcrumbSeparator />
-              <MCBreadcrumbItem>
-                {crumb.isCurrent ? (
-                  <MCBreadcrumbPage className="text-black-100">
-                    {crumb.text}
-                  </MCBreadcrumbPage>
-                ) : (
-                  <MCBreadcrumbLink>
-                    <Link to={crumb.path}>{crumb.text}</Link>
-                  </MCBreadcrumbLink>
-                )}
-              </MCBreadcrumbItem>
-            </React.Fragment>
-          ))}
-        </MCBreadcrumbList>
-      </MCBreadcrumb>
+        <MCBreadcrumb>
+          <MCBreadcrumbList className="gap-0">
+            {/* Breadcrumb cho Home */}
+            <MCBreadcrumbItem>
+              <MCBreadcrumbLink className="text-black-100/40">
+                <Link to={"/"}>Home</Link>
+              </MCBreadcrumbLink>
+            </MCBreadcrumbItem>
+
+            {/* Các breadcrumb từ tuyến đường khớp */}
+            {crumbs.map((crumb) => (
+              <React.Fragment key={crumb.path}>
+                <MCBreadcrumbSeparator />
+                <MCBreadcrumbItem>
+                  {crumb.isCurrent ? (
+                    <MCBreadcrumbPage className="text-black-100">
+                      {crumb.text}
+                    </MCBreadcrumbPage>
+                  ) : (
+                    <MCBreadcrumbLink>
+                      <Link to={crumb.path}>{crumb.text}</Link>
+                    </MCBreadcrumbLink>
+                  )}
+                </MCBreadcrumbItem>
+              </React.Fragment>
+            ))}
+          </MCBreadcrumbList>
+        </MCBreadcrumb>
+      </div>
+      <div className="flex items-center justify-start gap-4">
+        <ECThemeSwitcher />
+      </div>
     </div>
   );
 }
