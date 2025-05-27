@@ -1,11 +1,17 @@
+// src/components/organisms/sidebar2/context/SidebarProvider.tsx
+
 import React, { PropsWithChildren } from "react";
 import {
   SidebarActions,
   SidebarContextValue,
   SidebarRootProps,
   SidebarState,
-} from "../sidebar.type";
-import { SidebarContext, defaultContextValue } from "./SidebarContext";
+} from "../types";
+import { SidebarContext } from "./SidebarContext";
+import { SIDEBAR_EXPANDED_WIDTH, SIDEBAR_COLLAPSED_WIDTH } from "../constants";
+import { useIsMobile } from "@/composables/hooks/use-mobile";
+import { useSidebarState } from "../hooks/use-sidebar-state";
+import { useSidebarKeyboardShortcut } from "../hooks/use-sidebar-keyboard-shortcut"; // Import hook đã sửa
 
 function SidebarProvider({
   defaultOpen,
@@ -15,62 +21,62 @@ function SidebarProvider({
   side: sideProp,
   variant: variantProp,
   collapsible: collapsibleProp,
+  onOpenChange,
 }: PropsWithChildren<SidebarRootProps>) {
-  // Initialize state with default values, overridden by props if provided
-  const [state, setState] = React.useState<Omit<SidebarState, "state">>(
-    () =>
-      ({
-        ...defaultContextValue.state,
-        open:
-          defaultOpen !== undefined
-            ? defaultOpen
-            : defaultContextValue.state.open,
-        side:
-          sideProp !== undefined ? sideProp : defaultContextValue.state.side,
-        variant:
-          variantProp !== undefined
-            ? variantProp
-            : defaultContextValue.state.variant,
-        collapsible:
-          collapsibleProp !== undefined
-            ? collapsibleProp
-            : defaultContextValue.state.collapsible,
-        expandedWidth:
-          expandedWidthProp !== undefined
-            ? expandedWidthProp
-            : defaultContextValue.state.expandedWidth,
-        collapsedWidth:
-          collapsedWidthProp !== undefined
-            ? collapsedWidthProp
-            : defaultContextValue.state.collapsedWidth,
-      }) as Omit<SidebarState, "state">,
+  const isMobile = useIsMobile();
+  const [openMobile, setOpenMobile] = React.useState(false);
+
+  const [open, setOpen] = useSidebarState(defaultOpen, onOpenChange);
+
+  const toggleSidebar = React.useCallback(() => {
+    if (isMobile) {
+      setOpenMobile((prev) => !prev);
+    } else {
+      setOpen((prev) => !prev);
+    }
+  }, [isMobile, setOpen, setOpenMobile]);
+
+  const sidebarState: SidebarState = React.useMemo(
+    () => ({
+      open: open,
+      openMobile: openMobile,
+      side: sideProp || "left",
+      variant: variantProp || "sidebar",
+      collapsible: collapsibleProp || "icon",
+      expandedWidth: expandedWidthProp || SIDEBAR_EXPANDED_WIDTH,
+      collapsedWidth: collapsedWidthProp || SIDEBAR_COLLAPSED_WIDTH,
+      state: open ? "expanded" : "collapsed",
+    }),
+    [
+      open,
+      openMobile,
+      sideProp,
+      variantProp,
+      collapsibleProp,
+      expandedWidthProp,
+      collapsedWidthProp,
+    ],
   );
 
-  // Define actions for the context
-  // Memoize actions to stabilize their references
-  const actions = React.useMemo<SidebarActions>(
+  const actions: SidebarActions = React.useMemo(
     () => ({
-      setOpen: (open: boolean) => {
-        setState((prevState) => ({ ...prevState, open }));
-      },
-      setOpenMobile: (openMobile: boolean) => {
-        setState((prevState) => ({ ...prevState, openMobile }));
-      },
-      toggleSidebar: () => {
-        setState((prevState) => ({ ...prevState, open: !prevState.open }));
-      },
+      setOpen,
+      setOpenMobile,
+      toggleSidebar,
     }),
-    [],
-  ); // Empty dependency array ensures actions are stable
+    [setOpen, setOpenMobile, toggleSidebar],
+  );
 
-  // Memoize the context value to prevent unnecessary re-renders
-  const contextValue = React.useMemo<SidebarContextValue>(
-    () => ({ state, actions }),
-    [state, actions], // Only update when state or actions change
+  // GỌI HOOK PHÍM TẮT VÀ TRUYỀN HÀM toggleSidebar VÀO
+  useSidebarKeyboardShortcut(actions.toggleSidebar); // hoặc đơn giản là useSidebarKeyboardShortcut(toggleSidebar);
+
+  const contextValue: SidebarContextValue = React.useMemo(
+    () => ({ state: sidebarState, actions }),
+    [sidebarState, actions],
   );
 
   return (
-    <SidebarContext.Provider value={contextValue as SidebarContextValue}>
+    <SidebarContext.Provider value={contextValue}>
       {children}
     </SidebarContext.Provider>
   );
