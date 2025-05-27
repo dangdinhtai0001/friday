@@ -1,4 +1,4 @@
-import { SidebarInset, SidebarProvider } from "@/components/organisms/sidebar2";
+import { SidebarInset, SidebarProvider } from "@/components/organisms/sidebar";
 import { Outlet } from "react-router";
 import AppHeader from "./app-header";
 import AppLayoutProvider from "./context/app-layout-provider";

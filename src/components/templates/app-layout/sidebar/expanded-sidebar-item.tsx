@@ -9,7 +9,7 @@ import {
   SidebarMenuSub,
   SidebarMenuSubButton,
   SidebarMenuSubItem,
-} from "@/components/organisms/sidebar2";
+} from "@/components/organisms/sidebar";
 import {
   LinkMenuItem,
   NestedCollapsibleMenuItem,

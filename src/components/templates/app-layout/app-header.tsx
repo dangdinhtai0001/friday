@@ -6,7 +6,7 @@ import {
   MCBreadcrumbPage,
   MCBreadcrumbSeparator,
 } from "@/components/atoms/breadcrumb";
-import { SidebarTrigger } from "@/components/organisms/sidebar2";
+import { SidebarTrigger } from "@/components/organisms/sidebar";
 import React from "react";
 import { useAppLayoutContext } from "./context/app-layout-context";
 import { Link, useMatches } from "react-router";

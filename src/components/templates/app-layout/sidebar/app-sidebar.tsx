@@ -3,7 +3,7 @@ import {
   SidebarContent,
   SidebarFooter,
   SidebarHeader,
-} from "@/components/organisms/sidebar2";
+} from "@/components/organisms/sidebar";
 import CollapsedSidebarContent from "./collapsed-sidebar-content";
 import ExpandedSidebarContent from "./expanded-sidebar-content";
 import { motion, AnimatePresence } from "motion/react";

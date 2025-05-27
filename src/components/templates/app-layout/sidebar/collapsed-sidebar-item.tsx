@@ -11,7 +11,7 @@ import {
 import {
   SidebarMenuButton,
   SidebarMenuItem,
-} from "@/components/organisms/sidebar2";
+} from "@/components/organisms/sidebar";
 import { useAppLayoutContext } from "../context/app-layout-context";
 import {
   DropdownItemType,
