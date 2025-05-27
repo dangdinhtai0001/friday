@@ -45,7 +45,7 @@ function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     <Sidebar {...props} className="bg-background-2">
       <Link to="/">
         <SidebarHeader
-          className="typography-regular-24 rounded-8 flex w-full cursor-pointer items-center justify-start gap-12 px-8"
+          className=" rounded-8 flex w-full cursor-pointer items-center justify-start gap-12 px-8"
           style={{ height: headerHeight }}
         >
           <MCAvatar className="size-32">
@@ -55,7 +55,7 @@ function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             </MCAvatarFallback>
           </MCAvatar>
           {isSidebarExpanded && (
-            <span className="overflow-hidden text-ellipsis whitespace-nowrap">
+            <span className="overflow-hidden text-ellipsis whitespace-nowrap text-black-100 typography-regular-24">
               Friday
             </span>
           )}

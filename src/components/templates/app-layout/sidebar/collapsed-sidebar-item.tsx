@@ -104,7 +104,7 @@ function SidebarDropdownItem({
             </MCDropdownMenuTrigger>
           </CollapsedSidebarItemTrigger>
 
-          <MCDropdownMenuContent className="w-56" side="right">
+          <MCDropdownMenuContent className="min-w-[8rem] max-w-[11rem] text-black-100" side="right">
             {/* USING THE RECURSIVE RENDER COMPONENT HERE */}
             <DropdownMenuList items={dropdownItems} />
           </MCDropdownMenuContent>
