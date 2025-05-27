@@ -1,47 +1,19 @@
-import { cn } from "@/composables/utils/shadcn";
-import { useSidebarContext } from "../context/SidebarContext";
-import { motion } from "motion/react";
-import { SIDEBAR_TRANSITION_DURATION } from "../constants";
 
-interface SidebarInsetProps
-  extends Omit<
-    React.ComponentProps<"main">,
-    "onDrag" | "onDragEnd" | "onDragStart" | "onAnimationStart"
-  > {
-  className?: string;
-}
+import * as React from "react";
+import { cn } from "@/composables/utils/shadcn"; // Import cn utility
 
-function SidebarInset({ className, children, ...props }: SidebarInsetProps) {
-  const { state } = useSidebarContext();
-  const { open, collapsedWidth, expandedWidth } = state;
-
-  const insetVariants = {
-    expanded: {
-      width: `calc(100vw - ${expandedWidth})`,
-      marginLeft: expandedWidth,
-    },
-    collapsed: {
-      width: `calc(100vw - ${collapsedWidth})`,
-      marginLeft: collapsedWidth,
-    },
-  };
-
+function SidebarInset({ className, ...props }: React.ComponentProps<"main">) {
   return (
-    <motion.main
+    <main
       data-slot="sidebar-inset"
-      className={cn("relative flex w-full flex-1 flex-col", className)}
-      variants={insetVariants}
-      animate={open ? "expanded" : "collapsed"}
-      transition={{
-        duration: SIDEBAR_TRANSITION_DURATION,
-        type: "tween",
-        ease: "easeInOut",
-      }}
+      className={cn(
+        "bg-background relative flex w-full flex-1 flex-col",
+        "md:peer-data-[variant=inset]:m-2 md:peer-data-[variant=inset]:ml-0 md:peer-data-[variant=inset]:rounded-xl md:peer-data-[variant=inset]:shadow-sm md:peer-data-[variant=inset]:peer-data-[state=collapsed]:ml-2",
+        className
+      )}
       {...props}
-    >
-      {children}
-    </motion.main>
+    />
   );
 }
 
-export default SidebarInset;
+export { SidebarInset }; // Export để sử dụng trong index.ts
