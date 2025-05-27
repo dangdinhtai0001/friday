@@ -1,16 +1,43 @@
-export { default as MCSidebar } from "./core/Sidebar";
-export { default as MCSidebarContent } from "./container/SidebarContent";
-export { default as MCSidebarRoot } from "./core/SidebarRoot";
-export { default as MCSidebarInset } from "./core/SidebarInset";
-export { default as MCSidebarTrigger } from "./toggle/SidebarTrigger";
-export { default as MCSidebarHeader } from "./container/SidebarHeader";
-export { default as MCSidebarFooter } from "./container/SidebarFooter";
+// src/components/organisms/sidebar2/index.ts
 
-export { default as MCSidebarGroup } from "./content/SidebarGroup";
-export { default as MCSidebarGroupLabel } from "./content/SidebarGroupLabel";
-export { default as MCSidebarGroupAction } from "./content/SidebarGroupAction";
-export { default as MCSidebarGroupContent } from "./content/SidebarGroupContent";
+// Export các kiểu dữ liệu
+export * from "./types";
+export * from "./constants";
 
-export { default as MCSidebarMenu } from "./menu/SidebarMenu";
-export { default as MCSidebarMenuItem } from "./menu/SidebarMenuItem";
-export { default as MCSidebarMenuButton } from "./menu/SidebarMenuButton";
+// Export các Context và Provider
+export * from "./context/SidebarContext";
+export { default as SidebarProvider } from "./context/SidebarProvider";
+
+// Export các Hooks
+export * from "./hooks/use-sidebar-state";
+export * from "./hooks/use-sidebar-keyboard-shortcut";
+
+// Export các Core Components
+export * from "./core/Sidebar";
+export * from "./core/SidebarInset";
+export * from "./core/SidebarRail";
+
+// Export các UI Components
+export * from "./ui/SidebarTrigger";
+export * from "./ui/SidebarHeader";
+export * from "./ui/SidebarContent";
+export * from "./ui/SidebarFooter";
+export * from "./ui/SidebarInput";
+export * from "./ui/SidebarSeparator";
+
+// Export các Menu Components
+export * from "./menu/SidebarMenu";
+export * from "./menu/SidebarMenuItem";
+export * from "./menu/SidebarMenuButton";
+export * from "./menu/SidebarMenuAction";
+export * from "./menu/SidebarMenuBadge";
+export * from "./menu/SidebarMenuSkeleton";
+export * from "./menu/SidebarMenuSub";
+export * from "./menu/SidebarMenuSubItem";
+export * from "./menu/SidebarMenuSubButton";
+
+// Export các Group Components
+export * from "./groups/SidebarGroup";
+export * from "./groups/SidebarGroupLabel";
+export * from "./groups/SidebarGroupAction";
+export * from "./groups/SidebarGroupContent";
