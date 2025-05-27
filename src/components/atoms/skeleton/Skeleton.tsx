@@ -7,7 +7,7 @@ function Skeleton({ className, ...props }: React.ComponentProps<"div">) {
     <div
       data-slot="skeleton"
       className={cn(
-        "rounded-12 bg-black-100/4 relative overflow-hidden",
+        "rounded-12 bg-black-4 relative overflow-hidden",
         className,
       )}
       {...props}

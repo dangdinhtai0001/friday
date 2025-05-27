@@ -29,7 +29,7 @@ function RenderSidebarSubMenuItem({ item }: SidebarSubMenuItemProps) {
       <SidebarMenuSubItem>
         <SidebarMenuSubButton
           asChild
-          className="hover:bg-black-100/4 rounded-12 w-full gap-4 p-8 "
+          className="hover:bg-black-4 rounded-12 w-full gap-4 p-8 "
           text={linkItem.text}
           link={linkItem.link}
           icon={linkItem.icon}
@@ -44,7 +44,7 @@ function RenderSidebarSubMenuItem({ item }: SidebarSubMenuItemProps) {
         <MCCollapsiable className="w-full">
           <MCCollapsibleTrigger
             asChild
-            className="hover:bg-black-100/4 rounded-12 w-full gap-4 p-8"
+            className="hover:bg-black-4 rounded-12 w-full gap-4 p-8"
             iconPosition="start"
           >
             <SidebarMenuSubButton
@@ -84,7 +84,7 @@ function SidebarCollapsible({
         <SidebarMenuItem className="flex flex-col items-start">
           <MCCollapsibleTrigger
             asChild
-            className="hover:bg-black-100/4 rounded-12 w-full gap-4 p-8 cursor-pointer "
+            className="hover:bg-black-4 rounded-12 w-full gap-4 p-8 cursor-pointer "
             iconPosition="start"
             customIcon={<IconLoader name={"chevron-right"} className="size-16 text-black-20" />}
           >

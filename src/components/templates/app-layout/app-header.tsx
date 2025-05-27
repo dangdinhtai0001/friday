@@ -60,7 +60,7 @@ function AppHeader() {
           <MCBreadcrumbList className="gap-0">
             {/* Breadcrumb cho Home */}
             <MCBreadcrumbItem>
-              <MCBreadcrumbLink className="text-black-100/40">
+              <MCBreadcrumbLink className="text-black-40">
                 <Link to={"/"}>Home</Link>
               </MCBreadcrumbLink>
             </MCBreadcrumbItem>

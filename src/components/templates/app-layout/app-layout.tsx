@@ -41,9 +41,9 @@ function AppLayout({
         >
           <div className="flex h-screen w-screen flex-row">
             <AppSidebar />
-            <SidebarInset>
+            <SidebarInset className="" style={{ width: `calc(100% - ${defaultSidebarWidth})` }}>
               <AppHeader />
-              <div className="overflow-auto px-28 py-20">
+              <div className="overflow-auto px-28 py-20 bg-background-1">
                 <Outlet />
               </div>
             </SidebarInset>

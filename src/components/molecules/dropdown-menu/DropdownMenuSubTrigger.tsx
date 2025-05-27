@@ -15,7 +15,7 @@ function DropdownMenuSubTrigger({
         data-slot="dropdown-menu-sub-trigger"
         data-inset={inset}
         className={cn(
-          "hover:bg-black-5 rounded-8 typography-regular-14 flex cursor-pointer items-center justify-between gap-8 p-8 focus:ring-0 focus:outline-none",
+          "hover:bg-black-4 rounded-8 typography-regular-14 flex cursor-pointer items-center justify-between gap-8 p-8 focus:ring-0 focus:outline-none",
           className,
         )}
         {...props}

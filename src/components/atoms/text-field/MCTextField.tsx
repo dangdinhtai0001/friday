@@ -109,7 +109,7 @@ function MCTextField({
           addonBefore ? "rounded-l-none border-l-0" : "",
           addonAfter ? "rounded-r-none border-r-0" : "",
           disabled
-            ? "bg-black-100/4 text-black-20 pointer-events-none cursor-not-allowed opacity-50"
+            ? "bg-black-4 text-black-20 pointer-events-none cursor-not-allowed opacity-50"
             : "",
         )}
       >

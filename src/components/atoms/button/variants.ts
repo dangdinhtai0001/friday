@@ -5,11 +5,11 @@ export const buttonVariants = cva(
   {
     variants: {
       variant: {
-        borderless: "hover:bg-black-100/4",
-        neutral: "bg-black-100/4 hover:bg-black-20 disabled:bg-black-100/4",
+        borderless: "hover:bg-black-4",
+        neutral: "bg-black-4 hover:bg-black-20 disabled:bg-black-4",
         outline: "border-[1px] border-black-10 hover:bg-black-20",
         filled:
-          "bg-primary-brand text-white-100 hover:opacity-85 disabled:bg-black-100/4 ",
+          "bg-primary-brand text-white-100 hover:opacity-85 disabled:bg-black-4 ",
         icon: "",
       },
       size: {

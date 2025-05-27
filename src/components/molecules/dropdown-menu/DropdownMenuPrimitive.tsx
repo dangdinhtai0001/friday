@@ -52,7 +52,7 @@ function DropdownMenuItem({
       data-inset={inset}
       data-variant={variant}
       className={cn(
-        "hover:bg-black-5 rounded-8 typography-regular-14 flex cursor-pointer items-center justify-between gap-8 px-8 py-4 focus:ring-0 focus:outline-none",
+        "hover:bg-black-4 rounded-8 typography-regular-14 flex cursor-pointer items-center justify-between gap-8 px-8 py-4 focus:ring-0 focus:outline-none",
         className,
       )}
       {...props}
@@ -139,7 +139,7 @@ function DropdownMenuSeparator({
   return (
     <DropdownMenuPrimitive.Separator
       data-slot="dropdown-menu-separator"
-      className={cn("border-black-5 -mx-1 my-1 h-px border-[0.5px]", className)}
+      className={cn("border-black-4 -mx-1 my-1 h-px border-[0.5px]", className)}
       {...props}
     />
   );

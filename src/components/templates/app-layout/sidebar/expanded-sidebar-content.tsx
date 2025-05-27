@@ -28,7 +28,7 @@ function ExpandedSidebarContent() {
               <SidebarMenuItem
                 key={item.id}
                 className={cn(
-                  "hover:bg-black-100/4 rounded-12 w-full cursor-pointer gap-4 p-8",
+                  "hover:bg-black-4 rounded-12 w-full cursor-pointer gap-4 p-8",
                   "flex flex-col items-start",
                 )}
               >

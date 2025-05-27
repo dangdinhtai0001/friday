@@ -26,7 +26,7 @@ function CollapsedSidebarContent() {
               <SidebarMenuItem key={item.id}>
                 <CollapsedSidebarItemTrigger tooltip={item.tooltip}>
                   <SidebarMenuButton
-                    className="hover:bg-black-100/4 rounded-12 flex aspect-square w-full justify-center"
+                    className="hover:bg-black-4 rounded-12 flex aspect-square w-full justify-center"
                     link={item.link}
                     icon={item.iconName}
                   />

@@ -98,7 +98,7 @@ function SidebarDropdownItem({
             >
               <SidebarMenuButton
                 icon={iconName}
-                className="hover:bg-black-100/4 aspect-square w-full"
+                className="hover:bg-black-4 aspect-square w-full"
                 style={{ maxWidth: `calc(${collapsedWidth} - 24px)` }}
               />
             </MCDropdownMenuTrigger>
