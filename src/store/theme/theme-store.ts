@@ -13,16 +13,6 @@ const createThemeSlice: StateCreator<ThemeStore> = (set): ThemeStore => ({
       document.documentElement.setAttribute('data-theme', newTheme);
     }
   },
-  toggleTheme: () => {
-    set((state) => {
-      const newTheme = state.theme === 'pastel-light' ? 'pastel-dark' : 'pastel-light';
-      // Cập nhật thuộc tính data-theme trên thẻ html
-      if (typeof window !== 'undefined') {
-        document.documentElement.setAttribute('data-theme', newTheme);
-      }
-      return { theme: newTheme };
-    });
-  },
 });
 
 // Tạo Zustand store cho việc quản lý theme
