@@ -13,7 +13,7 @@ export const initialUnifiedRoutes: UnifiedSidebarRouteItem[] = [
     type: "link", // Đây là một liên kết trong sidebar
     breadcrumbText: "Trang chủ",
     hideInSidebar: true, // Thường không hiển thị trang chủ trong sidebar nếu có logo/link riêng
-    tooltip: "Đi tới trang chủ", // Đã bổ sung tooltip
+    tooltip: "Đi tới trang chủ", 
   },
   {
     id: "home-alias", // ID khác cho đường dẫn alias
@@ -22,7 +22,7 @@ export const initialUnifiedRoutes: UnifiedSidebarRouteItem[] = [
     lazyComponent: () => import("@/pages/home"), // Cùng component Home
     hideInSidebar: true, // Không hiển thị alias này trong sidebar
     hideInBreadcrumb: true, // Cũng không hiển thị trong breadcrumb
-    tooltip: "Trang chủ dự phòng", // Đã bổ sung tooltip
+    tooltip: "Trang chủ dự phòng", 
   },
   {
     id: "theme",
@@ -31,7 +31,7 @@ export const initialUnifiedRoutes: UnifiedSidebarRouteItem[] = [
     path: "/theme", // Đường dẫn này chỉ là nhóm, không dẫn đến component nào
     type: "collapsible", // Là một mục có thể mở rộng/thu gọn
     breadcrumbText: "Giao diện",
-    tooltip: "Quản lý giao diện người dùng", // Đã bổ sung tooltip
+    tooltip: "Quản lý giao diện người dùng", 
     children: [
       {
         id: "theme-color",
@@ -41,7 +41,7 @@ export const initialUnifiedRoutes: UnifiedSidebarRouteItem[] = [
         type: "link",
         breadcrumbText: "Màu sắc",
         icon: "droplet",
-        tooltip: "Cấu hình bảng màu", // Đã bổ sung tooltip
+        tooltip: "Cấu hình bảng màu", 
       },
       {
         id: "theme-typography",
@@ -51,7 +51,7 @@ export const initialUnifiedRoutes: UnifiedSidebarRouteItem[] = [
         type: "link",
         breadcrumbText: "Kiểu chữ",
         icon: "typography",
-        tooltip: "Cấu hình font chữ và văn bản", // Đã bổ sung tooltip
+        tooltip: "Cấu hình font chữ và văn bản", 
       },
     ],
   },
@@ -67,27 +67,37 @@ export const initialUnifiedRoutes: UnifiedSidebarRouteItem[] = [
     path: "/components", // Đường dẫn này chỉ là nhóm
     type: "collapsible",
     breadcrumbText: "Components",
-    tooltip: "Xem và thử nghiệm các thành phần UI", // Đã bổ sung tooltip
+    tooltip: "Xem và thử nghiệm các thành phần UI", 
     children: [
       {
         id: "components-buttons",
         text: "Buttons",
         path: "/components/buttons",
-        lazyComponent: () => import("@/pages/components/buttons"), // Import component ButtonsPage
+        lazyComponent: () => import("@/pages/components/buttons"), 
         type: "link",
         breadcrumbText: "Buttons",
         icon: "location",
-        tooltip: "Các loại nút bấm", // Đã bổ sung tooltip
+        tooltip: "Các loại nút bấm", 
       },
       {
         id: "components-icons",
         text: "Icons",
         path: "/components/icons",
-        lazyComponent: () => import("@/pages/components/icons"), // Import component IconsPage
+        lazyComponent: () => import("@/pages/components/icons"), 
         type: "link",
         breadcrumbText: "Icons",
         icon: "star",
-        tooltip: "Thư viện biểu tượng", // Đã bổ sung tooltip
+        tooltip: "Thư viện biểu tượng", 
+      },
+      {
+        id: "components-flex-layout",
+        text: "Flex layout",
+        path: "/components/flex-layout",
+        lazyComponent: () => import("@/pages/components/flex-layout"), 
+        type: "link",
+        breadcrumbText: "Flex layout",
+        icon: "layout",
+        tooltip: "layout linh hoạt", 
       },
     ],
   },
@@ -104,6 +114,6 @@ export const initialUnifiedRoutes: UnifiedSidebarRouteItem[] = [
     type: "link",
     breadcrumbText: "Trạng thái hệ thống",
     icon: "heart-rate-monitor",
-    tooltip: "Kiểm tra tình trạng hoạt động của hệ thống", // Đã bổ sung tooltip
+    tooltip: "Kiểm tra tình trạng hoạt động của hệ thống", 
   },
 ];
