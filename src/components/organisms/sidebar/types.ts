@@ -130,7 +130,7 @@ export type SidebarMenuButtonProps = {
   /**
    * Nội dung tooltip hiển thị khi sidebar thu gọn.
    */
-  tooltip?: string | React.ComponentProps<React.ComponentType<any>>;
+  tooltip?: string | React.ComponentProps<React.ComponentType<unknown>>;
 } & React.ComponentPropsWithoutRef<"button">;
 
 // Props cho SidebarMenuAction
