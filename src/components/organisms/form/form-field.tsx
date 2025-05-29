@@ -1,20 +1,24 @@
-import { cn } from '@/composables/utils/shadcn';
 import FormFieldProvider from './context/form-field/form-field-provider';
+import { LabelPlacement } from './context/context.types';
+import FormFieldLayout from './field/form-field-layout';
 
 export type FormFieldProps = React.HtmlHTMLAttributes<HTMLDivElement> & {
   name: string;
+  labelPlacement?: LabelPlacement;
 };
 
-function FormField({ name, children, className }: FormFieldProps) {
+function FormField({
+  name,
+  children,
+  className,
+  labelPlacement = 'top',
+}: FormFieldProps) {
   return (
-    <div
-      className={cn(
-        'bg-secondary-blue text-white-100 typography-semibold-14 flex h-full w-full items-center justify-center rounded-lg p-4',
-        className,
-      )}
-    >
-      <FormFieldProvider name={name}>{children}</FormFieldProvider>
-    </div>
+    <FormFieldProvider name={name} labelPlacement={labelPlacement}>
+      <FormFieldLayout labelPlacement={labelPlacement} className={className}>
+        {children}
+      </FormFieldLayout>
+    </FormFieldProvider>
   );
 }
 
