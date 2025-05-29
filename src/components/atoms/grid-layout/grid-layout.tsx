@@ -15,8 +15,10 @@ function GridLayout({
   children,
 }: GridLayoutProps) {
   const style: React.CSSProperties = {};
+  // style["--grid-cols"] = `repeat(${cols},minmax(0,1fr))`;
+  // style["--grid-rows"] = `repeat(${rows},minmax(0,1fr))`;
   style["--grid-cols"] = `repeat(${cols},minmax(0,1fr))`;
-  style["--grid-rows"] = `repeat(${rows},minmax(0,1fr))`;
+  style["--grid-rows"] = `repeat(${rows},minmax(0,auto))`;
 
   let gapColClass = "";
   if (hasUnitOrVar(gapCol)) {
@@ -37,7 +39,7 @@ function GridLayout({
   return (
     <div
       className={cn(
-        "grid h-full w-full gap-1",
+        "grid h-full w-full auto-rows-min",
         "grid-cols-[var(--grid-cols)] grid-rows-[var(--grid-rows)]",
         gapColClass,
         gapRowClass,
