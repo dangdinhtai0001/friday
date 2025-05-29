@@ -1,146 +1,187 @@
-import GridLayout from "@/components/organisms/grid-layout/grid-layout";
-import GridItem from "@/components/organisms/grid-layout/grid-item";
+import { ECGridItem, ECGridLayout } from "@/components/organisms/grid";
+import { cn } from "@/composables/utils/shadcn";
+
+// Component Item đơn giản để hiển thị nội dung trong ô lưới
+const Item = ({ index, className }: { index: number; className?: string }) => {
+  return (
+    <div
+      className={cn(
+        "rounded-lg bg-blue-500 text-white flex h-full w-full items-center justify-center p-4 text-2xl font-bold",
+        className,
+      )}
+    >
+      {index}
+    </div>
+  );
+};
 
 function Page() {
-  const numberOfDivs = 10;
-  const divItems = Array.from({ length: numberOfDivs }, (_, i) => i + 1);
-
-  // Dữ liệu cho demo Responsive Grid từ mảng
-  const responsiveGridItems = [
-    { id: 1, content: "Grid Item 1", span: 2, bgColor: "bg-secondary-blue" },
-    { id: 2, content: "Grid Item 2", span: 1, bgColor: "bg-secondary-yellow" },
-    { id: 3, content: "Grid Item 3", span: 1, bgColor: "bg-secondary-orange" },
-    {
-      id: 4,
-      content: "Grid Item 4 (Full Width)",
-      span: "full",
-      bgColor: "bg-primary-purple",
-    },
-    { id: 5, content: "Grid Item 5", span: 1, bgColor: "bg-secondary-cyan" },
-    { id: 6, content: "Grid Item 6", span: 1, bgColor: "bg-secondary-mint" },
-    {
-      id: 7,
-      content: "Grid Item 7 (start 4)",
-      span: 1,
-      start: 4,
-      bgColor: "bg-secondary-red",
-    },
-    { id: 8, content: "Grid Item 8", span: 1, bgColor: "bg-secondary-indigo" },
-    { id: 9, content: "Grid Item 9", span: 2, bgColor: "bg-primary-blue" },
-    { id: 10, content: "Grid Item 10", span: 1, bgColor: "bg-secondary-green" },
-  ];
-
   return (
-    <div className="text-black-100 min-h-screen p-8">
-      {/* --- Phần Demo Grid Layout --- */}
-      <div>
-        <h2 className="typography-semibold-20 mb-4">Demo Grid Layout</h2>
-        <div className="flex flex-col gap-8">
-          {/* Ví dụ Grid Layout 1: Cố định 3 cột, gap 20px */}
-          <div>
-            <h3 className="typography-semibold-18 mb-2">
-              Grid 3 Cột Cố Định - Gap 20px
-            </h3>
-            <p className="typography-regular-14 text-black-40 mb-4">
-              Lưới với 3 cột đều nhau, khoảng cách 20px. Các item chiếm 1 cột
-              mặc định.
-            </p>
-            <GridLayout
-              cols={3}
-              gap="20px"
-              className="rounded-8 bg-background-2 p-4 shadow-md"
-            >
-              {divItems.map((index) => (
-                <GridItem
-                  key={index}
-                  className="rounded-8 bg-secondary-indigo text-white-80 typography-semibold-12 flex h-48 items-center justify-center"
-                >
-                  {index}
-                </GridItem>
-              ))}
-            </GridLayout>
-          </div>
+    <div className="container mx-auto p-8 space-y-12">
+      <h1 className="text-4xl font-extrabold mb-8 text-center text-gray-800">
+        Grid Layout Showcase
+      </h1>
 
-          {/* Ví dụ Grid Layout 2: Responsive cột, gap Tailwind unit, với item span khác nhau (fixed) */}
-          <div>
-            <h3 className="typography-semibold-18 mb-2">
-              Grid Responsive (auto-fit) & Item Span (Fixed)
-            </h3>
-            <p className="typography-regular-14 text-black-40 mb-4">
-              Lưới tự động điều chỉnh số cột (tối thiểu 120px) và khoảng cách
-              dùng Tailwind unit "6" (24px). Có các item chiếm nhiều cột được
-              định nghĩa trực tiếp.
-            </p>
-            <GridLayout
-              cols="repeat(auto-fit, minmax(120px, 1fr))"
-              gap="6"
-              className="rounded-8 bg-background-2 p-4 shadow-md"
-            >
-              <GridItem
-                span={2}
-                className="rounded-8 bg-secondary-blue text-white-80 typography-semibold-12 flex h-48 items-center justify-center"
-              >
-                Item 1 (span 2)
-              </GridItem>
-              <GridItem className="rounded-8 bg-secondary-yellow text-white-80 typography-semibold-12 flex h-48 items-center justify-center">
-                Item 2
-              </GridItem>
-              <GridItem className="rounded-8 bg-secondary-orange text-white-80 typography-semibold-12 flex h-48 items-center justify-center">
-                Item 3
-              </GridItem>
-              <GridItem
-                span="full"
-                className="rounded-8 bg-primary-purple text-white-80 typography-semibold-12 flex h-48 items-center justify-center"
-              >
-                Item 4 (span full)
-              </GridItem>
-              <GridItem className="rounded-8 bg-secondary-cyan text-white-80 typography-semibold-12 flex h-48 items-center justify-center">
-                Item 5
-              </GridItem>
-              <GridItem className="rounded-8 bg-secondary-mint text-white-80 typography-semibold-12 flex h-48 items-center justify-center">
-                Item 6
-              </GridItem>
-              <GridItem
-                start={6}
-                span={1}
-                className="rounded-8 bg-secondary-red text-white-80 typography-semibold-12 flex h-48 items-center justify-center"
-              >
-                Item 7
-              </GridItem>
-            </GridLayout>
-          </div>
+      {/* --- */}
 
-          {/* --- Ví dụ Grid Layout 3: Responsive từ Mảng Dữ liệu --- */}
-          <div>
-            <h3 className="typography-semibold-18 mb-2">
-              Grid Responsive từ Mảng Dữ liệu & Căn giữa
-            </h3>
-            <p className="typography-regular-14 text-black-40 mb-4">
-              Lưới tự động điều chỉnh số cột (tối thiểu 150px), khoảng cách
-              24px. Các item được cấu hình động từ một mảng, bao gồm cả thuộc
-              tính `span` và `start`.
-            </p>
-            <GridLayout
-              cols="repeat(auto-fit, minmax(150px, 1fr))" // Responsive columns
-              gap="24px" // Gap tùy chỉnh 24px
-              justifyItems="center" // Căn giữa nội dung trong ô
-              alignItems="center" // Căn giữa nội dung trong ô
-              className="rounded-8 bg-background-2 p-4 shadow-md"
-            >
-              {responsiveGridItems.map((item) => (
-                <GridItem
-                  key={item.id}
-                  span={item.span}
-                  start={item.start} // Prop start (nếu có)
-                  className={`rounded-8 ${item.bgColor} text-white-80 typography-semibold-12 flex h-48 w-full items-center justify-center`}
-                >
-                  {item.content} {item.start ? `(start ${item.start})` : ""}
-                </GridItem>
-              ))}
-            </GridLayout>
+      <section>
+        <h2 className="text-3xl font-semibold mb-6 text-gray-700">
+          1. Basic Tailwind CSS Grid (Explicit Columns)
+        </h2>
+        <p className="mb-4 text-gray-600">
+          Sử dụng các utility classes mặc định của Tailwind CSS để tạo lưới với
+          số cột cố định và định vị các mục.
+        </p>
+        <div className="border border-dashed border-gray-400 p-6 rounded-lg bg-gray-50 min-h-[200px]">
+          <div className="grid grid-cols-6 gap-4">
+            <Item index={1} className="col-span-4 col-start-2" />
+            <Item index={2} className="col-start-1 col-end-3" />
+            <Item index={3} className="col-span-2 col-end-7" />
+            <Item index={4} className="col-span-full" />
           </div>
         </div>
-      </div>
+      </section>
+
+      {/* --- */}
+
+      <section>
+        <h2 className="text-3xl font-semibold mb-6 text-gray-700">
+          2. Basic Tailwind CSS Grid (Flow by Column)
+        </h2>
+        <p className="mb-4 text-gray-600">
+          Minh họa cách lưới tự động sắp xếp các mục theo cột
+          (`grid-flow-col`) với số lượng hàng cố định.
+        </p>
+        <div className="border border-dashed border-gray-400 p-6 rounded-lg bg-gray-50 min-h-[200px]">
+          <div className="grid grid-flow-col grid-rows-3 gap-4">
+            <Item index={1} className="row-span-3" />
+            <Item index={2} className="col-span-2" />
+            <Item index={3} className="col-span-2 row-span-2" />
+          </div>
+        </div>
+      </section>
+
+      {/* --- */}
+
+      <section>
+        <h2 className="text-3xl font-semibold mb-6 text-gray-700">
+          3. Tailwind CSS Grid with Manual Positioning
+        </h2>
+        <p className="mb-4 text-gray-600">
+          Ví dụ phức tạp hơn về việc định vị thủ công các mục trong lưới
+          Tailwind CSS mà không cần các component `ECGrid`.
+        </p>
+        <div className="border border-dashed border-gray-400 p-6 rounded-lg bg-gray-50 min-h-[400px]">
+          <div className="grid h-full w-full grid-cols-6 grid-rows-6 gap-[8px]">
+            <Item index={1} className="col-start-1 row-start-1" />
+            <Item
+              index={2}
+              className="col-span-2 col-start-1 row-span-4 row-start-3"
+            />
+            <Item
+              index={3}
+              className="col-span-3 col-start-3 row-span-3 row-start-3"
+            />
+            <Item index={4} className="col-start-6 row-start-6" />
+          </div>
+        </div>
+      </section>
+
+      {/* --- */}
+
+      <section>
+        <h2 className="text-3xl font-semibold mb-6 text-gray-700">
+          4. Using ECGridLayout and ECGridItem (Basic)
+        </h2>
+        <p className="mb-4 text-gray-600">
+          Đây là cách sử dụng các components `ECGridLayout` và `ECGridItem` của bạn,
+          cho phép định vị mục bằng các props `x`, `y`, `width`, `height` dễ đọc hơn.
+        </p>
+        <div className="border border-dashed border-gray-400 p-6 rounded-lg bg-gray-50 min-h-[400px]">
+          <ECGridLayout cols={6} rows={6} className="h-96">
+            <ECGridItem x={1} y={1}>
+              <Item index={1} />
+            </ECGridItem>
+            <ECGridItem x={1} y={3} width={2} height={4}>
+              <Item index={2} />
+            </ECGridItem>
+            <ECGridItem x={3} y={3} width={3} height={3}>
+              <Item index={3} />
+            </ECGridItem>
+            <ECGridItem x={6} y={6}>
+              <Item index={4} />
+            </ECGridItem>
+          </ECGridLayout>
+        </div>
+      </section>
+
+      {/* --- */}
+
+      <section>
+        <h2 className="text-3xl font-semibold mb-6 text-gray-700">
+          5. ECGridLayout with Custom Gaps
+        </h2>
+        <p className="mb-4 text-gray-600">
+          Minh họa cách sử dụng các props `gapCol` và `gapRow` để tùy chỉnh
+          khoảng cách giữa các ô lưới, bao gồm cả giá trị số và giá trị có đơn vị.
+        </p>
+        <div className="border border-dashed border-gray-400 p-6 rounded-lg bg-gray-50 min-h-[400px]">
+          <ECGridLayout cols={4} rows={4} gapCol="20px" gapRow="1.5rem" className="h-96">
+            <ECGridItem x={1} y={1} width={2} height={1}>
+              <Item index={1} />
+            </ECGridItem>
+            <ECGridItem x={3} y={1} width={2} height={2}>
+              <Item index={2} />
+            </ECGridItem>
+            <ECGridItem x={1} y={2} width={1} height={3}>
+              <Item index={3} />
+            </ECGridItem>
+            <ECGridItem x={2} y={3} width={3} height={2}>
+              <Item index={4} />
+            </ECGridItem>
+          </ECGridLayout>
+        </div>
+      </section>
+
+      {/* --- */}
+
+      <section>
+        <h2 className="text-3xl font-semibold mb-6 text-gray-700">
+          6. ECGridLayout with More Items and Complex Layout
+        </h2>
+        <p className="mb-4 text-gray-600">
+          Một ví dụ phức tạp hơn, hiển thị khả năng của components `ECGrid` trong việc
+          tạo ra các bố cục phức tạp và linh hoạt.
+        </p>
+        <div className="border border-dashed border-gray-400 p-6 rounded-lg bg-gray-50 min-h-[400px]">
+          <ECGridLayout cols={8} rows={8} gapCol="16px" gapRow="16px" className="h-[500px]">
+            <ECGridItem x={1} y={1} width={3} height={2}>
+              <Item index={1} />
+            </ECGridItem>
+            <ECGridItem x={4} y={1} width={5} height={1}>
+              <Item index={2} />
+            </ECGridItem>
+            <ECGridItem x={4} y={2} width={2} height={2}>
+              <Item index={3} />
+            </ECGridItem>
+            <ECGridItem x={6} y={2} width={3} height={3}>
+              <Item index={4} />
+            </ECGridItem>
+            <ECGridItem x={1} y={3} width={3} height={6}>
+              <Item index={5} />
+            </ECGridItem>
+            <ECGridItem x={4} y={4} width={2} height={2}>
+              <Item index={6} />
+            </ECGridItem>
+            <ECGridItem x={6} y={5} width={3} height={4}>
+              <Item index={7} />
+            </ECGridItem>
+            <ECGridItem x={4} y={6} width={2} height={3}>
+              <Item index={8} />
+            </ECGridItem>
+          </ECGridLayout>
+        </div>
+      </section>
     </div>
   );
 }
