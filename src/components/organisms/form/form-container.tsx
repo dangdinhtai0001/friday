@@ -1,28 +1,46 @@
-import  React from "react";
-import { useForm, FieldValues, UseFormProps, FormProvider } from "react-hook-form";
+import {
+  FieldValues,
+  FormProvider,
+  useForm,
+  UseFormProps,
+} from 'react-hook-form';
+import { ECGridLayout } from '../grid-layout';
+import { GridLayoutProps } from '@/components/organisms/grid-layout';
 
-export type FormContainerProps = React.HTMLAttributes<HTMLDivElement> & UseFormProps
+export type FormContainerProps = React.HTMLAttributes<HTMLDivElement> &
+  UseFormProps &
+  GridLayoutProps;
 
-function FormContainer<FormValues extends FieldValues>({reValidateMode, children} : FormContainerProps){
+function FormContainer<FormValues extends FieldValues>({
+  children,
+  rows,
+  cols = 1,
+  gapRow = '8px',
+  gapCol = '8px',
+}: FormContainerProps) {
+  const methods = useForm<FormValues>();
 
-    // Initialize useForm with custom resolver and mode
-    const methods = useForm<FormValues>({        mode: reValidateMode,        });
-
-    // Handle form submission
+  // Handle form submission
   const handleSubmission = async (data: FormValues) => {
     console.log(data);
-    
   };
 
-    return (
-        <div>
-            <form onSubmit={methods.handleSubmit(handleSubmission)}>
-              <FormProvider {...methods}>
-      {children}
-              </FormProvider>
-            </form>
-        </div>
-    )
+  return (
+    <FormProvider {...methods}>
+      <form onSubmit={methods.handleSubmit(handleSubmission)}>
+        <ECGridLayout rows={rows} cols={cols} gapCol={gapCol} gapRow={gapRow}>
+          {children}
+        </ECGridLayout>
+      </form>
+      <button
+        onClick={() => {
+          methods.handleSubmit(handleSubmission)();
+        }}
+      >
+        submit
+      </button>
+    </FormProvider>
+  );
 }
 
 export default FormContainer;
