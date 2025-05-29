@@ -13,13 +13,25 @@ export interface FromContainerProviderProps {}
 
 // -----
 
-/* eslint-disable @typescript-eslint/no-empty-object-type */
+/**
+ * Định nghĩa vị trí của label so với control.
+ * - 'top': Label nằm phía trên control.
+ * - 'left': Label nằm bên trái control.
+ */
+export type LabelPlacement = 'top' | 'left';
+
 export type FormFieldState = {
   id: string;
   controlId: string;
-  fieldName: string
+  fieldName: string;
+  labelPlacement?: LabelPlacement;
+  hasDescription: boolean;
+  hasMessage: boolean;
 };
-export type FormFieldActions = {};
+export type FormFieldActions = {
+  setShowDescription: (show: boolean) => void;
+  setShowMessage: (show: boolean) => void;
+};
 
 export type FormFieldContextValue = {
   state: FormFieldState;
@@ -27,5 +39,6 @@ export type FormFieldContextValue = {
 };
 
 export interface FormFieldProviderProps {
-  name: string
+  name: string;
+  labelPlacement: LabelPlacement;
 }

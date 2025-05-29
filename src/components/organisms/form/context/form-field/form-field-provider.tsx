@@ -12,13 +12,22 @@ function FormFieldProvider({
   children,
 }: React.PropsWithChildren<FormFieldProviderProps>) {
   const id = React.useId();
-  const [state] = React.useState<FormFieldState>({
+  const [state, setState] = React.useState<FormFieldState>({
     id: id,
     controlId: `_control-${id}`,
     fieldName: name,
+    hasDescription: false,
+    hasMessage: false,
   });
 
-  const actions: FormFieldActions = {};
+  const actions: FormFieldActions = {
+    setShowDescription: (show: boolean) => {
+      setState((prevState) => ({ ...prevState, hasDescription: show }));
+    },
+    setShowMessage: (show: boolean) => {
+      setState((prevState) => ({ ...prevState, hasMessage: show }));
+    },
+  };
 
   return (
     <FormFieldContext.Provider
