@@ -1,4 +1,4 @@
-import { ECGridItem, ECGridLayout } from "@/components/organisms/grid-layout";
+import { ECGridItem, ECGridLayout } from "@/components/atoms/grid-layout";
 import { cn } from "@/composables/utils/shadcn";
 
 // Component Item đơn giản để hiển thị nội dung trong ô lưới

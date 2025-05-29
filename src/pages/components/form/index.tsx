@@ -4,6 +4,7 @@ import {
   ECFormContainerProvider,
   ECFormField,
   ECFormFieldControl,
+  ECFormFieldDescription,
   ECFormFieldLabel,
 } from '@/components/organisms/form';
 
@@ -24,6 +25,9 @@ function Page() {
             <ECFormFieldControl>
               <MCTextField />
             </ECFormFieldControl>
+            <ECFormFieldDescription>
+              <span>hehehe</span>
+            </ECFormFieldDescription>
           </ECFormField>
           <ECFormField name='price'>
             <ECFormFieldLabel>Price</ECFormFieldLabel>

@@ -4,8 +4,8 @@ import {
   useForm,
   UseFormProps,
 } from 'react-hook-form';
-import { ECGridLayout } from '../grid-layout';
-import { GridLayoutProps } from '@/components/organisms/grid-layout';
+import { ECGridLayout } from '../../atoms/grid-layout';
+import { GridLayoutProps } from '@/components/atoms/grid-layout';
 
 export type FormContainerProps = React.HTMLAttributes<HTMLDivElement> &
   UseFormProps &
