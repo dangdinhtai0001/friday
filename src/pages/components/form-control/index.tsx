@@ -1,6 +1,6 @@
 import { IconLoader } from "@/components/atoms/icon-loader";
 import { Input } from "@/components/atoms/input";
-import { Label } from "@/components/atoms/label";
+import { MCLabel } from "@/components/atoms/label";
 import { MCTextFiled } from "@/components/atoms/text-field";
 import { MCSeparator } from "@/components/atoms/separator";
 import {
@@ -362,15 +362,15 @@ function Page() {
           </MCSheetHeader>
           <div className="grid gap-4 py-4">
             <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="name" className="text-right">
+              <MCLabel htmlFor="name" className="text-right">
                 Name
-              </Label>
+              </MCLabel>
               <Input id="name" value="Pedro Duarte" className="col-span-3" />
             </div>
             <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="username" className="text-right">
+              <MCLabel htmlFor="username" className="text-right">
                 Username
-              </Label>
+              </MCLabel>
               <Input id="username" value="@peduarte" className="col-span-3" />
             </div>
           </div>
@@ -481,7 +481,7 @@ function Page() {
         />
       </div>
 
-      <Label>Label</Label>
+      <MCLabel>Label</MCLabel>
       <MCSeparator />
     </>
   );
