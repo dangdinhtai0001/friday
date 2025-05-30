@@ -1,4 +1,6 @@
 export { default as ECFormContainerProvider } from './context/form-container/form-container-provider';
+export * from './useFormController';
+
 export { default as ECFormContainer } from './form-container';
 
 export { default as ECFormField } from './form-field';
