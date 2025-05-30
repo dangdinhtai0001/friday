@@ -2,6 +2,9 @@ import { ECGridLayout } from '@/components/atoms/grid-layout';
 import { LabelPlacement } from '../context/context.types';
 import { useFormFieldContext } from '../context/form-field/form-field-context';
 import { cn } from '@/composables/utils/shadcn';
+import { useController } from 'react-hook-form';
+import FormFieldMessage from './form-field-message';
+import { useFormContainerContext } from '../context/form-container/form-container-context';
 
 // Định nghĩa một kiểu dữ liệu cho cấu hình layout tổng thể
 type FormFieldGridLayoutConfig = {
@@ -46,8 +49,17 @@ function FormFieldLayout({
       hasDescription,
       hasMessage,
       labelPlacement: contextLabelPlacement,
+      fieldName,
     },
   } = useFormFieldContext();
+
+  const {
+    state: { fieldStates },
+  } = useFormContainerContext();
+
+  const {
+    fieldState: { error },
+  } = useController({ name: fieldName });
 
   // Ưu tiên labelPlacement từ props, nếu không thì dùng từ context
   const effectiveLabelPlacement =
@@ -80,6 +92,15 @@ function FormFieldLayout({
     totalRows += config.messageRowOffset;
   }
 
+  const renderMessage = () => {
+    const message = error?.message || fieldStates[fieldName]?.message;
+    const type = error?.message
+      ? 'error'
+      : (fieldStates[fieldName]?.messageType ?? undefined);
+
+    return <FormFieldMessage message={message} type={type} />;
+  };
+
   return (
     <ECGridLayout
       className={cn('rounded-8 border px-8 py-4', className)}
@@ -89,6 +110,7 @@ function FormFieldLayout({
       gapCol="0px"
     >
       {children}
+      {renderMessage()}
     </ECGridLayout>
   );
 }

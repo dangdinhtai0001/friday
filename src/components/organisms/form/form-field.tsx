@@ -1,8 +1,9 @@
 import FormFieldProvider from './context/form-field/form-field-provider';
 import { LabelPlacement } from './context/context.types';
 import FormFieldLayout from './field/form-field-layout';
+import { ECGridItem, ECGridItemProps } from '@/components/atoms/grid-layout';
 
-export type FormFieldProps = React.HtmlHTMLAttributes<HTMLDivElement> & {
+export type FormFieldProps = ECGridItemProps & {
   name: string;
   labelPlacement?: LabelPlacement;
 };
@@ -10,15 +11,17 @@ export type FormFieldProps = React.HtmlHTMLAttributes<HTMLDivElement> & {
 function FormField({
   name,
   children,
-  className,
   labelPlacement = 'top',
+  ...props
 }: FormFieldProps) {
   return (
-    <FormFieldProvider name={name} labelPlacement={labelPlacement}>
-      <FormFieldLayout labelPlacement={labelPlacement} className={className}>
-        {children}
-      </FormFieldLayout>
-    </FormFieldProvider>
+    <ECGridItem {...props}>
+      <FormFieldProvider name={name} labelPlacement={labelPlacement}>
+        <FormFieldLayout labelPlacement={labelPlacement}>
+          {children}
+        </FormFieldLayout>
+      </FormFieldProvider>
+    </ECGridItem>
   );
 }
 

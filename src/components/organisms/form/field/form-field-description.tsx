@@ -9,7 +9,7 @@ function FormFieldDescription({
   children,
 }: React.HTMLAttributes<HTMLDivElement>) {
   const {
-    state: { labelPlacement },
+    state: { labelPlacement, id },
     actions: { setShowDescription },
   } = useFormFieldContext();
 
@@ -26,7 +26,7 @@ function FormFieldDescription({
       y={y}
       className={cn('typography-regular-12 text-black-40', className)}
     >
-      {children}
+      {children} {id}
     </ECGridItem>
   );
 }
