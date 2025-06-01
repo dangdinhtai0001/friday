@@ -1,4 +1,4 @@
-import { Input, type InputProps } from "@/components/atoms/input";
+import { MCInput, type MCInputProps } from "@/components/atoms/input";
 import { cn } from "@/composables/utils/shadcn";
 import { textFieldVariants, addonVariant } from "./variant";
 import React from "react";
@@ -7,7 +7,7 @@ import { AnimatePresence, motion } from "motion/react";
 
 type AddonPosition = "before" | "after";
 
-export type MCTextFieldProps = Omit<InputProps, "prefix"> & {
+export type MCTextFieldProps = Omit<MCInputProps, "prefix"> & {
   addonBefore?: React.ReactNode;
   addonAfter?: React.ReactNode;
   prefix?: React.ReactNode | string;
@@ -114,7 +114,7 @@ function MCTextField({
         )}
       >
         {renderAffix(prefix)}
-        <Input
+        <MCInput
           className={cn(
             "w-full rounded-none border-r-0 border-l-0 focus-visible:ring-0",
             disabled ? "" : "group-hover:border-black-40",
