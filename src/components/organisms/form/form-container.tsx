@@ -7,14 +7,24 @@ import {
   UseFormProps,
 } from 'react-hook-form';
 import { ECGridLayout } from '../../atoms/grid-layout';
-import { GridLayoutProps } from '@/components/atoms/grid-layout';
+import { ECGridLayoutProps } from '@/components/atoms/grid-layout';
 import React from 'react';
 import { useFormContainerContext } from './context/form-container/form-container-context';
 import { FormContainerState } from './context/context.types';
-import { flattenErrors } from './helpers';
+import {
+  flattenErrors,
+  FormEventNames,
+  FormEventPayload,
+  resolveEventName,
+} from './helpers';
+import useEventListeners, {
+  EventHandler,
+} from '@/composables/hooks/use-event-listeners';
+import { EventBusInstance } from '@/composables/utils/EventBus';
+import { cn } from '@/composables/utils/shadcn';
 
 export type FormContainerProps<FormValues extends FieldValues> = UseFormProps &
-  GridLayoutProps & {
+  ECGridLayoutProps & {
     init?: FormValues | (() => Promise<FormValues>); // Initial value (synchronous or asynchronous)
     onReset?: () => void; // Handler function when resetting the form
     onReady?: (state: FormContainerState) => void; // Hook triggered when the form is ready
@@ -27,7 +37,14 @@ export type FormContainerProps<FormValues extends FieldValues> = UseFormProps &
     validateFunction?: (
       data: FormValues,
     ) => Promise<ValidateResponse<FormValues>>; // Custom validation function
+    onValueChange?: (params: OnValueChangeParams<FormValues>) => void; // Handler function when values change
   };
+
+export interface OnValueChangeParams<FormValues extends FieldValues> {
+  field: string;
+  value: unknown;
+  values: FormValues;
+}
 
 export type ValidateResponse<T extends FieldValues> = {
   values: T;
@@ -57,8 +74,10 @@ function FormContainer<FormValues extends FieldValues>(
     onBeforeSubmit,
     onSubmit,
     onAfterSubmit,
-    reValidateMode="onChange",
+    reValidateMode = 'onChange',
     validateFunction,
+    onValueChange,
+    className,
   }: FormContainerProps<FormValues>,
   ref: React.ForwardedRef<FormRef<FormValues>>,
 ) {
@@ -75,6 +94,27 @@ function FormContainer<FormValues extends FieldValues>(
       : undefined,
   });
   const { state, actions } = useFormContainerContext();
+
+  const defaultEventHandlers = {
+    [resolveEventName(FormEventNames.VALUE_CHANGE, state.id)]: (
+      payload: FormEventPayload[FormEventNames.VALUE_CHANGE],
+    ) => {
+      // Trigger the `onValueChange` callback if it exists
+      if (onValueChange) {
+        onValueChange({
+          ...payload,
+          values: methods.getValues(),
+        } as OnValueChangeParams<FormValues>);
+      }
+
+      // const fieldDisabilities = resolveFieldDisability(getValues());
+      // Object.entries(fieldDisabilities).forEach(([fieldName, isDisabled]) => {
+      //   actions.patchFieldState(fieldName, { isDisabled });
+      // });
+    },
+  } as Record<string, EventHandler>;
+
+  useEventListeners(defaultEventHandlers, EventBusInstance);
 
   // Handle form submission
   const handleSubmission = async (data: FormValues) => {
@@ -170,8 +210,14 @@ function FormContainer<FormValues extends FieldValues>(
 
   return (
     <FormProvider {...methods}>
-      <form onSubmit={methods.handleSubmit(handleSubmission)}>
-        <ECGridLayout rows={rows} cols={cols} gapCol={gapCol} gapRow={gapRow}>
+      <form onSubmit={methods.handleSubmit(handleSubmission)} className="">
+        <ECGridLayout
+          rows={rows}
+          cols={cols}
+          gapCol={gapCol}
+          gapRow={gapRow}
+          className={cn('__form-container', className)}
+        >
           {children}
         </ECGridLayout>
       </form>

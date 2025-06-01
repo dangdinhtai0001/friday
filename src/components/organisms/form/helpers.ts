@@ -1,13 +1,13 @@
-import { transform } from "lodash-es";
-import { FieldError, FieldErrors, FieldValues } from "react-hook-form";
+import { transform } from 'lodash-es';
+import { FieldError, FieldErrors, FieldValues } from 'react-hook-form';
 
 function isFieldError(value: unknown): value is FieldError {
-  return typeof value === "object" && value !== null && "message" in value;
+  return typeof value === 'object' && value !== null && 'message' in value;
 }
 
 export function flattenErrors<T extends FieldValues>(
   errors: FieldErrors<T>,
-  parentKey = ""
+  parentKey = '',
 ): Record<string, FieldError | undefined> {
   return transform(
     errors,
@@ -17,12 +17,12 @@ export function flattenErrors<T extends FieldValues>(
       if (isFieldError(value)) {
         // Base case: This is a FieldError
         result[fullKey] = value;
-      } else if (typeof value === "object" && value !== null) {
+      } else if (typeof value === 'object' && value !== null) {
         // Recursive case: This is a nested object
         Object.assign(result, flattenErrors(value as FieldErrors, fullKey));
       }
     },
-    {} as Record<string, FieldError | undefined>
+    {} as Record<string, FieldError | undefined>,
   );
 }
 
@@ -34,4 +34,12 @@ export function flattenErrors<T extends FieldValues>(
  */
 export function resolveEventName(name: string, id: string): string {
   return `form:${id}:${name}`;
+}
+
+export enum FormEventNames {
+  VALUE_CHANGE = 'valueChange',
+}
+
+export interface FormEventPayload {
+  [FormEventNames.VALUE_CHANGE]: { field: string; value: unknown };
 }
