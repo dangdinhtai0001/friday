@@ -15,7 +15,7 @@ function FormFieldMessage({
   return (
     <div
       className={cn(
-        'typography-regular-12',
+        '__form-field-message typography-regular-12',
         getMessageTypeClass(type),
         className,
       )}

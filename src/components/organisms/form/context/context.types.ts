@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-empty-object-type */
+//  #region FormContainerContext
 export type FormStatus = 'idle' | 'loading';
 export type FieldControlState = {
   message?: string;
@@ -31,22 +31,25 @@ export type FormContainerContextValue = {
   actions: FormContainerActions;
 };
 
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface FromContainerProviderProps {}
 
-// -----
+// #endregion
+
+// #region FormFieldContext
 
 /**
  * Định nghĩa vị trí của label so với control.
  * - 'top': Label nằm phía trên control.
  * - 'left': Label nằm bên trái control.
  */
-export type LabelPlacement = 'top' | 'left';
+export type FieldLayout = 'horizontal' | 'vertical';
 
 export type FormFieldState = {
   id: string;
   controlId: string;
   fieldName: string;
-  labelPlacement?: LabelPlacement;
+  fieldLayout?: FieldLayout;
   hasDescription: boolean;
   hasMessage: boolean;
 };
@@ -62,5 +65,7 @@ export type FormFieldContextValue = {
 
 export interface FormFieldProviderProps {
   name: string;
-  labelPlacement: LabelPlacement;
+  fieldLayout: FieldLayout;
 }
+
+// #endregion

@@ -9,11 +9,11 @@ function FormFieldDescription({
   children,
 }: React.HTMLAttributes<HTMLDivElement>) {
   const {
-    state: { labelPlacement, id },
+    state: { fieldLayout: labelPlacement, id },
     actions: { setShowDescription },
   } = useFormFieldContext();
 
-  const { x, y } = formFieldLayoutMap[labelPlacement || 'top'].description;
+  const { x, y } = formFieldLayoutMap[labelPlacement || 'vertical'].description;
 
   React.useEffect(() => {
     setShowDescription(true);
@@ -24,7 +24,7 @@ function FormFieldDescription({
     <ECGridItem
       x={x}
       y={y}
-      className={cn('typography-regular-12 text-black-40', className)}
+      className={cn('__form-field-description typography-regular-12 text-black-40', className)}
     >
       {children} {id}
     </ECGridItem>

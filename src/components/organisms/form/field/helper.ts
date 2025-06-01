@@ -1,4 +1,4 @@
-import { LabelPlacement } from '../context/context.types';
+import { FieldLayout } from '../context/context.types';
 
 export type FormFieldComponentType =
   | 'label'
@@ -16,18 +16,18 @@ type GridPosition = {
 
 // Định nghĩa kiểu dữ liệu cho toàn bộ cấu hình vị trí của FormField
 type FormFieldLayoutMap = Record<
-  LabelPlacement,
+  FieldLayout,
   Record<FormFieldComponentType, GridPosition>
 >;
 
 export const formFieldLayoutMap: FormFieldLayoutMap = {
-  top: {
+  vertical: {
     label: { x: 1, y: 1 },
     control: { x: 1, y: 2 },
     description: { x: 1, y: 3 },
     message: { x: 1, y: 4 },
   },
-  left: {
+  horizontal: {
     label: { x: 1, y: 1 },
     control: { x: 2, y: 1 },
     description: { x: 2, y: 2 },

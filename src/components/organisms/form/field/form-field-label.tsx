@@ -13,7 +13,7 @@ function FormFieldLabel({
   } = useFormFieldContext();
 
   return (
-    <ECGridItem x={1} y={1} className="">
+    <ECGridItem x={1} y={1} className="__form-field-label">
       <MCLabel
         data-slot="form-label"
         //   data-error={!!error}
