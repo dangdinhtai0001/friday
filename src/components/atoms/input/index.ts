@@ -1,2 +1,2 @@
-export { default as Input } from "./Input";
-export type { InputProps  } from "./Input";
+export { default as MCInput } from "./Input";
+export type { InputProps as MCInputProps  } from "./Input";
