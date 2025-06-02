@@ -1,0 +1,274 @@
+// src/types/form.ts
+
+// Định nghĩa kiểu dữ liệu cho dữ liệu đầu vào của form
+export interface ProductInput {
+  productName: string;
+  productCode: string;
+  price: number | null;
+  category: string;
+  isAvailable: boolean;
+  deliveryOption: 'pickup' | 'delivery';
+  deliveryAddress: string;
+  notes: string;
+}
+
+// Định nghĩa kiểu cho lỗi validation
+export interface FieldError {
+  message: string;
+}
+
+export interface FormErrors<T> {
+  [K in keyof T]?: FieldError;
+}
+
+// Định nghĩa kiểu cho phản hồi của hàm validate
+export interface ValidateResponse<T> {
+  values: Partial<T>; // Dữ liệu hợp lệ (có thể là một phần nếu có lỗi)
+  errors: FormErrors<T>; // Các lỗi
+}
+
+// Định nghĩa các quy tắc validation cho từng trường
+export interface FieldValidationRules {
+  required?: boolean;
+  minLength?: number;
+  maxLength?: number;
+  min?: number;
+  max?: number;
+  pattern?: RegExp;
+  // Thêm các quy tắc validation khác nếu cần
+}
+
+// Định nghĩa kiểu cho cấu hình của một trường (field)
+export interface FormFieldConfig<T extends ProductInput> {
+  label: string;
+  type: 'text' | 'number' | 'select' | 'checkbox' | 'radio' | 'textarea';
+  placeholder?: string;
+  options?: { value: string; label: string }[];
+  validation?: FieldValidationRules;
+  // Hàm callback khi giá trị của trường thay đổi
+  onValueChange?: (newValue: T[keyof T], currentFormState: T) => void;
+  // Các hàm để xác định trạng thái của trường
+  isVisible?: (currentFormState: T) => boolean;
+  isDisabled?: (currentFormState: T) => boolean;
+  isReadOnly?: (currentFormState: T) => boolean;
+}
+
+// Định nghĩa kiểu cho toàn bộ cấu hình của form
+export interface ProductFormConfigType {
+  initialValues: ProductInput;
+  fields: {
+    [K in keyof ProductInput]: FormFieldConfig<ProductInput>;
+  };
+  // Hàm async để khởi tạo dữ liệu form
+  asyncInitData: () => Promise<ProductInput>;
+  // Hàm xử lý sự kiện khi form đã sẵn sàng
+  onFormReady?: (currentFormState: ProductInput) => void;
+  // Hàm validate toàn bộ form
+  validateForm: (data: ProductInput) => Promise<ValidateResponse<ProductInput>>;
+  // Hàm xử lý khi form được submit
+  onSubmit: (formData: ProductInput, formState: ProductInput) => void; // formState có thể bao gồm cả metadata nếu bạn muốn
+}
+
+
+// src/config/ProductFormConfig.ts
+import { ProductInput, ProductFormConfigType, ValidateResponse, FieldError } from '../types/form'; // Import các interface
+
+const productFormConfig: ProductFormConfigType = {
+  initialValues: {
+    productName: '',
+    productCode: '',
+    price: null,
+    category: '',
+    isAvailable: false,
+    deliveryOption: 'delivery',
+    deliveryAddress: '',
+    notes: '',
+  },
+
+  fields: {
+    productName: {
+      label: 'Tên Sản Phẩm',
+      type: 'text',
+      placeholder: 'Nhập tên sản phẩm',
+      validation: {
+        required: true,
+        minLength: 5,
+        maxLength: 100,
+      },
+      onValueChange: (value, formState) => {
+        console.log(`Tên sản phẩm thay đổi thành: ${value}`);
+        // Ví dụ: Nếu tên sản phẩm quá ngắn, có thể gợi ý
+      },
+    },
+    productCode: {
+      label: 'Mã Sản Phẩm',
+      type: 'text',
+      placeholder: 'Nhập mã sản phẩm (SKU)',
+      validation: {
+        required: true,
+        pattern: /^[A-Z0-9]{3,10}$/, // Ví dụ: 3-10 ký tự chữ hoa hoặc số
+      },
+      onValueChange: (value, formState) => {
+        console.log(`Mã sản phẩm thay đổi thành: ${value}`);
+      },
+      // Điều kiện để trường này chỉ đọc
+      isReadOnly: (formState) => formState.productName.length > 50, // Mã sản phẩm chỉ đọc nếu tên sản phẩm quá dài
+    },
+    price: {
+      label: 'Giá',
+      type: 'number',
+      placeholder: 'Nhập giá sản phẩm',
+      validation: {
+        required: true,
+        min: 0,
+      },
+      onValueChange: (value, formState) => {
+        console.log(`Giá thay đổi thành: ${value}`);
+      },
+    },
+    category: {
+      label: 'Danh Mục',
+      type: 'select',
+      options: [
+        { value: '', label: 'Chọn danh mục...' },
+        { value: 'electronics', label: 'Điện tử' },
+        { value: 'fashion', label: 'Thời trang' },
+        { value: 'home_appliances', label: 'Thiết bị gia dụng' },
+      ],
+      validation: {
+        required: true,
+      },
+      onValueChange: (value, formState) => {
+        console.log(`Danh mục thay đổi thành: ${value}`);
+      },
+    },
+    isAvailable: {
+      label: 'Sản phẩm có sẵn',
+      type: 'checkbox',
+      onValueChange: (value, formState) => {
+        console.log(`Sản phẩm có sẵn: ${value}`);
+      },
+    },
+    deliveryOption: {
+      label: 'Tùy chọn giao hàng',
+      type: 'radio',
+      options: [
+        { value: 'pickup', label: 'Nhận tại cửa hàng' },
+        { value: 'delivery', label: 'Giao hàng tận nơi' },
+      ],
+      validation: {
+        required: true,
+      },
+      onValueChange: (value, formState) => {
+        console.log(`Tùy chọn giao hàng: ${value}`);
+      },
+    },
+    deliveryAddress: {
+      label: 'Địa chỉ giao hàng',
+      type: 'textarea',
+      placeholder: 'Nhập địa chỉ giao hàng',
+      validation: {
+        required: false, // Sẽ được validate bắt buộc trong hàm validateForm
+        minLength: 10,
+      },
+      // Điều kiện hiển thị: chỉ hiện khi deliveryOption là 'delivery'
+      isVisible: (formState) => formState.deliveryOption === 'delivery',
+      // Điều kiện disable: ngược lại với isVisible
+      isDisabled: (formState) => formState.deliveryOption !== 'delivery',
+    },
+    notes: {
+      label: 'Ghi chú',
+      type: 'textarea',
+      placeholder: 'Thêm ghi chú về sản phẩm (tùy chọn)',
+      validation: {
+        maxLength: 500,
+      },
+      // Điều kiện visible: chỉ hiện nếu sản phẩm không có sẵn hoặc giá cao
+      isVisible: (formState) => !formState.isAvailable || (formState.price !== null && formState.price > 10000000),
+    },
+  },
+
+  // Hàm async để khởi tạo dữ liệu (giả lập API call)
+  asyncInitData: async () => {
+    console.log('Đang gọi API để lấy dữ liệu sản phẩm...');
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve({
+          productName: 'Điện Thoại Thông Minh XYZ',
+          productCode: 'DTXYZ123',
+          price: 12500000,
+          category: 'electronics',
+          isAvailable: true,
+          deliveryOption: 'delivery',
+          deliveryAddress: 'Số 1, Đường ABC, Quận 1, TP.HCM',
+          notes: 'Sản phẩm mẫu được load từ hàm asyncInitData.',
+        });
+      }, 1500); // Giả lập độ trễ 1.5 giây
+    });
+  },
+
+  // Hàm xử lý sự kiện khi form đã sẵn sàng
+  onFormReady: (currentFormState) => {
+    console.log('🚀 Form sản phẩm đã sẵn sàng! Dữ liệu hiện tại:', currentFormState);
+    // Ví dụ: có thể set focus vào trường productName
+    // document.getElementById('productName')?.focus();
+  },
+
+  // Hàm validate toàn bộ form (theo yêu cầu của bạn)
+  validateForm: async (data: ProductInput): Promise<ValidateResponse<ProductInput>> => {
+    console.log('Bắt đầu validate form với dữ liệu:', data);
+    const errors: FormErrors<ProductInput> = {};
+
+    // Validate theo các quy tắc trong schema
+    for (const fieldName in productFormConfig.fields) {
+      const fieldConfig = productFormConfig.fields[fieldName as keyof ProductInput];
+      const value = data[fieldName as keyof ProductInput];
+      const rules = fieldConfig.validation;
+
+      if (!rules) continue;
+
+      if (rules.required && (value === null || value === undefined || (typeof value === 'string' && value.trim() === ''))) {
+        errors[fieldName as keyof ProductInput] = { message: `${fieldConfig.label} là bắt buộc.` };
+      } else if (rules.minLength && typeof value === 'string' && value.length < rules.minLength) {
+        errors[fieldName as keyof ProductInput] = { message: `${fieldConfig.label} phải có ít nhất ${rules.minLength} ký tự.` };
+      } else if (rules.maxLength && typeof value === 'string' && value.length > rules.maxLength) {
+        errors[fieldName as keyof ProductInput] = { message: `${fieldConfig.label} không được vượt quá ${rules.maxLength} ký tự.` };
+      } else if (rules.min !== undefined && typeof value === 'number' && value < rules.min) {
+        errors[fieldName as keyof ProductInput] = { message: `${fieldConfig.label} phải lớn hơn hoặc bằng ${rules.min}.` };
+      } else if (rules.max !== undefined && typeof value === 'number' && value > rules.max) {
+        errors[fieldName as keyof ProductInput] = { message: `${fieldConfig.label} phải nhỏ hơn hoặc bằng ${rules.max}.` };
+      } else if (rules.pattern && typeof value === 'string' && !rules.pattern.test(value)) {
+        errors[fieldName as keyof ProductInput] = { message: `${fieldConfig.label} không đúng định dạng.` };
+      }
+    }
+
+    // Các validate logic phức tạp hơn, dựa trên giá trị của nhiều trường
+    if (data.deliveryOption === 'delivery' && (data.deliveryAddress === null || data.deliveryAddress.trim() === '')) {
+      errors.deliveryAddress = { message: 'Địa chỉ giao hàng là bắt buộc khi chọn giao hàng tận nơi.' };
+    }
+
+    // Ví dụ về validate tùy chỉnh như bạn yêu cầu:
+    if (data.productName === '123') {
+      errors.productName = { message: 'Tên sản phẩm "123" không được phép.' };
+    }
+    if (data.price !== null && data.price < 100000 && data.category === 'electronics') {
+        errors.price = { message: 'Giá sản phẩm điện tử không thể thấp hơn 100,000 VND.' };
+    }
+
+
+    return {
+      values: Object.keys(errors).length > 0 ? {} : data, // Nếu có lỗi, trả về values rỗng hoặc chỉ các giá trị hợp lệ
+      errors,
+    };
+  },
+
+  // Hàm xử lý khi form được submit
+  onSubmit: (formData, formState) => {
+    console.log('✅ Form đã được gửi!', formData);
+    console.log('Trạng thái form đầy đủ khi gửi:', formState);
+    // Đây là nơi bạn sẽ gọi API để lưu dữ liệu sản phẩm
+    alert('Đã gửi dữ liệu sản phẩm! Kiểm tra console log.');
+  },
+};
+
+export default productFormConfig;

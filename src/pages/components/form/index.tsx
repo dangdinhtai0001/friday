@@ -1,6 +1,5 @@
 import { MCButton } from '@/components/atoms/button';
 import {
-  ECSelectAsFormControl,
   MCSelect,
   MCSelectContent,
   MCSelectItem,
@@ -13,7 +12,6 @@ import {
   ECFormContainerProvider,
   ECFormField,
   ECFormFieldControl,
-  ECFormFieldDescription,
   ECFormFieldLabel,
   useFormController,
 } from '@/components/organisms/form';
@@ -22,6 +20,7 @@ import {
   OnValueChangeParams,
   ValidateResponse,
 } from '@/components/organisms/form/form-container';
+import { initData } from './form';
 
 export interface ProductInput {
   productName?: string;
@@ -50,12 +49,13 @@ function Page() {
     useFormController();
   return (
     <>
-      <div className='border border-black-10 rounded-8 p-8'>
+      <div className="border-black-10 rounded-8 border p-8">
         <ECFormContainerProvider>
           <ECFormContainer
             cols={2}
             rows={3}
             className=""
+            init={initData}
             onReady={(state: FormContainerState) => {
               console.log(`form: ${state.id} ready`);
             }}
@@ -68,45 +68,61 @@ function Page() {
             validateFunction={validateFunction}
             ref={formRef}
           >
-            <ECFormField name="productName" width={2}>
-              <ECFormFieldLabel>Product Name</ECFormFieldLabel>
+            <ECFormField name="productName">
+              <ECFormFieldLabel>Tên sản phẩm</ECFormFieldLabel>
               <ECFormFieldControl>
-                <ECTextField />
-              </ECFormFieldControl>
-              <ECFormFieldDescription>
-                <span>hehehe</span>
-              </ECFormFieldDescription>
-            </ECFormField>
-            <ECFormField name="price">
-              <ECFormFieldLabel>Price</ECFormFieldLabel>
-              <ECFormFieldControl>
-                <ECTextField />
+                <ECTextField placeholder="Nhập tên sản phẩm" />
               </ECFormFieldControl>
             </ECFormField>
-            <ECFormField name="category">
-              <ECFormFieldLabel>Category</ECFormFieldLabel>
-              <ECFormFieldControl>
-                <ECSelectAsFormControl>
-                  <MCSelectTrigger className="w-full">
-                    <MCSelectValue placeholder="Select a fruit" />
-                  </MCSelectTrigger>
 
-                  <MCSelectContent>
-                    <MCSelectItem value="Electronics">Electronics</MCSelectItem>
-                    <MCSelectItem value="Books">Books</MCSelectItem>
-                    <MCSelectItem value="Clothing">Clothing</MCSelectItem>
-                    <MCSelectItem value="Home & Kitchen">
-                      Home & Kitchen
-                    </MCSelectItem>
-                    <MCSelectItem value="Other">Other</MCSelectItem>
-                  </MCSelectContent>
-                </ECSelectAsFormControl>
+            <ECFormField name="productCode">
+              <ECFormFieldLabel>Mã sản phẩm</ECFormFieldLabel>
+              <ECFormFieldControl>
+                <ECTextField placeholder="Nhập mã sản phẩm" />
               </ECFormFieldControl>
             </ECFormField>
-            <ECFormField name="isInStock">
-              <ECFormFieldLabel>In stock</ECFormFieldLabel>
+
+            <ECFormField name="price">
+              <ECFormFieldLabel>Giá</ECFormFieldLabel>
               <ECFormFieldControl>
-                <ECTextField />
+                {/* Đối với giá, bạn có thể cân nhắc dùng input type="number" hoặc thư viện định dạng tiền tệ */}
+                <ECTextField type="number" placeholder="Nhập giá" />
+              </ECFormFieldControl>
+            </ECFormField>
+
+            <ECFormField name="category">
+              <ECFormFieldLabel>Danh mục</ECFormFieldLabel>
+              <ECFormFieldControl>
+                <ECTextField placeholder="Nhập danh mục" />
+              </ECFormFieldControl>
+            </ECFormField>
+
+            {/* isAvailable là boolean, nhưng yêu cầu là text field, nên có thể nhập "true" hoặc "false" */}
+            <ECFormField name="isAvailable">
+              <ECFormFieldLabel>Còn hàng?</ECFormFieldLabel>
+              <ECFormFieldControl>
+                <ECTextField placeholder="true/false" />
+              </ECFormFieldControl>
+            </ECFormField>
+
+            <ECFormField name="deliveryOption">
+              <ECFormFieldLabel>Tùy chọn giao hàng</ECFormFieldLabel>
+              <ECFormFieldControl>
+                <ECTextField placeholder="Nhập tùy chọn giao hàng" />
+              </ECFormFieldControl>
+            </ECFormField>
+
+            <ECFormField name="deliveryAddress">
+              <ECFormFieldLabel>Địa chỉ giao hàng</ECFormFieldLabel>
+              <ECFormFieldControl>
+                <ECTextField placeholder="Nhập địa chỉ giao hàng" />
+              </ECFormFieldControl>
+            </ECFormField>
+
+            <ECFormField name="notes">
+              <ECFormFieldLabel>Ghi chú</ECFormFieldLabel>
+              <ECFormFieldControl>
+                <ECTextField placeholder="Nhập ghi chú" />
               </ECFormFieldControl>
             </ECFormField>
           </ECFormContainer>

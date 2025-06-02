@@ -123,7 +123,7 @@ function FormFieldLayout({
 
   return (
     <ECGridLayout
-      className={cn('__form-field-layout rounded-8 px-8 py-4 border', className)}
+      className={cn('__form-field-layout rounded-8 px-8 py-4', className)}
       cols={config.cols}
       rows={totalRows}
       gapRow="0px"

@@ -153,10 +153,12 @@ function FormContainer<FormValues extends FieldValues>(
         let resolvedValues: FormValues | undefined;
         if (typeof init === 'function') {
           actions.setStatus('loading');
-          resolvedValues = await (init as () => Promise<FormValues>)();
+          // resolvedValues = await (init as () => Promise<FormValues>)();
+          resolvedValues = await init();
         } else if (init) {
           resolvedValues = init;
         }
+
         // Step 2: Reset the form with the resolved values
         if (resolvedValues) {
           methods.reset(resolvedValues);
@@ -177,7 +179,7 @@ function FormContainer<FormValues extends FieldValues>(
     initializeForm();
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [init]);
 
   // Expose methods through ref
   React.useImperativeHandle(ref, () => ({
@@ -209,19 +211,22 @@ function FormContainer<FormValues extends FieldValues>(
   }));
 
   return (
-    <FormProvider {...methods}>
-      <form onSubmit={methods.handleSubmit(handleSubmission)} className="">
-        <ECGridLayout
-          rows={rows}
-          cols={cols}
-          gapCol={gapCol}
-          gapRow={gapRow}
-          className={cn('__form-container', className)}
-        >
-          {children}
-        </ECGridLayout>
-      </form>
-    </FormProvider>
+    <div className="relative">
+      {state.status === 'loading' && <>loading</>}
+      <FormProvider {...methods}>
+        <form onSubmit={methods.handleSubmit(handleSubmission)} className="">
+          <ECGridLayout
+            rows={rows}
+            cols={cols}
+            gapCol={gapCol}
+            gapRow={gapRow}
+            className={cn('__form-container', className)}
+          >
+            {children}
+          </ECGridLayout>
+        </form>
+      </FormProvider>
+    </div>
   );
 }
 
