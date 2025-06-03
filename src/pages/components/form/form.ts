@@ -1,7 +1,6 @@
-import { FormPolicy } from '@/components/organisms/form/form-container';
-import { FieldValues } from 'react-hook-form';
+import { Path } from "react-hook-form";
 
-export interface ProductInput extends FieldValues {
+export interface ProductInput {
   productName: string;
   productCode: string;
   price: number | null;
@@ -36,13 +35,28 @@ export async function onSubmit(formData: ProductInput) {
   // Đây là nơi bạn sẽ gọi API để lưu dữ liệu sản phẩm
 }
 // --- Disabled Policy ---
-export function disablePolicy(values: ProductInput): FormPolicy<ProductInput> {
-  return {
-    // Trường 'deliveryAddress' bị disabled nếu 'deliveryOption' không phải là 'delivery'
-    deliveryAddress: values.deliveryOption !== 'delivery',
-    // Ví dụ khác: productCode bị disabled nếu productName quá ngắn
-    productCode: values.productName.length < 3,
-  };
+export function disabledPolicy(
+  values: ProductInput,
+): Partial<Record<Path<ProductInput>, boolean>> {
+  const disabledFields: Partial<Record<Path<ProductInput>, boolean>> = {};
+
+  // Trường 'deliveryAddress' bị disabled nếu 'deliveryOption' không phải là 'delivery'
+  if (values.deliveryOption !== 'delivery') {
+    disabledFields.deliveryAddress = true;
+  } else {
+    // Nếu là 'delivery', đảm bảo nó không bị disabled bởi chính sách này
+    disabledFields.deliveryAddress = false;
+  }
+
+  // productCode bị disabled nếu productName quá ngắn (ví dụ: ít hơn 3 ký tự)
+  if (values.productName && values.productName.length < 3) {
+    disabledFields.productCode = true;
+  } else {
+    // Nếu productName đủ dài, đảm bảo productCode không bị disabled bởi chính sách này
+    disabledFields.productCode = false;
+  }
+
+  return disabledFields;
 }
 // --- ReadOnly Policy ---
 export function readOnlyPolicy(values: ProductInput) {

@@ -17,10 +17,11 @@ import {
 } from '@/components/organisms/form';
 import { FormContainerState } from '@/components/organisms/form/context/context.types';
 import {
+  FormPolicy,
   OnValueChangeParams,
   ValidateResponse,
 } from '@/components/organisms/form/form-container';
-import { disablePolicy, initData } from './form';
+import { disabledPolicy, initData } from './form';
 
 export interface ProductInput {
   productName?: string;
@@ -66,7 +67,7 @@ function Page() {
               console.log('onValueChange', params);
             }}
             validateFunction={validateFunction}
-            disablePolicy={disablePolicy}
+            disabledPolicy={disabledPolicy as FormPolicy<ProductInput>}
             ref={formRef}
           >
             <ECFormField name="productName">
