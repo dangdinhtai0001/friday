@@ -39,10 +39,12 @@ export type FormContainerProps<FormValues extends FieldValues> = UseFormProps &
       data: FormValues,
     ) => Promise<ValidateResponse<FormValues>>; // Custom validation function
     onValueChange?: (params: OnValueChangeParams<FormValues>) => void; // Handler function when values change
-    disablePolicy?:
-      | FormPolicy<FormValues>
-      | ((values: FormValues) => FormPolicy<FormValues>);
+    disabledPolicy?: FormPolicy<FormValues>;
   };
+
+export type FormPolicy<TFormValues extends FieldValues> = (
+  values: TFormValues,
+) => Partial<Record<Path<TFormValues>, boolean>>;
 
 export interface OnValueChangeParams<FormValues extends FieldValues> {
   field: string;
@@ -65,10 +67,6 @@ export interface FormRef<T extends FieldValues> {
   getFieldsError: () => Record<string, FieldError | undefined>;
 }
 
-export type FormPolicy<T extends FieldValues> = {
-  [K in keyof T]?: boolean;
-};
-
 function FormContainer<FormValues extends FieldValues>(
   {
     children,
@@ -85,6 +83,7 @@ function FormContainer<FormValues extends FieldValues>(
     reValidateMode = 'onChange',
     validateFunction,
     onValueChange,
+    disabledPolicy,
     className,
   }: FormContainerProps<FormValues>,
   ref: React.ForwardedRef<FormRef<FormValues>>,
@@ -115,10 +114,23 @@ function FormContainer<FormValues extends FieldValues>(
         } as OnValueChangeParams<FormValues>);
       }
 
-      // const fieldDisabilities = resolveFieldDisability(getValues());
-      // Object.entries(fieldDisabilities).forEach(([fieldName, isDisabled]) => {
-      //   actions.patchFieldState(fieldName, { isDisabled });
-      // });
+      if (disabledPolicy) {
+        const currentFormValues = methods.getValues();
+        // Gọi hàm disabledPolicy để lấy ra trạng thái disable mong muốn cho từng trường
+        const fieldDisabilities = disabledPolicy(currentFormValues);
+
+        // Lặp qua các trường và áp dụng trạng thái disabled
+        Object.entries(fieldDisabilities).forEach(([fieldName, isDisabled]) => {
+          if (isDisabled) {
+            // Nếu trường cần bị disabled, gọi actions.disableField
+            // Ép kiểu fieldName sang Path<FormValues> vì actions.disableField mong đợi kiểu này
+            actions.disableField(fieldName as Path<FormValues>);
+          } else {
+            // Nếu trường cần được enabled, gọi actions.enableField
+            actions.enableField(fieldName as Path<FormValues>);
+          }
+        });
+      }
     },
   } as Record<string, EventHandler>;
 
