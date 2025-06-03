@@ -52,11 +52,7 @@ function TextField({
 
   const renderAffix = (affix: React.ReactNode | undefined) => {
     if (affix) {
-      return (
-        <div className={cn('affix')}>
-          {affix}
-        </div>
-      );
+      return <div className={cn('affix')}>{affix}</div>;
     }
 
     return null;
@@ -99,22 +95,32 @@ function TextField({
       <AnimatePresence>
         {hasValue && (
           <motion.button
+            disabled={disabled}
             onClick={handleClear}
-            className="hover:bg-black-10 cursor-pointer rounded-full p-0"
+            className={cn(
+              'hover:bg-black-10 cursor-pointer rounded-full p-0',
+              disabled
+                ? 'cursor-not-allowed opacity-50 hover:bg-transparent'
+                : '',
+            )}
             key="clear-button"
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: 20 }}
             transition={{ duration: 0.15, ease: 'easeInOut', type: 'spring' }}
-            whileHover={{
-              rotate: 90,
-              transition: {
-                duration: 0.3,
-                type: 'spring',
-                stiffness: 260,
-                damping: 20,
-              },
-            }}
+            whileHover={
+              disabled
+                ? undefined
+                : {
+                    rotate: 90,
+                    transition: {
+                      duration: 0.3,
+                      type: 'spring',
+                      stiffness: 260,
+                      damping: 20,
+                    },
+                  }
+            }
           >
             <IconLoader name="x" />
           </motion.button>
@@ -129,7 +135,7 @@ function TextField({
         'input-wrapper group flex w-full items-center gap-4',
         'border-black-10 rounded-8 typography-regular-14 border-[0.5px] px-8',
         disabled
-          ? 'bg-black-4 text-black-20 hover:cursor-not-allowed opacity-50'
+          ? 'bg-black-4 text-black-20 opacity-50 hover:cursor-not-allowed'
           : 'hover:border-black-40',
         className,
       )}
