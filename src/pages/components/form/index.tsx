@@ -20,7 +20,7 @@ import {
   OnValueChangeParams,
   ValidateResponse,
 } from '@/components/organisms/form/form-container';
-import { initData } from './form';
+import { disablePolicy, initData } from './form';
 
 export interface ProductInput {
   productName?: string;
@@ -66,6 +66,7 @@ function Page() {
               console.log('onValueChange', params);
             }}
             validateFunction={validateFunction}
+            disablePolicy={disablePolicy}
             ref={formRef}
           >
             <ECFormField name="productName">
