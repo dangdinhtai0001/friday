@@ -1,4 +1,7 @@
-export interface ProductInput {
+import { FormPolicy } from '@/components/organisms/form/form-container';
+import { FieldValues } from 'react-hook-form';
+
+export interface ProductInput extends FieldValues {
   productName: string;
   productCode: string;
   price: number | null;
@@ -31,4 +34,34 @@ export async function onSubmit(formData: ProductInput) {
   console.log('✅ Form đã được gửi!', formData);
   console.log('Trạng thái form đầy đủ khi gửi:', formData);
   // Đây là nơi bạn sẽ gọi API để lưu dữ liệu sản phẩm
+}
+// --- Disabled Policy ---
+export function disablePolicy(values: ProductInput): FormPolicy<ProductInput> {
+  return {
+    // Trường 'deliveryAddress' bị disabled nếu 'deliveryOption' không phải là 'delivery'
+    deliveryAddress: values.deliveryOption !== 'delivery',
+    // Ví dụ khác: productCode bị disabled nếu productName quá ngắn
+    productCode: values.productName.length < 3,
+  };
+}
+// --- ReadOnly Policy ---
+export function readOnlyPolicy(values: ProductInput) {
+  return {
+    // Trường 'productCode' chỉ đọc nếu 'productName' quá dài (ví dụ từ config của bạn)
+    productCode: values.productName.length > 50,
+    // Ví dụ khác: 'price' chỉ đọc nếu 'isAvailable' là false
+    price: !values.isAvailable,
+    // Thêm các điều kiện readOnly khác
+  };
+}
+// --- Visible Policy ---
+export function vbisiblePolicy(values: ProductInput) {
+  return {
+    // Trường 'deliveryAddress' chỉ hiển thị khi 'deliveryOption' là 'delivery'
+    deliveryAddress: values.deliveryOption === 'delivery',
+    // Trường 'notes' chỉ hiển thị nếu sản phẩm không có sẵn HOẶC giá cao
+    notes:
+      !values.isAvailable || (values.price !== null && values.price > 10000000),
+    // Thêm các điều kiện visible khác
+  };
 }

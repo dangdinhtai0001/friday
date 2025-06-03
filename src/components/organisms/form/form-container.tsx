@@ -22,6 +22,7 @@ import useEventListeners, {
 } from '@/composables/hooks/use-event-listeners';
 import { EventBusInstance } from '@/composables/utils/EventBus';
 import { cn } from '@/composables/utils/shadcn';
+import { LoadingCircleSpinner } from '@/components/atoms/loader';
 
 export type FormContainerProps<FormValues extends FieldValues> = UseFormProps &
   ECGridLayoutProps & {
@@ -38,6 +39,9 @@ export type FormContainerProps<FormValues extends FieldValues> = UseFormProps &
       data: FormValues,
     ) => Promise<ValidateResponse<FormValues>>; // Custom validation function
     onValueChange?: (params: OnValueChangeParams<FormValues>) => void; // Handler function when values change
+    disablePolicy?:
+      | FormPolicy<FormValues>
+      | ((values: FormValues) => FormPolicy<FormValues>);
   };
 
 export interface OnValueChangeParams<FormValues extends FieldValues> {
@@ -60,6 +64,10 @@ export interface FormRef<T extends FieldValues> {
   validateForm: () => Promise<boolean>;
   getFieldsError: () => Record<string, FieldError | undefined>;
 }
+
+export type FormPolicy<T extends FieldValues> = {
+  [K in keyof T]?: boolean;
+};
 
 function FormContainer<FormValues extends FieldValues>(
   {
@@ -212,7 +220,11 @@ function FormContainer<FormValues extends FieldValues>(
 
   return (
     <div className="relative">
-      {state.status === 'loading' && <>loading</>}
+      {state.status === 'loading' && (
+        <div className="rounded-8 backdrop-blur-4 absolute flex h-full w-full items-center justify-center">
+          <LoadingCircleSpinner className="size-32" />
+        </div>
+      )}
       <FormProvider {...methods}>
         <form onSubmit={methods.handleSubmit(handleSubmission)} className="">
           <ECGridLayout
