@@ -48,6 +48,12 @@ function FormContainerProvider({
     ) => {
       setFieldState(fieldName, { message, messageType });
     },
+    disableField: (fieldName: string) => {
+      setFieldState(fieldName, { disabled: true });
+    },
+    enableField: (fieldName: string) => {
+      setFieldState(fieldName, { disabled: false });
+    },
   };
 
   return (

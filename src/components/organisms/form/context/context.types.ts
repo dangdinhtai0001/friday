@@ -1,3 +1,5 @@
+import { FieldValues, Path } from "react-hook-form";
+
 //  #region FormContainerContext
 export type FormStatus = 'idle' | 'loading';
 export type FieldControlState = {
@@ -24,6 +26,8 @@ export type FormContainerActions = {
     message?: string, // Nội dung tin nhắn (có thể là undefined để xóa)
     messageType?: FieldControlState['messageType'], // Loại tin nhắn (error, warning, info, success)
   ) => void;
+  disableField: <T extends FieldValues>(fieldName: Path<T>) => void;
+  enableField: <T extends FieldValues>(fieldName: Path<T>) => void;
 };
 
 export type FormContainerContextValue = {
