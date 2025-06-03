@@ -2,7 +2,7 @@ import { cn } from "@/composables/utils/shadcn";
 import { Button } from ".";
 import { ButtonProps } from "./Button";
 import { IconLoader } from "@/components/atoms/icon-loader";
-import { LoadingCircleSpinner } from "@/components/atoms/spinner";
+import { LoadingCircleSpinner } from "@/components/atoms/loader";
 import { motion } from "motion/react";
 
 export type MCButtonProps = ButtonProps & {
