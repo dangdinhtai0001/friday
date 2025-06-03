@@ -12,7 +12,7 @@ function FormFieldControl({ ...props }: React.ComponentProps<typeof Slot>) {
     state: { controlId, fieldName, fieldLayout: labelPlacement },
   } = useFormFieldContext();
   const {
-    state: { id },
+    state: { id, fieldStates },
   } = useFormContainerContext();
 
   const {
@@ -87,6 +87,7 @@ function FormFieldControl({ ...props }: React.ComponentProps<typeof Slot>) {
         data-slot="form-control"
         id={controlId}
         onChange={handleOnChange}
+        disabled={fieldStates[fieldName]?.disabled}
         {...props}
         {...field}
       />
