@@ -38,11 +38,6 @@ export interface FromContainerProviderProps {}
 
 // #region FormFieldContext
 
-/**
- * Định nghĩa vị trí của label so với control.
- * - 'top': Label nằm phía trên control.
- * - 'left': Label nằm bên trái control.
- */
 export type FieldLayout = 'horizontal' | 'vertical';
 
 export type FormFieldState = {
