@@ -1,11 +1,4 @@
 import { MCButton } from '@/components/atoms/button';
-import {
-  MCSelect,
-  MCSelectContent,
-  MCSelectItem,
-  MCSelectTrigger,
-  MCSelectValue,
-} from '@/components/atoms/select';
 import { ECTextField } from '@/components/atoms/text-field';
 import {
   ECFormContainer,
@@ -17,32 +10,38 @@ import {
 } from '@/components/organisms/form';
 import { FormContainerState } from '@/components/organisms/form/context/context.types';
 import {
+  FormContainerProps,
   FormPolicy,
+  FormValidateFunction,
   OnValueChangeParams,
-  ValidateResponse,
 } from '@/components/organisms/form/form-container';
-import { disabledPolicy, initData } from './form';
+import {
+  disabledPolicy,
+  initData,
+  onSubmit,
+  ProductInput,
+  validate,
+} from './form';
+import {
+  ECControlledSelect,
+  ECBaseOption,
+} from '@/components/molecules/controlled-select';
+import { FormEventHandler } from 'react';
+import { FieldValues, UseFormProps } from 'react-hook-form';
 
-export interface ProductInput {
-  productName?: string;
-  price?: number;
-  category?: 'Electronics' | 'Books' | 'Clothing' | 'Home & Kitchen' | 'Other';
-  isInStock?: boolean;
-}
-
-const validateFunction = async (
-  data: ProductInput,
-): Promise<ValidateResponse<ProductInput>> => {
-  const errors: Record<string, { message: string }> = {};
-
-  if (data.productName === '123') {
-    errors.productName = { message: 'Có lỗi nè' };
-  }
-
-  return {
-    values: Object.keys(errors).length > 0 ? {} : data,
-    errors,
-  };
+type DeliveryOption = ECBaseOption & {
+  label: string;
+  id: string;
+};
+const fetchDeliveryOptions = async (): Promise<DeliveryOption[]> => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve([
+        { value: 'pickup', label: 'Nhận tại cửa hàng', id: 'pickup' },
+        { value: 'delivery', label: 'Giao hàng tận nơi', id: 'delivery' },
+      ]);
+    }, 1500); // Giả lập độ trễ
+  });
 };
 
 function Page() {
@@ -60,13 +59,13 @@ function Page() {
             onReady={(state: FormContainerState) => {
               console.log(`form: ${state.id} ready`);
             }}
-            onSubmit={(data: ProductInput) => {
-              console.log('onSubmit', data);
-            }}
+            onSubmit={onSubmit}
             onValueChange={(params: OnValueChangeParams<ProductInput>) => {
               console.log('onValueChange', params);
             }}
-            validateFunction={validateFunction}
+            validateFunction={
+              validate as unknown as FormValidateFunction<ProductInput>
+            }
             disabledPolicy={disabledPolicy as FormPolicy<ProductInput>}
             ref={formRef}
           >
@@ -110,7 +109,15 @@ function Page() {
             <ECFormField name="deliveryOption">
               <ECFormFieldLabel>Tùy chọn giao hàng</ECFormFieldLabel>
               <ECFormFieldControl>
-                <ECTextField placeholder="Nhập tùy chọn giao hàng" />
+                {/* <ECTextField placeholder="Nhập tùy chọn giao hàng" /> */}
+                <ECControlledSelect
+                  placeholder="Tùy chọn giao hàng"
+                  options={fetchDeliveryOptions}
+                  getOptionValue={(option) => option.value}
+                  renderLabel={(option: DeliveryOption) => (
+                    <div className="w-full">{option.label}</div>
+                  )}
+                />
               </ECFormFieldControl>
             </ECFormField>
 
@@ -161,18 +168,6 @@ function Page() {
           get field err
         </MCButton>
       </div>
-
-      <MCSelect>
-        <MCSelectTrigger>
-          <MCSelectValue placeholder="Select a fruit" />
-        </MCSelectTrigger>
-
-        <MCSelectContent>
-          <MCSelectItem value="apple">Apple</MCSelectItem>
-          <MCSelectItem value="banana">Banana</MCSelectItem>
-          <MCSelectItem value="orange">Orange</MCSelectItem>
-        </MCSelectContent>
-      </MCSelect>
     </>
   );
 }
