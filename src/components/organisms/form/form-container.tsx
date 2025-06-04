@@ -24,23 +24,28 @@ import { EventBusInstance } from '@/composables/utils/EventBus';
 import { cn } from '@/composables/utils/shadcn';
 import { LoadingCircleSpinner } from '@/components/atoms/loader';
 
-export type FormContainerProps<FormValues extends FieldValues> = UseFormProps &
-  ECGridLayoutProps & {
-    init?: FormValues | (() => Promise<FormValues>); // Initial value (synchronous or asynchronous)
+export type FormContainerProps<TFormValues extends FieldValues> = Omit<
+  UseFormProps,
+  'onSubmit'
+> &
+  Omit<ECGridLayoutProps, 'onSubmit'> & {
+    init?: TFormValues | (() => Promise<TFormValues>); // Initial value (synchronous or asynchronous)
     onReset?: () => void; // Handler function when resetting the form
     onReady?: (state: FormContainerState) => void; // Hook triggered when the form is ready
-    onBeforeSubmit?: (values: FormValues) => boolean | Promise<boolean>; // Trigger before submission
-    onSubmit?: (data: FormValues) => unknown | Promise<unknown>; // Submit handler function now returns a response
+    onBeforeSubmit?: (values: TFormValues) => boolean | Promise<boolean>; // Trigger before submission
+    onSubmit?: (data: TFormValues) => unknown | Promise<unknown>; // Submit handler function now returns a response
     onAfterSubmit?: (
-      values: FormValues,
+      values: TFormValues,
       submitResponse: unknown,
     ) => void | Promise<void>; // Trigger after submission, receives both the form data and the response
-    validateFunction?: (
-      data: FormValues,
-    ) => Promise<ValidateResponse<FormValues>>; // Custom validation function
-    onValueChange?: (params: OnValueChangeParams<FormValues>) => void; // Handler function when values change
-    disabledPolicy?: FormPolicy<FormValues>;
+    validateFunction?: FormValidateFunction<TFormValues>; // Custom validation function
+    onValueChange?: (params: OnValueChangeParams<TFormValues>) => void; // Handler function when values change
+    disabledPolicy?: FormPolicy<TFormValues>;
   };
+
+export type FormValidateFunction<TFormValues extends FieldValues> = (
+  data: TFormValues,
+) => Promise<ValidateResponse<TFormValues>>;
 
 export type FormPolicy<TFormValues extends FieldValues> = (
   values: TFormValues,
