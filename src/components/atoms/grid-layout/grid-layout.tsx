@@ -1,5 +1,5 @@
-import { cn } from "@/composables/utils/shadcn";
-import { GridLayoutProps } from "./types";
+import { cn } from '@/composables/utils/shadcn';
+import { GridLayoutProps } from './types';
 
 function hasUnitOrVar(gap: string) {
   const hasUnitOrVar =
@@ -9,29 +9,33 @@ function hasUnitOrVar(gap: string) {
 function GridLayout({
   cols = 6,
   rows = 6,
-  gapCol = "8px",
-  gapRow = "8px",
+  gapCol = '8px',
+  gapRow = '8px',
   className,
   children,
 }: GridLayoutProps) {
   const style: React.CSSProperties = {};
-  // style["--grid-cols"] = `repeat(${cols},minmax(0,1fr))`;
-  // style["--grid-rows"] = `repeat(${rows},minmax(0,1fr))`;
-  style["--grid-cols"] = `repeat(${cols},minmax(0,1fr))`;
-  style["--grid-rows"] = `repeat(${rows},minmax(0,auto))`;
+  style['--grid-cols'] = `repeat(${cols},minmax(0,1fr))`;
 
-  let gapColClass = "";
+  if (typeof rows === 'string') {
+    // Nếu `rows` là một chuỗi (ví dụ: "min-content min-content 1fr")
+    style['--grid-rows'] = rows;
+  } else {
+    style['--grid-rows'] = `repeat(${rows},minmax(0,auto))`;
+  }
+
+  let gapColClass = '';
   if (hasUnitOrVar(gapCol)) {
-    style["--grid-gap-col"] = gapCol;
-    gapColClass = "gap-x-[var(--grid-gap-col)]";
+    style['--grid-gap-col'] = gapCol;
+    gapColClass = 'gap-x-[var(--grid-gap-col)]';
   } else {
     gapColClass = `gap-x-${gapCol}`;
   }
 
-  let gapRowClass = "";
+  let gapRowClass = '';
   if (hasUnitOrVar(gapRow)) {
-    style["--grid-gap-row"] = gapRow;
-    gapRowClass = "gap-y-[var(--grid-gap-row)]";
+    style['--grid-gap-row'] = gapRow;
+    gapRowClass = 'gap-y-[var(--grid-gap-row)]';
   } else {
     gapRowClass = `gap-y-${gapRow}`;
   }
@@ -39,8 +43,8 @@ function GridLayout({
   return (
     <div
       className={cn(
-        "grid h-full w-full auto-rows-min",
-        "grid-cols-[var(--grid-cols)] grid-rows-[var(--grid-rows)]",
+        'grid h-full w-full auto-rows-min',
+        'grid-cols-[var(--grid-cols)] grid-rows-[var(--grid-rows)]',
         gapColClass,
         gapRowClass,
         className,
