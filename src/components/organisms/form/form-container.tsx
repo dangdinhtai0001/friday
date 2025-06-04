@@ -8,7 +8,7 @@ import {
 } from 'react-hook-form';
 import { ECGridLayout } from '../../atoms/grid-layout';
 import { ECGridLayoutProps } from '@/components/atoms/grid-layout';
-import React from 'react';
+import React, { JSX } from 'react';
 import { useFormContainerContext } from './context/form-container/form-container-context';
 import { FormContainerState } from './context/context.types';
 import {
@@ -259,4 +259,12 @@ function FormContainer<FormValues extends FieldValues>(
   );
 }
 
-export default React.forwardRef(FormContainer);
+// export default React.forwardRef(FormContainer) as ForwardedFormContainer;
+
+export default React.forwardRef(FormContainer) as <
+  FormValues extends FieldValues,
+>(
+  props: FormContainerProps<FormValues> & {
+    ref?: React.ForwardedRef<FormRef<FormValues>>;
+  },
+) => JSX.Element;
