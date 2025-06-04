@@ -3,7 +3,7 @@ export * from './useFormController';
 
 export { default as ECFormContainer } from './form-container';
 
-export { default as ECFormField } from './form-field';
+export { default as ECFormField } from './field/form-field';
 export { default as ECFormFieldLabel } from './field/form-field-label';
 export { default as ECFormFieldControl } from './field/form-field-control';
 export { default as ECFormFieldDescription } from './field/form-field-description';
