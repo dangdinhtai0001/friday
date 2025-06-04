@@ -3,12 +3,13 @@ import * as SelectPrimitive from '@radix-ui/react-select';
 
 import { cn } from '@/composables/utils/shadcn';
 import { IconLoader } from '../icon-loader';
+import { SelectItemProps } from './types';
 
 function SelectItem({
   className,
   children,
   ...props
-}: React.ComponentProps<typeof SelectPrimitive.Item>) {
+}: SelectItemProps) {
   return (
     <SelectPrimitive.Item
       data-slot="select-item"

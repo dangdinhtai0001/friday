@@ -15,3 +15,5 @@ export {
   SelectSeparator as MCSelectSeparator,
 } from './select-items';
 export { default as ECSelectAsFormControl } from './select-as-form-control';
+
+export type { SelectProps as MCSelectProps } from './types';
