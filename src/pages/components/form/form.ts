@@ -30,7 +30,7 @@ export async function initData(): Promise<ProductInput> {
   });
 }
 // Hàm xử lý khi form được submit
-export async function onSubmit(formData: ProductInput) {
+export async function onSubmit(formData: ProductInput): Promise<void> {
   console.log('✅ Form đã được gửi!', formData);
   console.log('Trạng thái form đầy đủ khi gửi:', formData);
   // Đây là nơi bạn sẽ gọi API để lưu dữ liệu sản phẩm
