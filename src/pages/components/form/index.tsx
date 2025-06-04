@@ -10,7 +10,6 @@ import {
 } from '@/components/organisms/form';
 import { FormContainerState } from '@/components/organisms/form/context/context.types';
 import {
-  FormContainerProps,
   FormPolicy,
   FormValidateFunction,
   OnValueChangeParams,
@@ -26,8 +25,6 @@ import {
   ECControlledSelect,
   ECBaseOption,
 } from '@/components/molecules/controlled-select';
-import { FormEventHandler } from 'react';
-import { FieldValues, UseFormProps } from 'react-hook-form';
 
 type DeliveryOption = ECBaseOption & {
   label: string;
@@ -52,8 +49,8 @@ function Page() {
       <div className="border-black-10 rounded-8 border p-8">
         <ECFormContainerProvider>
           <ECFormContainer
-            cols={2}
-            rows={3}
+            cols={4}
+            rows={4}
             className=""
             init={initData}
             onReady={(state: FormContainerState) => {
@@ -69,14 +66,14 @@ function Page() {
             disabledPolicy={disabledPolicy as FormPolicy<ProductInput>}
             ref={formRef}
           >
-            <ECFormField name="productName">
+            <ECFormField name="productName" required width={4}>
               <ECFormFieldLabel>Tên sản phẩm</ECFormFieldLabel>
               <ECFormFieldControl>
                 <ECTextField placeholder="Nhập tên sản phẩm" />
               </ECFormFieldControl>
             </ECFormField>
 
-            <ECFormField name="productCode">
+            <ECFormField name="productCode" required>
               <ECFormFieldLabel>Mã sản phẩm</ECFormFieldLabel>
               <ECFormFieldControl>
                 <ECTextField placeholder="Nhập mã sản phẩm" />
@@ -91,7 +88,7 @@ function Page() {
               </ECFormFieldControl>
             </ECFormField>
 
-            <ECFormField name="category">
+            <ECFormField name="category" required>
               <ECFormFieldLabel>Danh mục</ECFormFieldLabel>
               <ECFormFieldControl>
                 <ECTextField placeholder="Nhập danh mục" />
@@ -106,7 +103,7 @@ function Page() {
               </ECFormFieldControl>
             </ECFormField>
 
-            <ECFormField name="deliveryOption">
+            <ECFormField name="deliveryOption" width={1}>
               <ECFormFieldLabel>Tùy chọn giao hàng</ECFormFieldLabel>
               <ECFormFieldControl>
                 {/* <ECTextField placeholder="Nhập tùy chọn giao hàng" /> */}
@@ -121,14 +118,14 @@ function Page() {
               </ECFormFieldControl>
             </ECFormField>
 
-            <ECFormField name="deliveryAddress">
+            <ECFormField name="deliveryAddress" width={3}>
               <ECFormFieldLabel>Địa chỉ giao hàng</ECFormFieldLabel>
               <ECFormFieldControl>
                 <ECTextField placeholder="Nhập địa chỉ giao hàng" />
               </ECFormFieldControl>
             </ECFormField>
 
-            <ECFormField name="notes">
+            <ECFormField name="notes" width={4}>
               <ECFormFieldLabel>Ghi chú</ECFormFieldLabel>
               <ECFormFieldControl>
                 <ECTextField placeholder="Nhập ghi chú" />
