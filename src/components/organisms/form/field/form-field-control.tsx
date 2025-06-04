@@ -6,6 +6,7 @@ import { formFieldLayoutMap } from './helper';
 import { EventBusInstance } from '@/composables/utils/EventBus';
 import { useFormContainerContext } from '../context/form-container/form-container-context';
 import { FormEventNames, resolveEventName } from '../helpers';
+import { cn } from '@/composables/utils/shadcn';
 
 function FormFieldControl({ ...props }: React.ComponentProps<typeof Slot>) {
   const {
@@ -17,57 +18,13 @@ function FormFieldControl({ ...props }: React.ComponentProps<typeof Slot>) {
 
   const {
     field: { onChange, ...field },
+    fieldState: { error },
   } = useController({ name: fieldName });
 
   const { x, y } = formFieldLayoutMap[labelPlacement || 'vertical'].control;
 
   const handleOnChange = (value: unknown) => {
     try {
-      // // Check if e is a valid event object
-      // if (typeof e !== 'object' || e === null) {
-      //   console.error('Invalid event object:', e);
-      //   return;
-      // }
-
-      // // Cast e to EventTarget to access the target property
-      // const target = (
-      //   e as React.ChangeEvent<
-      //     HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-      //   >
-      // ).target;
-
-      // let value: unknown;
-
-      // // Handle based on the input type
-      // if (target instanceof HTMLInputElement) {
-      //   if (target.type === 'checkbox') {
-      //     // For checkboxes, get the value from the checked property
-      //     value = target.checked;
-      //   } else if (target.type === 'file') {
-      //     // For file inputs, get the list of files
-      //     value = Array.from(target.files || []);
-      //   } else {
-      //     // For other input types, get the value from the value property
-      //     value = target.value;
-      //   }
-      // } else if (target instanceof HTMLTextAreaElement) {
-      //   // For textareas, get the value from the value property
-      //   value = target.value;
-      // } else if (target instanceof HTMLSelectElement) {
-      //   if (target.multiple) {
-      //     // For multi-select, get all selected values
-      //     value = Array.from(target.selectedOptions).map(
-      //       (option) => option.value,
-      //     );
-      //   } else {
-      //     // For single-select, get the selected value
-      //     value = target.value;
-      //   }
-      // } else {
-      //   console.error('Unsupported input type:', target);
-      //   return;
-      // }
-
       // Call field.onChange with the new value
       onChange(value);
 
@@ -88,6 +45,9 @@ function FormFieldControl({ ...props }: React.ComponentProps<typeof Slot>) {
         id={controlId}
         onChange={handleOnChange}
         disabled={fieldStates[fieldName]?.disabled}
+        className={cn(
+          error ? 'border-secondary-red hover:border-secondary-red' : '',
+        )}
         {...props}
         {...field}
       />
