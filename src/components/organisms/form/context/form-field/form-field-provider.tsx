@@ -10,6 +10,7 @@ import { FormFieldContext } from './form-field-context';
 function FormFieldProvider({
   name,
   children,
+  required,
 }: React.PropsWithChildren<FormFieldProviderProps>) {
   const id = React.useId();
   const [state, setState] = React.useState<FormFieldState>({
@@ -18,6 +19,7 @@ function FormFieldProvider({
     fieldName: name,
     hasDescription: false,
     hasMessage: false,
+    required,
   });
 
   const actions: FormFieldActions = {

@@ -51,6 +51,7 @@ export type FormFieldState = {
   fieldLayout?: FieldLayout;
   hasDescription: boolean;
   hasMessage: boolean;
+  required?: boolean;
 };
 export type FormFieldActions = {
   setShowDescription: (show: boolean) => void;
@@ -65,6 +66,7 @@ export type FormFieldContextValue = {
 export interface FormFieldProviderProps {
   name: string;
   fieldLayout: FieldLayout;
+  required?: boolean;
 }
 
 // #endregion
