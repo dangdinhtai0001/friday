@@ -107,6 +107,26 @@ function FormContainer<FormValues extends FieldValues>(
   });
   const { state, actions } = useFormContainerContext();
 
+  const applyDisabledPolicy = () => {
+    if (disabledPolicy) {
+      const currentFormValues = methods.getValues();
+      // Gọi hàm disabledPolicy để lấy ra trạng thái disable mong muốn cho từng trường
+      const fieldDisabilities = disabledPolicy(currentFormValues);
+
+      // Lặp qua các trường và áp dụng trạng thái disabled
+      Object.entries(fieldDisabilities).forEach(([fieldName, isDisabled]) => {
+        if (isDisabled) {
+          // Nếu trường cần bị disabled, gọi actions.disableField
+          // Ép kiểu fieldName sang Path<FormValues> vì actions.disableField mong đợi kiểu này
+          actions.disableField(fieldName as Path<FormValues>);
+        } else {
+          // Nếu trường cần được enabled, gọi actions.enableField
+          actions.enableField(fieldName as Path<FormValues>);
+        }
+      });
+    }
+  };
+
   const defaultEventHandlers = {
     [resolveEventName(FormEventNames.VALUE_CHANGE, state.id)]: (
       payload: FormEventPayload[FormEventNames.VALUE_CHANGE],
@@ -119,23 +139,7 @@ function FormContainer<FormValues extends FieldValues>(
         } as OnValueChangeParams<FormValues>);
       }
 
-      if (disabledPolicy) {
-        const currentFormValues = methods.getValues();
-        // Gọi hàm disabledPolicy để lấy ra trạng thái disable mong muốn cho từng trường
-        const fieldDisabilities = disabledPolicy(currentFormValues);
-
-        // Lặp qua các trường và áp dụng trạng thái disabled
-        Object.entries(fieldDisabilities).forEach(([fieldName, isDisabled]) => {
-          if (isDisabled) {
-            // Nếu trường cần bị disabled, gọi actions.disableField
-            // Ép kiểu fieldName sang Path<FormValues> vì actions.disableField mong đợi kiểu này
-            actions.disableField(fieldName as Path<FormValues>);
-          } else {
-            // Nếu trường cần được enabled, gọi actions.enableField
-            actions.enableField(fieldName as Path<FormValues>);
-          }
-        });
-      }
+      applyDisabledPolicy();
     },
   } as Record<string, EventHandler>;
 
@@ -193,7 +197,11 @@ function FormContainer<FormValues extends FieldValues>(
       } finally {
         // Step 3: Ensure loading state is reset
         actions.setStatus('idle');
-        // Step 4: Call onReady after initialization completes
+
+        // Step 4: call applyDisabledPolicy() when form ready
+        applyDisabledPolicy();
+
+        // Step 5: Call onReady after initialization completes
         if (onReady) {
           onReady(state);
         }
