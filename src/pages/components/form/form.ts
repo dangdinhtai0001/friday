@@ -1,7 +1,7 @@
 import { ValidateResponse } from '@/components/organisms/form/form-container';
 import { FieldValues, Path } from 'react-hook-form';
 
-export interface ProductInput extends FieldValues  {
+export interface ProductInput extends FieldValues {
   productName: string;
   productCode: string;
   price: number | null;
@@ -56,6 +56,8 @@ export function disabledPolicy(
     // Nếu productName đủ dài, đảm bảo productCode không bị disabled bởi chính sách này
     disabledFields.productCode = false;
   }
+
+  // disabledFields.isAvailable = true;
 
   return disabledFields;
 }
@@ -165,7 +167,7 @@ export async function validate(
 
   // --- Trả về kết quả validation ---
   return {
-    values: data, 
+    values: data,
     errors, // Đối tượng chứa các lỗi
   };
 }
