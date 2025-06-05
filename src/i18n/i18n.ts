@@ -10,7 +10,7 @@ i18n
   .init({
     // Các namespace mà bạn sử dụng trong ứng dụng
     // Điều này giúp i18next tải trước các namespace khi khởi tạo
-    ns: ["common", "pages/theme-color"],
+    ns: ["common", "pages/theme-color", "component/select"],
     defaultNS: "common", // Namespace mặc định nếu không chỉ định
 
     fallbackLng: "en",
