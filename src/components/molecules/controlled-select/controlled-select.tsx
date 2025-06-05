@@ -2,40 +2,24 @@ import {
   MCSelect,
   MCSelectContent,
   MCSelectItem,
-  MCSelectProps,
   MCSelectTrigger,
   MCSelectValue,
 } from '@/components/atoms/select';
 import { cn } from '@/composables/utils/shadcn';
 import React from 'react';
+import { BaseOption, ControlledSelectProps } from './types';
+import { useLanguage } from '@/composables/hooks/use-language';
+import Lottie from 'react-lottie';
+import animationData from '@/assets/lotties/empty-state-animation.json';
 
-export type FormField = {
-  onChange?: (value: unknown) => void;
-  onBlur?: () => void;
-  value?: unknown;
-  disabled?: boolean;
-  name?: boolean;
-  ref?: React.Ref<unknown>;
+const defaultOptions = {
+  loop: true,
+  autoplay: true,
+  animationData: animationData,
+  rendererSettings: {
+    preserveAspectRatio: 'xMidYMid slice',
+  },
 };
-
-export type BaseOption = {
-  value: string | number;
-  label?: string;
-};
-
-export type SelectOption<TOption extends BaseOption> =
-  | TOption[]
-  | (() => Promise<TOption[]>)
-  | (() => TOption[]);
-
-export type ControlledSelectProps<TOption extends BaseOption> = FormField &
-  MCSelectProps & {
-    options?: SelectOption<TOption>;
-    getOptionValue?: (option: TOption) => unknown;
-    renderLabel?: (option: TOption) => React.ReactNode;
-    placeholder?: React.ReactNode;
-    className?: string;
-  };
 
 function ControlledSelect<TOption extends BaseOption>({
   options: optionsProp,
@@ -46,6 +30,8 @@ function ControlledSelect<TOption extends BaseOption>({
   className,
   ...props
 }: ControlledSelectProps<TOption>) {
+  const { t } = useLanguage();
+
   const [internalOptions, setInternalOptions] = React.useState<TOption[]>([]);
   const [isLoading, setIsLoading] = React.useState(false);
   const [fetchError, setFetchError] = React.useState<string | null>(null);
@@ -119,11 +105,21 @@ function ControlledSelect<TOption extends BaseOption>({
         <MCSelectValue placeholder={placeholder} />
       </MCSelectTrigger>
 
-      <MCSelectContent className='text-black-100'>
-        {isLoading && <div>Đang tải...</div>}
-        {fetchError && <div className="text-secondary-red">Lỗi: {fetchError}</div>}
+      <MCSelectContent className="text-black-100">
+        {isLoading && <div>{t('component/select:loading_options')}</div>}
+        {fetchError && (
+          <div className="text-secondary-red">
+            {t('component/select:error_fetching_data')}
+            {fetchError}
+          </div>
+        )}
         {!isLoading && !fetchError && internalOptions.length === 0 ? (
-          <div>Không có tùy chọn nào</div>
+          <div className="flex flex-col items-center justify-center">
+            <Lottie options={defaultOptions} height={150} width={150} />
+            <span className="typography-regular-14 text-black-100">
+              {t('component/select:no_options_available')}
+            </span>
+          </div>
         ) : (
           internalOptions.map((option) => (
             <MCSelectItem key={option.value} value={String(option.value)}>
