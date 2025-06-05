@@ -25,6 +25,7 @@ import {
   ECControlledSelect,
   ECBaseOption,
 } from '@/components/molecules/controlled-select';
+import { MCCheckbox } from '@/components/atoms/checkbox';
 
 type DeliveryOption = ECBaseOption & {
   label: string;
@@ -99,7 +100,8 @@ function Page() {
             <ECFormField name="isAvailable">
               <ECFormFieldLabel>Còn hàng?</ECFormFieldLabel>
               <ECFormFieldControl>
-                <ECTextField placeholder="true/false" />
+                {/* <ECTextField placeholder="true/false" /> */}
+                <MCCheckbox />
               </ECFormFieldControl>
             </ECFormField>
 
