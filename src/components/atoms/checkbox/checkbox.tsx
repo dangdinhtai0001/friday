@@ -1,37 +1,88 @@
 import * as React from 'react';
 import * as CheckboxPrimitive from '@radix-ui/react-checkbox';
+
 import { cn } from '@/composables/utils/shadcn';
-import { IconLoader } from '@/components/atoms/icon-loader';
+import { IconLoader } from '../icon-loader';
+import { AnimatePresence, motion } from 'motion/react';
+import { iconTransition, iconVariants } from './variants';
+
+export type CheckBoxProps = React.ComponentProps<
+  typeof CheckboxPrimitive.Root
+> & {};
 
 function Checkbox({
   className,
+  checked: controlledChecked,
+  onCheckedChange,
   ...props
-}: React.ComponentProps<typeof CheckboxPrimitive.Root>) {
+}: CheckBoxProps) {
+  const [uncontrolledChecked, setUncontrolledChecked] =
+    React.useState<CheckboxPrimitive.CheckedState>(false);
+
+  const isControlled = controlledChecked !== undefined;
+  const currentChecked = isControlled ? controlledChecked : uncontrolledChecked;
+
+  const handleCheckedChange = (state: CheckboxPrimitive.CheckedState) => {
+    if (isControlled && onCheckedChange) {
+      onCheckedChange(state);
+    } else if (!isControlled) {
+      setUncontrolledChecked(state);
+    }
+  };
+
+  // Logic để xác định icon nào hiển thị:
+  // 1. Ưu tiên trạng thái indeterminate
+  // 2. Sau đó đến trạng thái checked (true/false)
+
   return (
     <CheckboxPrimitive.Root
       data-slot="checkbox"
-      // className={cn(
-      //   'peer border-input dark:bg-input/30 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground dark:data-[state=checked]:bg-primary data-[state=checked]:border-primary focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive size-4 shrink-0 rounded-[4px] border shadow-xs transition-shadow outline-none focus-visible:ring-[3px] disabled:cursor-not-allowed disabled:opacity-50',
-      //   className,
-      // )}
       className={cn(
-        'size-16 shrink-0 rounded-[4px] border shadow-xs',
-        'border-input dark:bg-input/30',
-        'data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground dark:data-[state=checked]:bg-primary data-[state=checked]:border-primary',
-        'focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]',
-        'aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive',
-        'transition-shadow outline-none',
+        'rounded-8 border-black-10 size-28 border outline-none',
+        'data-[state=checked]:bg-primary-brand data-[state=checked]:text-white-100 data-[state=checked]:border-primary-brand',
+        'transition-colors duration-300',
+        'focus-visible:ring-none focus-visible:outline-none',
         'disabled:cursor-not-allowed disabled:opacity-50',
+        "data-[state=checked]:disabled:bg-black-10 data-[state=checked]:disabled:border-transparent",
         className,
       )}
+      checked={currentChecked}
+      onCheckedChange={handleCheckedChange}
       {...props}
     >
       <CheckboxPrimitive.Indicator
         data-slot="checkbox-indicator"
-        className="flex items-center justify-center text-current transition-none"
+        className="flex h-fit items-center justify-center"
+        forceMount
       >
-        {/* <CheckIcon className="size-3.5" /> */}
-        <IconLoader name="check" />
+        <AnimatePresence initial={false}>
+          {(currentChecked === true) && (
+            <motion.div
+              key="check"
+              variants={iconVariants}
+              initial="initial"
+              animate="animate"
+              exit="exit"
+              transition={iconTransition}
+              className="flex items-center justify-center"
+            >
+              <IconLoader name="check" className="size-16" />
+            </motion.div>
+          )}
+          {(currentChecked === 'indeterminate') && (
+            <motion.div
+              key="check"
+              variants={iconVariants}
+              initial="initial"
+              animate="animate"
+              exit="exit"
+              transition={iconTransition}
+              className="flex items-center justify-center"
+            >
+              <IconLoader name="minus" className="size-16" />
+            </motion.div>
+          )}
+        </AnimatePresence>
       </CheckboxPrimitive.Indicator>
     </CheckboxPrimitive.Root>
   );
