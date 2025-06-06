@@ -13,6 +13,7 @@ import {
   NestedCollapsibleMenuItem,
   SidebarSubMenuItem,
 } from "@/components/templates/app-layout";
+import { ECPageLoader } from "@/components/organisms/page-loader";
 
 /**
  * @description Hàm đệ quy để chuyển đổi mảng UnifiedSidebarRouteItem thành mảng React Router RouteObject.
@@ -34,7 +35,7 @@ export function convertUnifiedToRouteObjects(
       if (item.lazyComponent) {
         const LazyComponent = React.lazy(item.lazyComponent);
         routeElement = (
-          <Suspense fallback={<div>Đang tải...</div>}>
+          <Suspense fallback={<ECPageLoader />}>
             <LazyComponent />
           </Suspense>
         );
