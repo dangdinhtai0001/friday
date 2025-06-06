@@ -9,17 +9,9 @@ import { cn } from '@/composables/utils/shadcn';
 import React from 'react';
 import { BaseOption, ControlledSelectProps } from './types';
 import { useLanguage } from '@/composables/hooks/use-language';
-import Lottie from 'react-lottie';
 import animationData from '@/assets/lotties/empty-state-animation.json';
+import { ECLottieLoader } from '@/components/atoms/lottie-loader';
 
-const defaultOptions = {
-  loop: true,
-  autoplay: true,
-  animationData: animationData,
-  rendererSettings: {
-    preserveAspectRatio: 'xMidYMid slice',
-  },
-};
 
 function ControlledSelect<TOption extends BaseOption>({
   options: optionsProp,
@@ -115,7 +107,11 @@ function ControlledSelect<TOption extends BaseOption>({
         )}
         {!isLoading && !fetchError && internalOptions.length === 0 ? (
           <div className="flex flex-col items-center justify-center">
-            <Lottie options={defaultOptions} height={150} width={150} />
+            <ECLottieLoader
+              options={{ animationData: animationData }}
+              height={150}
+              width={150}
+            />
             <span className="typography-regular-14 text-black-100">
               {t('component/select:no_options_available')}
             </span>
