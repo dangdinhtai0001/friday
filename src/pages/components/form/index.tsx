@@ -38,7 +38,19 @@ const fetchDeliveryOptions = async (): Promise<DeliveryOption[]> => {
         { value: 'pickup', label: 'Nhận tại cửa hàng', id: 'pickup' },
         { value: 'delivery', label: 'Giao hàng tận nơi', id: 'delivery' },
       ]);
-    }, 1500); // Giả lập độ trễ
+    }, 500); // Giả lập độ trễ
+  });
+};
+
+const fetchCategoryOptions = async (): Promise<ECBaseOption[]> => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve([
+        { value: 'electronics', label: 'Điện tử',  },
+        { value: 'fashion', label: 'Thời trang',},
+        { value: 'home_appliances', label: 'Thiết bị gia dụng', },
+      ]);
+    }, 500); // Giả lập độ trễ
   });
 };
 
@@ -93,7 +105,7 @@ function Page() {
               <ECFormFieldLabel>Danh mục</ECFormFieldLabel>
               <ECFormFieldControl>
                 {/* <ECTextField placeholder="Nhập danh mục" /> */}
-                <ECControlledSelect placeholder="Nhập danh mục" />
+                <ECControlledSelect placeholder="Nhập danh mục" options={fetchCategoryOptions}/>
               </ECFormFieldControl>
             </ECFormField>
 
