@@ -2,8 +2,7 @@ import * as React from "react";
 import * as SheetPrimitive from "@radix-ui/react-dialog";
 
 import { cn } from "@/composables/utils/shadcn";
-import { ECSheetOverlay, SheetPortal } from ".";
-import { ECIconLoader } from "@/components/atoms/icon-loader";
+import { ECSheetOverlay, ECSheetPortal } from ".";
 
 function SheetContent({
   className,
@@ -14,7 +13,7 @@ function SheetContent({
   side?: "top" | "right" | "bottom" | "left";
 }) {
   return (
-    <SheetPortal>
+    <ECSheetPortal>
       <ECSheetOverlay />
       <SheetPrimitive.Content
         data-slot="sheet-content"
@@ -36,7 +35,7 @@ function SheetContent({
         {children}
         
       </SheetPrimitive.Content>
-    </SheetPortal>
+    </ECSheetPortal>
   );
 }
 
