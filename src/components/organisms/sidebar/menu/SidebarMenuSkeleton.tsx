@@ -4,7 +4,7 @@ import * as React from "react";
 import { cn } from "@/composables/utils/shadcn"; // Giả định đường dẫn
 import { SidebarMenuSkeletonProps } from "../types"; // Import props
 import { useSidebarContext } from "../context/SidebarContext"; // Import hook context
-import { MCSkeleton } from "@/components/atoms/skeleton";
+import { ECSkeleton } from "@/components/atoms/skeleton";
 
 const SidebarMenuSkeleton = React.forwardRef<
   HTMLDivElement,
@@ -27,7 +27,7 @@ const SidebarMenuSkeleton = React.forwardRef<
     >
       {/* Hiển thị Skeleton cho Icon nếu showIcon là true */}
       {showIcon && (
-        <MCSkeleton
+        <ECSkeleton
           className={cn(
             "h-5 w-5 rounded-md",
             sidebarState === "collapsed" && "shrink-0", // Đảm bảo icon không bị co lại khi collapsed
@@ -35,7 +35,7 @@ const SidebarMenuSkeleton = React.forwardRef<
         />
       )}
       {/* Skeleton cho văn bản, ẩn khi collapsed */}
-      <MCSkeleton
+      <ECSkeleton
         className={cn(
           "h-5 flex-1 rounded-md",
           sidebarState === "collapsed" && "hidden", // Ẩn khi collapsed

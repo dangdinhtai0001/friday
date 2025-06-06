@@ -2,10 +2,10 @@
 
 import * as React from "react";
 import { cn } from "@/composables/utils/shadcn"; // Giả định đường dẫn
-import { MCSeparator } from "@/components/atoms/separator";
+import { ECSeparator } from "@/components/atoms/separator";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
-interface SidebarSeparatorProps extends React.ComponentProps<typeof MCSeparator> {
+interface SidebarSeparatorProps extends React.ComponentProps<typeof ECSeparator> {
   // Bạn có thể thêm các props cụ thể cho SidebarSeparator nếu cần
 }
 
@@ -14,7 +14,7 @@ const SidebarSeparator = React.forwardRef<
   SidebarSeparatorProps
 >(({ className, ...props }, ref) => {
   return (
-    <MCSeparator
+    <ECSeparator
       ref={ref}
       className={cn(
         "my-4", // Khoảng cách trên và dưới

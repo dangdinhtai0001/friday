@@ -1,14 +1,14 @@
 import {
-  MCTooltip,
-  MCTooltipContent,
-  MCTooltipProvider,
-  MCTooltipTrigger,
+  ECTooltip,
+  ECTooltipContent,
+  ECTooltipProvider,
+  ECTooltipTrigger,
 } from "@/components/molecules/tooltip";
 import {
-  MCCard,
-  MCCardContent,
-  MCCardHeader,
-  MCCardTitle,
+  ECCard,
+  ECCardContent,
+  ECCardHeader,
+  ECCardTitle,
 } from "@/components/organisms/card";
 import { useLanguage } from "@/composables/hooks/use-language";
 import { useTheme } from "@/composables/hooks/use-theme";
@@ -31,20 +31,20 @@ function Page() {
 
       <div className="flex flex-col gap-8">
         {Object.entries(currentThemeColors).map(([category, colorArray]) => (
-          <MCCard className="" key={category}>
-            <MCCardHeader>
-              <MCCardTitle>{category}</MCCardTitle>
-            </MCCardHeader>
+          <ECCard className="" key={category}>
+            <ECCardHeader>
+              <ECCardTitle>{category}</ECCardTitle>
+            </ECCardHeader>
 
-            <MCCardContent className="flex items-center gap-8">
+            <ECCardContent className="flex items-center gap-8">
               {colorArray.map((color) => (
                 <div
                   key={color.name}
                   className="flex flex-col items-center gap-8"
                 >
-                  <MCTooltip>
-                    <MCTooltipProvider>
-                      <MCTooltipTrigger>
+                  <ECTooltip>
+                    <ECTooltipProvider>
+                      <ECTooltipTrigger>
                         <div
                           className={cn(
                             "rounded-12 border-black-20 size-80 border",
@@ -52,13 +52,13 @@ function Page() {
                             color.className,
                           )}
                         />
-                      </MCTooltipTrigger>
+                      </ECTooltipTrigger>
 
-                      <MCTooltipContent side="right">
+                      <ECTooltipContent side="right">
                         {color.value}
-                      </MCTooltipContent>
-                    </MCTooltipProvider>
-                  </MCTooltip>
+                      </ECTooltipContent>
+                    </ECTooltipProvider>
+                  </ECTooltip>
 
                   {/* ------ */}
                   <div className="flex flex-col items-center gap-1">
@@ -72,8 +72,8 @@ function Page() {
                   </div>
                 </div>
               ))}
-            </MCCardContent>
-          </MCCard>
+            </ECCardContent>
+          </ECCard>
         ))}
       </div>
     </div>

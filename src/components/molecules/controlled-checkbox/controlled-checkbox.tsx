@@ -1,9 +1,9 @@
-import { MCCheckbox, MCCheckboxProps } from '@/components/atoms/checkbox';
+import { ECCheckbox, ECCheckboxProps } from '@/components/atoms/checkbox';
 import { ControlledProps } from '@/components/shared-types';
 import * as CheckboxPrimitive from '@radix-ui/react-checkbox';
 
 export type ControlledCheckboxProps = ControlledProps &
-  MCCheckboxProps & {
+  ECCheckboxProps & {
     value?: CheckboxPrimitive.CheckedState;
   };
 
@@ -18,7 +18,7 @@ function ControlledCheckbox({
     }
   };
   return (
-      <MCCheckbox checked={value} onCheckedChange={handleChange} {...props} />
+      <ECCheckbox checked={value} onCheckedChange={handleChange} {...props} />
   );
 }
 

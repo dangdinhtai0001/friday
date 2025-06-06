@@ -1,12 +1,12 @@
 import {
-  ECCascadingMenu,
-  MCDropdownMenu,
-  MCDropdownMenuContent,
-  MCDropdownMenuItem,
-  MCDropdownMenuLabel,
-  MCDropdownMenuSeparator,
-  MCDropdownMenuShortcut,
-  MCDropdownMenuTrigger,
+  ECDropdownMenuCascadingMenu,
+  ECDropdownMenu,
+  ECDropdownMenuContent,
+  ECDropdownMenuItem,
+  ECDropdownMenuLabel,
+  ECDropdownMenuSeparator,
+  ECDropdownMenuShortcut,
+  ECDropdownMenuTrigger,
 } from "@/components/molecules/dropdown-menu";
 import {
   SidebarMenuButton,
@@ -31,30 +31,30 @@ function DropdownItem({ item }: { item: DropdownItemType }) {
     case "link": {
       const { icon, text, link, shortcut } = item as DropdownLink;
       return (
-        <MCDropdownMenuItem className="rounded-12 gap-4 p-8">
+        <ECDropdownMenuItem className="rounded-12 gap-4 p-8">
           <SidebarMenuButton icon={icon} text={text} link={link} />
           {shortcut && (
-            <MCDropdownMenuShortcut>{shortcut}</MCDropdownMenuShortcut>
+            <ECDropdownMenuShortcut>{shortcut}</ECDropdownMenuShortcut>
           )}
-        </MCDropdownMenuItem>
+        </ECDropdownMenuItem>
       );
     }
     case "submenu": {
       const { text, submenuItems } = item as DropdownSubmenu;
       return (
-        <ECCascadingMenu trigger={text} key={text}>
+        <ECDropdownMenuCascadingMenu trigger={text} key={text}>
           {/* Using text as a simple key */}
           {/* RECURSION HERE: Calling DropdownMenuList to render child items */}
           <DropdownMenuList items={submenuItems} />
-        </ECCascadingMenu>
+        </ECDropdownMenuCascadingMenu>
       );
     }
     case "separator": {
-      return <MCDropdownMenuSeparator />;
+      return <ECDropdownMenuSeparator />;
     }
     case "label": {
       const { text } = item as DropdownLabelItem;
-      return <MCDropdownMenuLabel>{text}</MCDropdownMenuLabel>;
+      return <ECDropdownMenuLabel>{text}</ECDropdownMenuLabel>;
     }
     default:
       return null;
@@ -88,11 +88,11 @@ function SidebarDropdownItem({
 
   return (
     <>
-      <MCDropdownMenu>
+      <ECDropdownMenu>
         <SidebarMenuItem>
           {/* <TriggerWithTooltip /> */}
           <CollapsedSidebarItemTrigger tooltip={tooltip}>
-            <MCDropdownMenuTrigger
+            <ECDropdownMenuTrigger
               asChild
               className="rounded-12 flex w-full justify-center"
             >
@@ -101,15 +101,15 @@ function SidebarDropdownItem({
                 className="hover:bg-black-4 aspect-square w-full"
                 style={{ maxWidth: `calc(${collapsedWidth} - 24px)` }}
               />
-            </MCDropdownMenuTrigger>
+            </ECDropdownMenuTrigger>
           </CollapsedSidebarItemTrigger>
 
-          <MCDropdownMenuContent className="min-w-[8rem] max-w-[11rem] text-black-100" side="right">
+          <ECDropdownMenuContent className="min-w-[8rem] max-w-[11rem] text-black-100" side="right">
             {/* USING THE RECURSIVE RENDER COMPONENT HERE */}
             <DropdownMenuList items={dropdownItems} />
-          </MCDropdownMenuContent>
+          </ECDropdownMenuContent>
         </SidebarMenuItem>
-      </MCDropdownMenu>
+      </ECDropdownMenu>
     </>
   );
 }

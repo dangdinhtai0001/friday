@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as SelectPrimitive from '@radix-ui/react-select';
 
 import { cn } from '@/composables/utils/shadcn';
-import { IconLoader } from '../icon-loader';
+import { ECIconLoader } from '../icon-loader';
 import { SelectItemProps } from './types';
 
 function SelectItem({
@@ -26,7 +26,7 @@ function SelectItem({
     >
       <span className="absolute right-4 flex items-center justify-center">
         <SelectPrimitive.ItemIndicator>
-          <IconLoader name='check'/>
+          <ECIconLoader name='check'/>
         </SelectPrimitive.ItemIndicator>
       </span>
       <SelectPrimitive.ItemText>{children}</SelectPrimitive.ItemText>

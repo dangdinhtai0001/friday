@@ -3,7 +3,7 @@
 import * as React from "react";
 import { Slot } from "@radix-ui/react-slot";
 import { cn } from "@/composables/utils/shadcn"; // Đảm bảo đường dẫn chính xác
-import { IconLoader } from "@/components/atoms/icon-loader";
+import { ECIconLoader } from "@/components/atoms/icon-loader";
 import { Link } from "react-router";
 
 interface SidebarMenuSubButtonProps
@@ -38,7 +38,7 @@ const SidebarMenuSubButton = React.forwardRef<
     // Xử lý icon: Nếu là string thì dùng IconLoader, nếu không thì render trực tiếp
     const renderIcon = () => {
       if (!icon) return null;
-      return typeof icon === "string" ? <IconLoader name={icon} className="size-20"/> : icon;
+      return typeof icon === "string" ? <ECIconLoader name={icon} className="size-20"/> : icon;
     };
 
     // Xử lý text: Nếu có link thì wrap vào <Link>, nếu không thì render trực tiếp

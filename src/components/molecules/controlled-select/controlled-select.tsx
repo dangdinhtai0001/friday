@@ -1,9 +1,9 @@
 import {
-  MCSelect,
-  MCSelectContent,
-  MCSelectItem,
-  MCSelectTrigger,
-  MCSelectValue,
+  ECSelect,
+  ECSelectContent,
+  ECSelectItem,
+  ECSelectTrigger,
+  ECSelectValue,
 } from '@/components/atoms/select';
 import { cn } from '@/composables/utils/shadcn';
 import React from 'react';
@@ -100,12 +100,12 @@ function ControlledSelect<TOption extends BaseOption>({
   };
 
   return (
-    <MCSelect onValueChange={handleValueChange} {...props}>
-      <MCSelectTrigger className={cn('text-black-100 w-full', className)}>
-        <MCSelectValue placeholder={placeholder} />
-      </MCSelectTrigger>
+    <ECSelect onValueChange={handleValueChange} {...props}>
+      <ECSelectTrigger className={cn('text-black-100 w-full', className)}>
+        <ECSelectValue placeholder={placeholder} />
+      </ECSelectTrigger>
 
-      <MCSelectContent className="text-black-100">
+      <ECSelectContent className="text-black-100">
         {isLoading && <div>{t('component/select:loading_options')}</div>}
         {fetchError && (
           <div className="text-secondary-red">
@@ -122,13 +122,13 @@ function ControlledSelect<TOption extends BaseOption>({
           </div>
         ) : (
           internalOptions.map((option) => (
-            <MCSelectItem key={option.value} value={String(option.value)}>
+            <ECSelectItem key={option.value} value={String(option.value)}>
               {renderLabel(option)}
-            </MCSelectItem>
+            </ECSelectItem>
           ))
         )}
-      </MCSelectContent>
-    </MCSelect>
+      </ECSelectContent>
+    </ECSelect>
   );
 }
 

@@ -1,6 +1,6 @@
 import * as React from "react";
 import { cn } from "@/composables/utils/shadcn";
-import { IconLoader } from "../icon-loader";
+import { ECIconLoader } from "../icon-loader";
 
 function BreadcrumbSeparator({
   children,
@@ -15,7 +15,7 @@ function BreadcrumbSeparator({
       className={cn("flex items-center justify-center", className)}
       {...props}
     >
-      {children ?? <IconLoader name="slash" className="text-black-40" />}
+      {children ?? <ECIconLoader name="slash" className="text-black-40" />}
     </li>
   );
 }

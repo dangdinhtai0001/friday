@@ -1,12 +1,12 @@
-import { type MCInputProps, MCInput } from '@/components/atoms/input';
+import { type ECInputProps, ECInput } from '@/components/atoms/input';
 import { cn } from '@/composables/utils/shadcn';
 import { AnimatePresence, motion } from 'motion/react';
 import React from 'react';
-import { IconLoader } from '../icon-loader';
+import { ECIconLoader } from '../icon-loader';
 
 type AddonPosition = 'before' | 'after';
 
-export type TextFieldProps = Omit<MCInputProps, 'prefix'> & {
+export type TextFieldProps = Omit<ECInputProps, 'prefix'> & {
   defaultValue?: string;
   disabled?: boolean;
   formatter?: (value: string) => string;
@@ -122,7 +122,7 @@ function TextField({
                   }
             }
           >
-            <IconLoader name="x" />
+            <ECIconLoader name="x" />
           </motion.button>
         )}
       </AnimatePresence>
@@ -142,7 +142,7 @@ function TextField({
     >
       {renderAddon(addonBefore, 'before')}
       {renderAffix(prefix)}
-      <MCInput
+      <ECInput
         className={cn(
           'w-full rounded-none border-0 px-0 focus-visible:ring-0',
           disabled ? '' : 'group-hover:border-black-40',

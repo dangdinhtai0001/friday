@@ -1,8 +1,8 @@
 import {
-  MCTooltip,
-  MCTooltipContent,
-  MCTooltipProvider,
-  MCTooltipTrigger,
+  ECTooltip,
+  ECTooltipContent,
+  ECTooltipProvider,
+  ECTooltipTrigger,
 } from "@/components/molecules/tooltip";
 import { PropsWithChildren } from "react";
 
@@ -17,12 +17,12 @@ function CollapsedSidebarItemTrigger({
 
   if (tooltip) {
     return (
-      <MCTooltipProvider>
-        <MCTooltip>
-          <MCTooltipTrigger asChild>{children}</MCTooltipTrigger>
-          <MCTooltipContent side="right">{tooltip}</MCTooltipContent>
-        </MCTooltip>
-      </MCTooltipProvider>
+      <ECTooltipProvider>
+        <ECTooltip>
+          <ECTooltipTrigger asChild>{children}</ECTooltipTrigger>
+          <ECTooltipContent side="right">{tooltip}</ECTooltipContent>
+        </ECTooltip>
+      </ECTooltipProvider>
     );
   }
 

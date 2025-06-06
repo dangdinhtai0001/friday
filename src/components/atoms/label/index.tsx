@@ -1,1 +1,1 @@
-export { default as MCLabel } from "./Label";
+export { default as ECLabel } from "./ec-label";

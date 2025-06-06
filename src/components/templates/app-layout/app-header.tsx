@@ -1,10 +1,10 @@
 import {
-  MCBreadcrumb,
-  MCBreadcrumbItem,
-  MCBreadcrumbLink,
-  MCBreadcrumbList,
-  MCBreadcrumbPage,
-  MCBreadcrumbSeparator,
+  ECBreadcrumb,
+  ECBreadcrumbItem,
+  ECBreadcrumbLink,
+  ECBreadcrumbList,
+  ECBreadcrumbPage,
+  ECBreadcrumbSeparator,
 } from "@/components/atoms/breadcrumb";
 import { SidebarTrigger } from "@/components/organisms/sidebar";
 import React from "react";
@@ -56,34 +56,34 @@ function AppHeader() {
           onToggleSidebar={() => setIsSidebarExpanded(!isSidebarExpanded)}
         />
 
-        <MCBreadcrumb>
-          <MCBreadcrumbList className="gap-0">
+        <ECBreadcrumb>
+          <ECBreadcrumbList className="gap-0">
             {/* Breadcrumb cho Home */}
-            <MCBreadcrumbItem>
-              <MCBreadcrumbLink className="text-black-40">
+            <ECBreadcrumbItem>
+              <ECBreadcrumbLink className="text-black-40">
                 <Link to={"/"}>Home</Link>
-              </MCBreadcrumbLink>
-            </MCBreadcrumbItem>
+              </ECBreadcrumbLink>
+            </ECBreadcrumbItem>
 
             {/* Các breadcrumb từ tuyến đường khớp */}
             {crumbs.map((crumb) => (
               <React.Fragment key={crumb.path}>
-                <MCBreadcrumbSeparator />
-                <MCBreadcrumbItem>
+                <ECBreadcrumbSeparator />
+                <ECBreadcrumbItem>
                   {crumb.isCurrent ? (
-                    <MCBreadcrumbPage className="text-black-100">
+                    <ECBreadcrumbPage className="text-black-100">
                       {crumb.text}
-                    </MCBreadcrumbPage>
+                    </ECBreadcrumbPage>
                   ) : (
-                    <MCBreadcrumbLink>
+                    <ECBreadcrumbLink>
                       <Link to={crumb.path}>{crumb.text}</Link>
-                    </MCBreadcrumbLink>
+                    </ECBreadcrumbLink>
                   )}
-                </MCBreadcrumbItem>
+                </ECBreadcrumbItem>
               </React.Fragment>
             ))}
-          </MCBreadcrumbList>
-        </MCBreadcrumb>
+          </ECBreadcrumbList>
+        </ECBreadcrumb>
       </div>
       <div className="flex items-center justify-start gap-4">
         <ECThemeSwitcher />

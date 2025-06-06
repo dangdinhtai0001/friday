@@ -8,11 +8,11 @@ import CollapsedSidebarContent from "./collapsed-sidebar-content";
 import ExpandedSidebarContent from "./expanded-sidebar-content";
 import { motion, AnimatePresence } from "motion/react";
 import {
-  MCAvatar,
-  MCAvatarFallback,
-  MCAvatarImage,
+  ECAvatar,
+  ECAvatarFallback,
+  ECAvatarImage,
 } from "@/components/atoms/avatar";
-import { MCSkeleton } from "@/components/atoms/skeleton";
+import { ECSkeleton } from "@/components/atoms/skeleton";
 import logo from "@/assets/images/vite.svg";
 import { Link } from "react-router";
 import { useAppLayoutContext } from "../context/app-layout-context";
@@ -48,12 +48,12 @@ function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           className=" rounded-8 flex w-full cursor-pointer items-center justify-start gap-12 px-8"
           style={{ height: headerHeight }}
         >
-          <MCAvatar className="size-32">
-            <MCAvatarImage src={logo} />
-            <MCAvatarFallback>
-              <MCSkeleton className="size-32 rounded-full" />
-            </MCAvatarFallback>
-          </MCAvatar>
+          <ECAvatar className="size-32">
+            <ECAvatarImage src={logo} />
+            <ECAvatarFallback>
+              <ECSkeleton className="size-32 rounded-full" />
+            </ECAvatarFallback>
+          </ECAvatar>
           {isSidebarExpanded && (
             <span className="overflow-hidden text-ellipsis whitespace-nowrap text-black-100 typography-regular-24">
               Friday

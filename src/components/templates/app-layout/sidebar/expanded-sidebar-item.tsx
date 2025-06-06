@@ -1,7 +1,7 @@
 import {
-  MCCollapsiable,
-  MCCollapsibleContent,
-  MCCollapsibleTrigger,
+  ECCollapsiable,
+  ECCollapsibleContent,
+  ECCollapsibleTrigger,
 } from "@/components/atoms/collapsible";
 import {
   SidebarMenuButton,
@@ -16,7 +16,7 @@ import {
   SidebarCollapsibleProps,
   SidebarSubMenuItemProps,
 } from "../types/sidebar-menu.types";
-import { IconLoader } from "@/components/atoms/icon-loader";
+import { ECIconLoader } from "@/components/atoms/icon-loader";
 
 /**
  * Renders a single submenu item, which can be either a link or a nested collapsible.
@@ -41,8 +41,8 @@ function RenderSidebarSubMenuItem({ item }: SidebarSubMenuItemProps) {
 
     return (
       <SidebarMenuSubItem>
-        <MCCollapsiable className="w-full">
-          <MCCollapsibleTrigger
+        <ECCollapsiable className="w-full">
+          <ECCollapsibleTrigger
             asChild
             className="hover:bg-black-4 rounded-12 w-full gap-4 p-8"
             iconPosition="start"
@@ -52,17 +52,17 @@ function RenderSidebarSubMenuItem({ item }: SidebarSubMenuItemProps) {
               icon={collapsibleItem.icon}
               text={collapsibleItem.text}
             />
-          </MCCollapsibleTrigger>
+          </ECCollapsibleTrigger>
 
-          <MCCollapsibleContent className="px-1">
+          <ECCollapsibleContent className="px-1">
             <SidebarMenuSub className="gap-4">
               {collapsibleItem.nestedItems?.map((nestedItem, nestedIndex) => (
                 // RECURSION HERE: Calling RenderSidebarSubMenuItem for each nested item
                 <RenderSidebarSubMenuItem key={nestedIndex} item={nestedItem} />
               ))}
             </SidebarMenuSub>
-          </MCCollapsibleContent>
-        </MCCollapsiable>
+          </ECCollapsibleContent>
+        </ECCollapsiable>
       </SidebarMenuSubItem>
     );
   }
@@ -80,26 +80,26 @@ function SidebarCollapsible({
 }: SidebarCollapsibleProps) {
   return (
     <>
-      <MCCollapsiable defaultOpen>
+      <ECCollapsiable defaultOpen>
         <SidebarMenuItem className="flex flex-col items-start">
-          <MCCollapsibleTrigger
+          <ECCollapsibleTrigger
             asChild
             className="hover:bg-black-4 rounded-12 w-full gap-4 p-8 cursor-pointer "
             iconPosition="start"
-            customIcon={<IconLoader name={"chevron-right"} className="size-16 text-black-20" />}
+            customIcon={<ECIconLoader name={"chevron-right"} className="size-16 text-black-20" />}
           >
             <SidebarMenuButton icon={mainIcon} text={mainText} />
-          </MCCollapsibleTrigger>
+          </ECCollapsibleTrigger>
 
-          <MCCollapsibleContent className="px-4">
+          <ECCollapsibleContent className="px-4">
             <SidebarMenuSub className="gap-4 px-4">
               {subItems.map((item, index) => (
                 <RenderSidebarSubMenuItem key={index} item={item} />
               ))}
             </SidebarMenuSub>
-          </MCCollapsibleContent>
+          </ECCollapsibleContent>
         </SidebarMenuItem>
-      </MCCollapsiable>
+      </ECCollapsiable>
     </>
   );
 }

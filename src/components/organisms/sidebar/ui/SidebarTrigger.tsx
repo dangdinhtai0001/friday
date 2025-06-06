@@ -3,7 +3,7 @@ import { cn } from "@/composables/utils/shadcn"; // Giả định đường dẫ
 import { useSidebarContext } from "../context/SidebarContext"; // Import hook context
 import { motion } from "motion/react";
 import { Button } from "@/components/atoms/button";
-import { IconLoader } from "@/components/atoms/icon-loader";
+import { ECIconLoader } from "@/components/atoms/icon-loader";
 import { SIDEBAR_TRANSITION_DURATION } from "../constants";
 
 const iconTransition = {
@@ -64,7 +64,7 @@ const SidebarTrigger = React.forwardRef<HTMLButtonElement, SidebarTriggerProps>(
         {...props}
       >
         {children ?? (
-          <IconLoader
+          <ECIconLoader
             name="layout-sidebar-right-collapse"
             className="size-24"
           />

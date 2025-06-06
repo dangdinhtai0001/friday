@@ -1,12 +1,12 @@
 import {
-  MCDropdownMenu,
-  MCDropdownMenuContent,
-  MCDropdownMenuGroup,
-  MCDropdownMenuItem,
-  MCDropdownMenuTrigger,
+  ECDropdownMenu,
+  ECDropdownMenuContent,
+  ECDropdownMenuGroup,
+  ECDropdownMenuItem,
+  ECDropdownMenuTrigger,
 } from "../dropdown-menu";
-import { MCButton } from "@/components/atoms/button";
-import { IconLoader } from "@/components/atoms/icon-loader";
+import { ECButton } from "@/components/atoms/button";
+import { ECIconLoader } from "@/components/atoms/icon-loader";
 import { useTheme } from "@/composables/hooks/use-theme";
 import React from "react";
 import { find as _find } from "lodash-es";
@@ -35,36 +35,36 @@ function ThemeSwitcher() {
   };
 
   return (
-    <MCDropdownMenu>
-      <MCDropdownMenuTrigger asChild>
-        <MCButton
+    <ECDropdownMenu>
+      <ECDropdownMenuTrigger asChild>
+        <ECButton
           leftIcon={
-            <IconLoader name={currentOption.icon} className="size-20" />
+            <ECIconLoader name={currentOption.icon} className="size-20" />
           }
         />
-      </MCDropdownMenuTrigger>
+      </ECDropdownMenuTrigger>
 
-      <MCDropdownMenuContent
+      <ECDropdownMenuContent
         className="typography-regular-12 text-black-100 w-[8rem]"
         side="bottom"
       >
-        <MCDropdownMenuGroup>
+        <ECDropdownMenuGroup>
           {options.map((option, index) => (
-            <MCDropdownMenuItem
+            <ECDropdownMenuItem
               key={index}
               onSelect={() => {
                 handleSelect(option);
               }}
             >
               <div className="rounded-8 flex items-center justify-start gap-4">
-                <IconLoader name={option.icon} />
+                <ECIconLoader name={option.icon} />
                 <div>{option.text}</div>
               </div>
-            </MCDropdownMenuItem>
+            </ECDropdownMenuItem>
           ))}
-        </MCDropdownMenuGroup>
-      </MCDropdownMenuContent>
-    </MCDropdownMenu>
+        </ECDropdownMenuGroup>
+      </ECDropdownMenuContent>
+    </ECDropdownMenu>
   );
 }
 

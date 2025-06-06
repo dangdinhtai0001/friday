@@ -1,41 +1,41 @@
-import { IconLoader } from "@/components/atoms/icon-loader";
-import { MCInput } from "@/components/atoms/input";
-import { MCLabel } from "@/components/atoms/label";
+import { ECIconLoader } from "@/components/atoms/icon-loader";
+import { ECInput } from "@/components/atoms/input";
+import { ECLabel } from "@/components/atoms/label";
 import { MCTextFiled } from "@/components/atoms/text-field";
-import { MCSeparator } from "@/components/atoms/separator";
+import { ECSeparator } from "@/components/atoms/separator";
 import {
-  MCTooltip,
-  MCTooltipContent,
-  MCTooltipProvider,
-  MCTooltipTrigger,
+  ECTooltip,
+  ECTooltipContent,
+  ECTooltipProvider,
+  ECTooltipTrigger,
 } from "@/components/molecules/tooltip";
 import { Button } from "@/components/atoms/button";
-import { MCSkeleton } from "@/components/atoms/skeleton";
+import { ECSkeleton } from "@/components/atoms/skeleton";
 import {
-  MCSheet,
-  MCSheetClose,
-  MCSheetContent,
-  MCSheetDescription,
-  MCSheetFooter,
-  MCSheetHeader,
-  MCSheetTitle,
-  MCSheetTrigger,
+  ECSheet,
+  ECSheetClose,
+  ECSheetContent,
+  ECSheetDescription,
+  ECSheetFooter,
+  ECSheetHeader,
+  ECSheetTitle,
+  ECSheetTrigger,
 } from "@/components/organisms/sheet";
 import {
-  ECCascadingMenu,
-  MCDropdownMenu,
-  MCDropdownMenuContent,
-  MCDropdownMenuGroup,
-  MCDropdownMenuItem,
-  MCDropdownMenuLabel,
-  MCDropdownMenuSeparator,
-  MCDropdownMenuShortcut,
-  MCDropdownMenuTrigger,
+  ECDropdownMenuCascadingMenu,
+  ECDropdownMenu,
+  ECDropdownMenuContent,
+  ECDropdownMenuGroup,
+  ECDropdownMenuItem,
+  ECDropdownMenuLabel,
+  ECDropdownMenuSeparator,
+  ECDropdownMenuShortcut,
+  ECDropdownMenuTrigger,
 } from "@/components/molecules/dropdown-menu";
 import {
-  MCCollapsibleContent,
-  MCCollapsiable,
-  MCCollapsibleTrigger,
+  ECCollapsibleContent,
+  ECCollapsiable,
+  ECCollapsibleTrigger,
 } from "@/components/atoms/collapsible";
 import { ChevronsUpDown } from "lucide-react";
 import React from "react";
@@ -234,7 +234,7 @@ const renderDropdownChildren = (
     switch (item.type) {
       case "item":
         return (
-          <MCDropdownMenuItem
+          <ECDropdownMenuItem
             key={index}
             onClick={item.onClick}
             inset={item.inset}
@@ -242,35 +242,35 @@ const renderDropdownChildren = (
           >
             {item.label}
             {item.shortcut && (
-              <MCDropdownMenuShortcut>{item.shortcut}</MCDropdownMenuShortcut>
+              <ECDropdownMenuShortcut>{item.shortcut}</ECDropdownMenuShortcut>
             )}
-          </MCDropdownMenuItem>
+          </ECDropdownMenuItem>
         );
       case "label":
         return (
-          <MCDropdownMenuLabel key={index} inset={item.inset}>
+          <ECDropdownMenuLabel key={index} inset={item.inset}>
             {item.label}
-          </MCDropdownMenuLabel>
+          </ECDropdownMenuLabel>
         );
       case "separator":
-        return <MCDropdownMenuSeparator key={index} />;
+        return <ECDropdownMenuSeparator key={index} />;
       case "group":
         return (
-          <MCDropdownMenuGroup key={index}>
+          <ECDropdownMenuGroup key={index}>
             {renderDropdownChildren(item.items)}
             {/* Gọi đệ quy cho các mục trong group */}
-          </MCDropdownMenuGroup>
+          </ECDropdownMenuGroup>
         );
       case "submenu":
         return (
-          <ECCascadingMenu
+          <ECDropdownMenuCascadingMenu
             key={index}
             trigger={item.trigger}
             inset={item.inset}
           >
             {renderDropdownChildren(item.items)}
             {/* Gọi đệ quy cho các mục trong submenu */}
-          </ECCascadingMenu>
+          </ECDropdownMenuCascadingMenu>
         );
       default:
         return null;
@@ -282,30 +282,30 @@ function Page() {
   return (
     <>
       <div>Form control component nè</div>
-      <MCCollapsiable className="w-[350px] space-y-2">
+      <ECCollapsiable className="w-[350px] space-y-2">
         <div className="flex items-center justify-between space-x-4 px-4">
           <h4 className="text-sm font-semibold">
             @peduarte starred 3 repositories
           </h4>
-          <MCCollapsibleTrigger asChild>
+          <ECCollapsibleTrigger asChild>
             <Button className="w-9 p-0">
               <ChevronsUpDown className="h-4 w-4" />
               <span className="sr-only">Toggle</span>
             </Button>
-          </MCCollapsibleTrigger>
+          </ECCollapsibleTrigger>
         </div>
         <div className="rounded-md border px-4 py-3 font-mono text-sm">
           @radix-ui/primitives
         </div>
-        <MCCollapsibleContent className="flex flex-col gap-8">
+        <ECCollapsibleContent className="flex flex-col gap-8">
           <div className="rounded-md border px-4 py-3 font-mono text-sm">
             @radix-ui/colors
           </div>
           <div className="rounded-md border px-4 py-3 font-mono text-sm">
             @stitches/react
           </div>
-        </MCCollapsibleContent>
-      </MCCollapsiable>
+        </ECCollapsibleContent>
+      </ECCollapsiable>
       <div>Form control component nè</div>
       {/* <MCDropdownMenu>
         <MCDropdownMenuTrigger>
@@ -339,96 +339,96 @@ function Page() {
           </MCDropdownMenuGroup>
         </MCDropdownMenuContent>
       </MCDropdownMenu> */}
-      <MCDropdownMenu>
-        <MCDropdownMenuTrigger asChild>
+      <ECDropdownMenu>
+        <ECDropdownMenuTrigger asChild>
           <Button variant="outline">{myDropdownData.triggerText}</Button>
-        </MCDropdownMenuTrigger>
-        <MCDropdownMenuContent className="w-56" side="right">
+        </ECDropdownMenuTrigger>
+        <ECDropdownMenuContent className="w-56" side="right">
           {renderDropdownChildren(myDropdownData.content)}
-        </MCDropdownMenuContent>
-      </MCDropdownMenu>
+        </ECDropdownMenuContent>
+      </ECDropdownMenu>
       <div className="h-8 w-full"></div>
 
-      <MCSheet>
-        <MCSheetTrigger asChild>
+      <ECSheet>
+        <ECSheetTrigger asChild>
           <Button variant="outline">Open</Button>
-        </MCSheetTrigger>
-        <MCSheetContent>
-          <MCSheetHeader>
-            <MCSheetTitle>Edit profile</MCSheetTitle>
-            <MCSheetDescription>
+        </ECSheetTrigger>
+        <ECSheetContent>
+          <ECSheetHeader>
+            <ECSheetTitle>Edit profile</ECSheetTitle>
+            <ECSheetDescription>
               Make changes to your profile here. Click save when you're done.
-            </MCSheetDescription>
-          </MCSheetHeader>
+            </ECSheetDescription>
+          </ECSheetHeader>
           <div className="grid gap-4 py-4">
             <div className="grid grid-cols-4 items-center gap-4">
-              <MCLabel htmlFor="name" className="text-right">
+              <ECLabel htmlFor="name" className="text-right">
                 Name
-              </MCLabel>
-              <MCInput id="name" value="Pedro Duarte" className="col-span-3" />
+              </ECLabel>
+              <ECInput id="name" value="Pedro Duarte" className="col-span-3" />
             </div>
             <div className="grid grid-cols-4 items-center gap-4">
-              <MCLabel htmlFor="username" className="text-right">
+              <ECLabel htmlFor="username" className="text-right">
                 Username
-              </MCLabel>
-              <MCInput id="username" value="@peduarte" className="col-span-3" />
+              </ECLabel>
+              <ECInput id="username" value="@peduarte" className="col-span-3" />
             </div>
           </div>
-          <MCSheetFooter>
-            <MCSheetClose asChild>
+          <ECSheetFooter>
+            <ECSheetClose asChild>
               <Button type="submit">Save changes</Button>
-            </MCSheetClose>
-          </MCSheetFooter>
-        </MCSheetContent>
-      </MCSheet>
+            </ECSheetClose>
+          </ECSheetFooter>
+        </ECSheetContent>
+      </ECSheet>
 
-      <MCTooltipProvider>
-        <MCTooltip>
-          <MCTooltipTrigger asChild>
+      <ECTooltipProvider>
+        <ECTooltip>
+          <ECTooltipTrigger asChild>
             <Button variant="outline">Hover</Button>
-          </MCTooltipTrigger>
-          <MCTooltipContent side="top">
+          </ECTooltipTrigger>
+          <ECTooltipContent side="top">
             <p>Add to library</p>
-          </MCTooltipContent>
-        </MCTooltip>
-      </MCTooltipProvider>
+          </ECTooltipContent>
+        </ECTooltip>
+      </ECTooltipProvider>
 
-      <MCTooltipProvider>
-        <MCTooltip>
-          <MCTooltipTrigger asChild>
+      <ECTooltipProvider>
+        <ECTooltip>
+          <ECTooltipTrigger asChild>
             <Button variant="outline">Hover</Button>
-          </MCTooltipTrigger>
-          <MCTooltipContent side="bottom">
+          </ECTooltipTrigger>
+          <ECTooltipContent side="bottom">
             <p>Add to library</p>
-          </MCTooltipContent>
-        </MCTooltip>
-      </MCTooltipProvider>
+          </ECTooltipContent>
+        </ECTooltip>
+      </ECTooltipProvider>
 
-      <MCTooltipProvider>
-        <MCTooltip>
-          <MCTooltipTrigger asChild>
+      <ECTooltipProvider>
+        <ECTooltip>
+          <ECTooltipTrigger asChild>
             <Button variant="outline">Hover</Button>
-          </MCTooltipTrigger>
-          <MCTooltipContent side="right">
+          </ECTooltipTrigger>
+          <ECTooltipContent side="right">
             <p>Add to library</p>
-          </MCTooltipContent>
-        </MCTooltip>
-      </MCTooltipProvider>
+          </ECTooltipContent>
+        </ECTooltip>
+      </ECTooltipProvider>
 
       <div className="h-8"></div>
 
       <div className="flex items-center space-x-4">
-        <MCSkeleton className="h-48 w-48 rounded-full" />
+        <ECSkeleton className="h-48 w-48 rounded-full" />
         <div className="space-y-2">
-          <MCSkeleton className="h-24 w-[250px]" />
-          <MCSkeleton className="h-24 w-[200px]" />
+          <ECSkeleton className="h-24 w-[250px]" />
+          <ECSkeleton className="h-24 w-[200px]" />
         </div>
       </div>
 
       <div className="h-8"></div>
 
-      <MCInput>{/* <span>123</span> */}</MCInput>
-      <MCInput disabled prefix="123" />
+      <ECInput>{/* <span>123</span> */}</ECInput>
+      <ECInput disabled prefix="123" />
 
       <div className="h-8"></div>
 
@@ -436,12 +436,12 @@ function Page() {
         <MCTextFiled
           prefix={
             <div className="">
-              <IconLoader name="search" />
+              <ECIconLoader name="search" />
             </div>
           }
           postfix={
             <div className="">
-              <IconLoader name="command" />
+              <ECIconLoader name="command" />
             </div>
           }
           placeholder="Search"
@@ -449,12 +449,12 @@ function Page() {
         <MCTextFiled
           prefix={
             <div className="">
-              <IconLoader name="search" />
+              <ECIconLoader name="search" />
             </div>
           }
           postfix={
             <div className="">
-              <IconLoader name="command" />
+              <ECIconLoader name="command" />
             </div>
           }
           placeholder="Search"
@@ -464,12 +464,12 @@ function Page() {
         <MCTextFiled
           prefix={
             <div className="">
-              <IconLoader name="search" />
+              <ECIconLoader name="search" />
             </div>
           }
           postfix={
             <div className="">
-              <IconLoader name="command" />
+              <ECIconLoader name="command" />
             </div>
           }
           addonAfter={
@@ -481,8 +481,8 @@ function Page() {
         />
       </div>
 
-      <MCLabel>Label</MCLabel>
-      <MCSeparator />
+      <ECLabel>Label</ECLabel>
+      <ECSeparator />
     </>
   );
 }

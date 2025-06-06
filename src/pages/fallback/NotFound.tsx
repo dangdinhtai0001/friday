@@ -1,7 +1,7 @@
 import Lottie from "react-lottie";
 import animationData from "@/assets/lotties/dog-swimming-outlines.json";
 import { Link } from "react-router";
-import { MCButton } from "@/components/atoms/button";
+import { ECButton } from "@/components/atoms/button";
 
 const defaultOptions = {
   loop: true,
@@ -24,7 +24,7 @@ function Page() {
         </div>
         <div className="h-16"/>
         <Link to="/" className="back-home-button">
-          <MCButton variant="filled" size="medium">Về trang chủ</MCButton>
+          <ECButton variant="filled" size="medium">Về trang chủ</ECButton>
         </Link>
       </div>
       <div>

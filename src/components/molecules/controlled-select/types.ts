@@ -1,4 +1,4 @@
-import { MCSelectProps } from "@/components/atoms/select";
+import { ECSelectProps } from "@/components/atoms/select";
 import { ControlledProps } from "@/components/shared-types";
 
 export type BaseOption = {
@@ -12,7 +12,7 @@ export type SelectOption<TOption extends BaseOption> =
   | (() => TOption[]);
 
 export type ControlledSelectProps<TOption extends BaseOption> = ControlledProps &
-  MCSelectProps & {
+  ECSelectProps & {
     options?: SelectOption<TOption>;
     getOptionValue?: (option: TOption) => unknown;
     renderLabel?: (option: TOption) => React.ReactNode;

@@ -1,4 +1,4 @@
-import { MCLabel } from '@/components/atoms/label';
+import { ECLabel } from '@/components/atoms/label';
 import { cn } from '@/composables/utils/shadcn';
 import * as LabelPrimitive from '@radix-ui/react-label';
 import { useFormFieldContext } from '../context/form-field/form-field-context';
@@ -19,7 +19,7 @@ function FormFieldLabel({
 
   return (
     <ECGridItem x={1} y={1} className="__form-field-label">
-      <MCLabel
+      <ECLabel
         data-slot="form-label"
         //   data-error={!!error}
         className={cn(
@@ -31,7 +31,7 @@ function FormFieldLabel({
       >
         {children}
         {required && <span className="text-secondary-red">*</span>}
-      </MCLabel>
+      </ECLabel>
     </ECGridItem>
   );
 }

@@ -6,13 +6,13 @@ import { cn } from "@/composables/utils/shadcn";
 
 import { useSidebarContext } from "../context/SidebarContext"; // Import hook context
 import {
-  MCSheet,
-  MCSheetContent,
-  MCSheetDescription,
-  MCSheetHeader,
-  MCSheetTitle,
+  ECSheet,
+  ECSheetContent,
+  ECSheetDescription,
+  ECSheetHeader,
+  ECSheetTitle,
 } from "@/components/organisms/sheet";
-import { MCTooltipProvider } from "@/components/molecules/tooltip";
+import { ECTooltipProvider } from "@/components/molecules/tooltip";
 import { motion } from "motion/react";
 import { SIDEBAR_TRANSITION_DURATION } from "../constants";
 
@@ -118,8 +118,8 @@ function Sidebar({
   // Render cho thiết bị di động
   if (isMobile) {
     return (
-      <MCSheet open={openMobile} onOpenChange={setOpenMobile} {...props}>
-        <MCSheetContent
+      <ECSheet open={openMobile} onOpenChange={setOpenMobile} {...props}>
+        <ECSheetContent
           data-sidebar="sidebar"
           data-slot="sidebar"
           data-mobile="true"
@@ -131,15 +131,15 @@ function Sidebar({
           }
           side={side}
         >
-          <MCSheetHeader className="sr-only">
-            <MCSheetTitle>Sidebar</MCSheetTitle>
-            <MCSheetDescription>
+          <ECSheetHeader className="sr-only">
+            <ECSheetTitle>Sidebar</ECSheetTitle>
+            <ECSheetDescription>
               Displays the mobile sidebar.
-            </MCSheetDescription>
-          </MCSheetHeader>
+            </ECSheetDescription>
+          </ECSheetHeader>
           <div className="flex h-full w-full flex-col">{children}</div>
-        </MCSheetContent>
-      </MCSheet>
+        </ECSheetContent>
+      </ECSheet>
     );
   }
 
@@ -200,7 +200,7 @@ function Sidebar({
           data-slot="sidebar-inner"
           className="bg-sidebar group-data-[variant=floating]:border-sidebar-border flex h-full w-full flex-col group-data-[variant=floating]:rounded-lg group-data-[variant=floating]:border group-data-[variant=floating]:shadow-sm"
         >
-          <MCTooltipProvider delayDuration={0}>{children}</MCTooltipProvider>
+          <ECTooltipProvider delayDuration={0}>{children}</ECTooltipProvider>
         </div>
       </motion.div>
     </div>

@@ -1,4 +1,4 @@
-import { MCButton } from '@/components/atoms/button';
+import { ECButton } from '@/components/atoms/button';
 import { ECTextField } from '@/components/atoms/text-field';
 import {
   ECFormContainer,
@@ -139,34 +139,34 @@ function Page() {
       </div>
 
       <div className="flex items-center gap-4">
-        <MCButton
+        <ECButton
           onClick={() => {
             submitForm();
           }}
         >
           Submit
-        </MCButton>
-        <MCButton
+        </ECButton>
+        <ECButton
           onClick={() => {
             resetForm();
           }}
         >
           Reset
-        </MCButton>
-        <MCButton
+        </ECButton>
+        <ECButton
           onClick={() => {
             validateForm();
           }}
         >
           Validate
-        </MCButton>
-        <MCButton
+        </ECButton>
+        <ECButton
           onClick={() => {
             getFieldsError();
           }}
         >
           get field err
-        </MCButton>
+        </ECButton>
       </div>
     </>
   );

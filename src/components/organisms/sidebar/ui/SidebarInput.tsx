@@ -1,16 +1,16 @@
 import * as React from "react";
 import { cn } from "@/composables/utils/shadcn"; // Giả định đường dẫn
-import { MCInput } from "@/components/atoms/input";
+import { ECInput } from "@/components/atoms/input";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
-interface SidebarInputProps extends React.ComponentProps<typeof MCInput> {
+interface SidebarInputProps extends React.ComponentProps<typeof ECInput> {
   // Bạn có thể thêm các props cụ thể cho SidebarInput nếu cần
 }
 
 const SidebarInput = React.forwardRef<HTMLInputElement, SidebarInputProps>(
   ({ className, ...props }, ref) => {
     return (
-      <MCInput
+      <ECInput
         ref={ref}
         className={cn(
           "h-8 w-full", // Chiều cao và chiều rộng mặc định

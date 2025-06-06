@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as SelectPrimitive from '@radix-ui/react-select';
 
 import { cn } from '@/composables/utils/shadcn';
-import { IconLoader } from '../icon-loader';
+import { ECIconLoader } from '../icon-loader';
 
 function SelectTrigger({
   className,
@@ -32,7 +32,7 @@ function SelectTrigger({
     >
       {children}
       <SelectPrimitive.Icon asChild>
-        <IconLoader name="chevron-down" className="opacity-50"/>
+        <ECIconLoader name="chevron-down" className="opacity-50"/>
       </SelectPrimitive.Icon>
     </SelectPrimitive.Trigger>
   );
