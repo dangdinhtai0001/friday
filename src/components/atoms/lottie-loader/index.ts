@@ -1,0 +1,1 @@
+export { default as ECLottieLoader } from './lotttie-loader'
