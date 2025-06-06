@@ -1,7 +1,7 @@
-export { default as MCCard } from "./card";
-export { default as MCCardHeader } from "./card-header";
-export { default as MCCardFooter } from "./card-footer";
-export { default as MCCardTitle } from "./card-title";
-export { default as MCCardAction } from "./card-action";
-export { default as MCCardDescription } from "./card-description";
-export { default as MCCardContent } from "./card-content";
+export { default as ECCard } from "./card";
+export { default as ECCardHeader } from "./card-header";
+export { default as ECCardFooter } from "./card-footer";
+export { default as ECCardTitle } from "./card-title";
+export { default as ECCardAction } from "./card-action";
+export { default as ECCardDescription } from "./card-description";
+export { default as ECCardContent } from "./card-content";

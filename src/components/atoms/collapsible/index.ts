@@ -1,3 +1,3 @@
-export { default as MCCollapsiable } from "./Collapsiable";
-export { default as MCCollapsibleContent } from "./CollapsibleContent";
-export { default as MCCollapsibleTrigger } from "./CollapsibleTrigger";
+export { default as ECCollapsiable } from "./ec-collapsiable";
+export { default as ECCollapsibleContent } from "./ec-collapsible-content";
+export { default as ECCollapsibleTrigger } from "./ec-collapsible-trigger";

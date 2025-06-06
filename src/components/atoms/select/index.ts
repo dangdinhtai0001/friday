@@ -1,19 +1,18 @@
 export {
-  Select as MCSelect,
-  SelectGroup as MCSelectGroup,
-  SelectValue as MCSelectValue,
+  Select as ECSelect,
+  SelectGroup as ECSelectGroup,
+  SelectValue as ECSelectValue,
 } from './select-root';
-export { SelectTrigger as MCSelectTrigger } from './select-trigger';
+export { SelectTrigger as ECSelectTrigger } from './select-trigger';
 export {
-  SelectContent as MCSelectContent,
-  SelectScrollUpButton as MCSelectScrollUpButton,
-  SelectScrollDownButton as MCSelectScrollDownButton,
+  SelectContent as ECSelectContent,
+  SelectScrollUpButton as ECSelectScrollUpButton,
+  SelectScrollDownButton as ECSelectScrollDownButton,
 } from './select-content';
 export {
-  SelectItem as MCSelectItem,
-  SelectLabel as MCSelectLabel,
-  SelectSeparator as MCSelectSeparator,
+  SelectItem as ECSelectItem,
+  SelectLabel as ECSelectLabel,
+  SelectSeparator as ECSelectSeparator,
 } from './select-items';
-export { default as ECSelectAsFormControl } from './select-as-form-control';
 
-export type { SelectProps as MCSelectProps } from './types';
+export type { SelectProps as ECSelectProps } from './types';

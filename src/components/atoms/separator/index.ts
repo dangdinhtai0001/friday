@@ -1,1 +1,1 @@
-export { default as MCSeparator } from "./Separator";
+export { default as ECSeparator } from "./ec-separator";

@@ -1,3 +1,3 @@
-export { default as MCAvatar } from "./Avatar";
-export { default as MCAvatarFallback } from "./AvatarFallback";
-export { default as MCAvatarImage } from "./AvatarImage";
+export { default as ECAvatar } from "./ec-avatar";
+export { default as ECAvatarFallback } from "./avatar-fallback";
+export { default as ECAvatarImage } from "./avatar-image";

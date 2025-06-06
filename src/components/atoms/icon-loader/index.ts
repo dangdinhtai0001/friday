@@ -1,1 +1,1 @@
-export { default as IconLoader } from "./IconLoader";
+export { default as ECIconLoader } from "./ec-icon-loader";

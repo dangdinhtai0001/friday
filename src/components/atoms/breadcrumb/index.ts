@@ -1,7 +1,7 @@
-export { default as MCBreadcrumb } from "./Breadcrumb";
-export { default as MCBreadcrumbList } from "./breadcrumb-list";
-export { default as MCBreadcrumbItem } from "./breadcrumb-item";
-export { default as MCBreadcrumbLink } from "./breadcrumb-link";
-export { default as MCBreadcrumbPage } from "./breadcrumb-page";
-export { default as MCBreadcrumbSeparator } from "./breadcrumb-separator";
-export { default as MCBreadcrumbEllipsis } from "./breadcrumb-ellipsis";
+export { default as ECBreadcrumb } from "./Breadcrumb";
+export { default as ECBreadcrumbList } from "./breadcrumb-list";
+export { default as ECBreadcrumbItem } from "./breadcrumb-item";
+export { default as ECBreadcrumbLink } from "./breadcrumb-link";
+export { default as ECBreadcrumbPage } from "./breadcrumb-page";
+export { default as ECBreadcrumbSeparator } from "./breadcrumb-separator";
+export { default as ECBreadcrumbEllipsis } from "./breadcrumb-ellipsis";

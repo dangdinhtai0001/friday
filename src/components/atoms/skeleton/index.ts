@@ -1,1 +1,1 @@
-export { default as MCSkeleton } from "./Skeleton";
+export { default as ECSkeleton } from "./ec-skeleton";
