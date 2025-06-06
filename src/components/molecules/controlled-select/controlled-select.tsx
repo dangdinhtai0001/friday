@@ -9,9 +9,9 @@ import { cn } from '@/composables/utils/shadcn';
 import React from 'react';
 import { BaseOption, ControlledSelectProps } from './types';
 import { useLanguage } from '@/composables/hooks/use-language';
-import animationData from '@/assets/lotties/empty-state-animation.json';
+import noOptionAnimationData from '@/assets/lotties/empty-state-animation.json';
+import loadingAnimationData from '@/assets/lotties/plane-animation.json';
 import { ECLottieLoader } from '@/components/atoms/lottie-loader';
-
 
 function ControlledSelect<TOption extends BaseOption>({
   options: optionsProp,
@@ -98,7 +98,16 @@ function ControlledSelect<TOption extends BaseOption>({
       </ECSelectTrigger>
 
       <ECSelectContent className="text-black-100">
-        {isLoading && <div>{t('component/select:loading_options')}</div>}
+        {isLoading && (
+          <div>
+            <ECLottieLoader
+              options={{ animationData: loadingAnimationData }}
+              height={150}
+              width={150}
+            />
+            {t('component/select:loading_options')}
+          </div>
+        )}
         {fetchError && (
           <div className="text-secondary-red">
             {t('component/select:error_fetching_data')}
@@ -108,7 +117,7 @@ function ControlledSelect<TOption extends BaseOption>({
         {!isLoading && !fetchError && internalOptions.length === 0 ? (
           <div className="flex flex-col items-center justify-center">
             <ECLottieLoader
-              options={{ animationData: animationData }}
+              options={{ animationData: noOptionAnimationData }}
               height={150}
               width={150}
             />
