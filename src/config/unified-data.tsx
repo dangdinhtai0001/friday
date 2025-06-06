@@ -109,6 +109,16 @@ export const initialUnifiedRoutes: UnifiedSidebarRouteItem[] = [
         icon: "forms",
         tooltip: "Form", 
       },
+      {
+        id: "components-datatable",
+        text: "Data table",
+        path: "/components/data-table",
+        lazyComponent: () => import("@/pages/components/data-table"), 
+        type: "link",
+        breadcrumbText: "Data table",
+        icon: "table",
+        tooltip: "Data table", 
+      },
     ],
   },
   {
