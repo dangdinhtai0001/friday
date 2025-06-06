@@ -1,7 +1,14 @@
+import { ECLottieLoader } from "@/components/atoms/lottie-loader";
+import animationData from "@/assets/lotties/plane-animation.json";
+
 function Page() {
   return (
-    <div>
-      <h1>System Status</h1>
+    <div className="flex h-screen w-full items-center justify-center">
+      <ECLottieLoader
+        options={{ animationData: animationData }}
+        height={600}
+        width={600}
+      />
     </div>
   );
 }
