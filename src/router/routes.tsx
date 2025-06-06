@@ -4,7 +4,7 @@ import { RouteObject } from "react-router";
 import { AppLayout } from "@/layouts/app-layout"; // Hoặc là AppLayout từ file của bạn
 import AuthLayout from "@/layouts/AuthLayout";
 import FallbackLayout from "@/layouts/FallbackLayout";
-import NotFound from "@/pages/fallback/NotFound"; // Giả sử component NotFound
+import NotFound from "@/pages/fallback/not-found"; // Giả sử component NotFound
 
 import { convertUnifiedToRouteObjects, initialUnifiedRoutes } from "@/config";
 
