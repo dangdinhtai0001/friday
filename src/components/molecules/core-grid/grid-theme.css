@@ -1,0 +1,31 @@
+body {
+    --ag-accent-color: var(--color-black-40);
+    --ag-border-color: var(--color-black-40);
+    --ag-background-color: var(--color-background-1);
+  
+    --ag-font-family: var(--font-inter);
+    --ag-font-size: var(--text-12);
+    --ag-text-color: var(--color-black-100);
+  
+    --ag-border-radius: var(--radius-8);
+    --ag-wrapper-border: 0;
+  
+    --ag-row-border: solid 1px var(--color-black-4);
+  
+  
+    --ag-header-background-color: transparent;
+    --ag-header-cell-hover-background-color: var(--color-transparent);
+    --ag-header-font-weight: var(--font-weight-regular);
+    --ag-header-row-border: solid 1px var(--color-black-20);
+    --ag-header-column-resize-handle-color: var(--color-black-20);
+    --ag-header-text-color: var(--color-black-40);
+    --ag-header-height: 40px;
+  
+    --ag-checkbox-border-radius: var(--radius-4);
+    --ag-checkbox-checked-background-color: var(--color-primary-brand);
+    --ag-checkbox-indeterminate-background-color: var(--color-primary-brand);
+    --ag-checkbox-unchecked-border-color: var(--color-black-20);
+  
+    --ag-input-background-color: var(--color-primary-brand);
+  }
+  
