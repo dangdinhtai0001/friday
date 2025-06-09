@@ -24,7 +24,7 @@ function DropdownMenuSubContent({
           animate="visible"
           exit="hidden"
           className={cn(
-            "rounded-16 bg-white-80 backdrop-blur-40 p-16 shadow-lg",
+            "rounded-16 bg-white-80 backdrop-blur-40 px-8 py-4 shadow-lg",
             className,
           )}
         >
