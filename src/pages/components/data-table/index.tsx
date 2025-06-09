@@ -2,6 +2,7 @@ import { ECStandardGrid } from '@/components/organisms/data-grid';
 import React from 'react';
 import { ColDef, ColGroupDef } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
+import { ECEnhancedDataGrid } from '@/components/organisms/enhanced-data-grid';
 
 interface IRowData {
   make: string;
@@ -31,8 +32,31 @@ function Page() {
   const gridRef = React.useRef<AgGridReact<IRowData>>(null);
 
   return (
+    // <div>
+    //   <ECStandardGrid<IRowData>
+    //     height={500}
+    //     rowData={rowData}
+    //     columnDefs={colDefs}
+    //     rowSelection={{ mode: 'multiRow' }}
+    //     suppressCellFocus
+    //     ref={gridRef}
+    //   />
+    //   <button
+    //     onClick={() => {
+    //       gridRef.current?.api.applyTransaction({
+    //         add: [
+    //           { make: 'Tesla', model: 'Model Y', price: 64950, electric: true },
+    //         ],
+    //         addIndex: 0,
+    //       });
+    //     }}
+    //   >
+    //     add
+    //   </button>
+    // </div>
+
     <div>
-      <ECStandardGrid<IRowData>
+      <ECEnhancedDataGrid<IRowData>
         height={500}
         rowData={rowData}
         columnDefs={colDefs}
@@ -40,18 +64,6 @@ function Page() {
         suppressCellFocus
         ref={gridRef}
       />
-      <button
-        onClick={() => {
-          gridRef.current?.api.applyTransaction({
-            add: [
-              { make: 'Tesla', model: 'Model Y', price: 64950, electric: true },
-            ],
-            addIndex: 0,
-          });
-        }}
-      >
-        add
-      </button>
     </div>
   );
 }
