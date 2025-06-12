@@ -4,6 +4,8 @@ import { ColDef, GridReadyEvent } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import React from 'react';
 import DataGridColumnHeader from './header/data-grid-column-header';
+import ChooseColumnPanel from './panel/choose-column-panel';
+import { motion } from 'motion/react';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface EnhancedDataGridProps<TData>
@@ -42,15 +44,25 @@ function EnhancedDataGrid<TData>(
     };
   }, [columnDefaultsProp]);
 
+  const constraintsRef = React.useRef<HTMLDivElement>(null);
+
   return (
-    <>
+    <div className="relative border w-full h-full" ref={constraintsRef}>
+      <motion.div
+        className="z-10 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+        drag
+        dragConstraints={constraintsRef}
+        dragElastic={0.2}
+      >
+        <ChooseColumnPanel gridApi={gridApi} />
+      </motion.div>
       <EcCoreDataGrid
         onGridReady={handleGridReady}
         columnDefaults={columnDefaults}
         {...props}
         ref={ref}
       ></EcCoreDataGrid>
-    </>
+    </div>
   );
 }
 
