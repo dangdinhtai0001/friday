@@ -47,8 +47,8 @@ function DataGridColumnHeader({
   };
 
   return (
-    <div className="flex h-full w-full items-center justify-between gap-4">
-      <div>{displayName}</div>
+    <div className="flex h-full w-full items-center justify-between gap-4 ">
+      <div className='typography-regular-12'>{displayName}</div>
       {/* ------- Dropdown Menu ------- */}
       {enableMenu && (
         <ECDropdownMenu>
