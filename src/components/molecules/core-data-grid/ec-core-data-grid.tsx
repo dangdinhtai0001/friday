@@ -4,13 +4,17 @@ import { ColDef, themeQuartz } from 'ag-grid-community';
 import './grid-theme.css';
 
 export interface CoreDataGridProps<TData>
-  extends React.ComponentProps<typeof AgGridReact<TData>> {
+  extends Omit<React.ComponentProps<typeof AgGridReact<TData>>, 'children'> {
   height: React.CSSProperties['height'];
   columnDefaults?: ColDef<TData>;
 }
 
 function CoreDataGrid<TData>(
-  { height, columnDefaults, ...props }: CoreDataGridProps<TData>,
+  {
+    height,
+    columnDefaults,
+    ...props
+  }: CoreDataGridProps<TData>,
   ref: React.ForwardedRef<AgGridReact<TData>>,
 ) {
   const defaultColDef: ColDef<TData> = React.useMemo(() => {
