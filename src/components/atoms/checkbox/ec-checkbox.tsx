@@ -66,7 +66,7 @@ function Checkbox({
               transition={iconTransition}
               className="flex items-center justify-center"
             >
-              <ECIconLoader name="check" className="size-16" />
+              <ECIconLoader name="check" />
             </motion.div>
           )}
           {(currentChecked === 'indeterminate') && (
@@ -79,7 +79,7 @@ function Checkbox({
               transition={iconTransition}
               className="flex items-center justify-center"
             >
-              <ECIconLoader name="minus" className="size-16" />
+              <ECIconLoader name="minus"  />
             </motion.div>
           )}
         </AnimatePresence>
