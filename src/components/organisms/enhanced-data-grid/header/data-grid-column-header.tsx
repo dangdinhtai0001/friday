@@ -16,6 +16,9 @@ import {
 import { DataGridColumnHeaderProps } from './types';
 import { ColumnPinnedType } from 'ag-grid-community';
 import { cn } from '@/composables/utils/shadcn';
+import { EventBusInstance } from '@/composables/utils/EventBus';
+import { resolveEventName } from '@/composables/utils/event';
+import { EVENT_NAME, EVENT_NAMESPACE } from '../constants';
 
 function DataGridColumnHeader({
   displayName,
@@ -46,9 +49,24 @@ function DataGridColumnHeader({
     gridApi!.autoSizeColumns(allColumnIds, skipHeader);
   };
 
+  const handleChooseColumn = () => {
+    EventBusInstance.emit(
+      resolveEventName(
+        EVENT_NAMESPACE,
+        EVENT_NAME.OPEN_PANEL_CHOOSE_COLUMN,
+        '',
+      ),
+    );
+  };
+
+  const handleResetColumn = () => {
+    gridApi.resetColumnState();
+    gridApi.resetColumnGroupState();
+  };
+
   return (
-    <div className="flex h-full w-full items-center justify-between gap-4 ">
-      <div className='typography-regular-12'>{displayName}</div>
+    <div className="flex h-full w-full items-center justify-between gap-4">
+      <div className="typography-regular-12">{displayName}</div>
       {/* ------- Dropdown Menu ------- */}
       {enableMenu && (
         <ECDropdownMenu>
@@ -149,10 +167,16 @@ function DataGridColumnHeader({
             </ECDropdownMenuGroup>
             <ECDropdownMenuSeparator />
             <ECDropdownMenuGroup className="__visibility_group">
-              <ECDropdownMenuItem className="">
-                Choose columns
+              <ECDropdownMenuItem
+                className="justify-start"
+                onClick={() => handleChooseColumn()}
+              >
+                <IconLoader name="columns-3" />
+                <span className="typography-regular-12">Choose columns</span>
               </ECDropdownMenuItem>
-              <ECDropdownMenuItem className="">Reset column</ECDropdownMenuItem>
+              <ECDropdownMenuItem onClick={() => handleResetColumn()}>
+                <span className="typography-regular-12">Reset column</span>
+              </ECDropdownMenuItem>
             </ECDropdownMenuGroup>
           </ECDropdownMenuContent>
         </ECDropdownMenu>
