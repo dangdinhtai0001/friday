@@ -2,8 +2,8 @@ import { ECCheckbox, ECCheckboxProps } from '@/components/atoms/checkbox';
 import { ControlledProps } from '@/components/shared-types';
 import * as CheckboxPrimitive from '@radix-ui/react-checkbox';
 
-export type ControlledCheckboxProps = ControlledProps &
-  ECCheckboxProps & {
+export type ControlledCheckboxProps = Omit<ControlledProps, "value"> &
+  Omit<ECCheckboxProps, "value"> & {
     value?: CheckboxPrimitive.CheckedState;
   };
 
