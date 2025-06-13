@@ -8,12 +8,15 @@ import { iconTransition, iconVariants } from './variants';
 
 export type CheckBoxProps = React.ComponentProps<
   typeof CheckboxPrimitive.Root
-> & {};
+> & {
+  checkedIcon?: React.ReactNode;
+};
 
 function Checkbox({
   className,
   checked: controlledChecked,
   onCheckedChange,
+  checkedIcon,
   ...props
 }: CheckBoxProps) {
   const [uncontrolledChecked, setUncontrolledChecked] =
@@ -43,7 +46,7 @@ function Checkbox({
         'transition-colors duration-300',
         'focus-visible:ring-none focus-visible:outline-none',
         'disabled:cursor-not-allowed disabled:opacity-50',
-        "data-[state=checked]:disabled:bg-black-10 data-[state=checked]:disabled:border-transparent",
+        'data-[state=checked]:disabled:bg-black-10 data-[state=checked]:disabled:border-transparent',
         className,
       )}
       checked={currentChecked}
@@ -56,7 +59,7 @@ function Checkbox({
         forceMount
       >
         <AnimatePresence initial={false}>
-          {(currentChecked === true) && (
+          {currentChecked === true && (
             <motion.div
               key="check"
               variants={iconVariants}
@@ -66,10 +69,10 @@ function Checkbox({
               transition={iconTransition}
               className="flex items-center justify-center"
             >
-              <ECIconLoader name="check" />
+              {checkedIcon ? checkedIcon : <ECIconLoader name="check" />}
             </motion.div>
           )}
-          {(currentChecked === 'indeterminate') && (
+          {currentChecked === 'indeterminate' && (
             <motion.div
               key="check"
               variants={iconVariants}
@@ -79,7 +82,7 @@ function Checkbox({
               transition={iconTransition}
               className="flex items-center justify-center"
             >
-              <ECIconLoader name="minus"  />
+              <ECIconLoader name="minus" />
             </motion.div>
           )}
         </AnimatePresence>
