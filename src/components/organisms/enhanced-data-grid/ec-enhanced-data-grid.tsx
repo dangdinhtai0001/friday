@@ -5,7 +5,11 @@ import { AgGridReact } from 'ag-grid-react';
 import React from 'react';
 import DataGridColumnHeader from './header/data-grid-column-header';
 import ChooseColumnPanel from './panel/choose-column-panel';
-import { motion } from 'motion/react';
+import { AnimatePresence, motion } from 'motion/react';
+import useEventListeners from '@/composables/hooks/use-event-listeners';
+import { EventBusInstance } from '@/composables/utils/EventBus';
+import { EVENT_NAMESPACE, EVENT_NAME } from './constants';
+import { resolveEventName } from '@/composables/utils/event';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface EnhancedDataGridProps<TData>
@@ -19,7 +23,9 @@ function EnhancedDataGrid<TData>(
   }: EnhancedDataGridProps<TData>,
   ref: React.ForwardedRef<AgGridReact<TData>>,
 ) {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [isOpenChooseColumnPanel, setIsOpenChooseColumnPanel] =
+    React.useState(false);
+
   const [gridApi, setGridApi] = React.useState<GridReadyEvent['api'] | null>(
     null,
   );
@@ -46,16 +52,51 @@ function EnhancedDataGrid<TData>(
 
   const constraintsRef = React.useRef<HTMLDivElement>(null);
 
+  const defaultEventHandlers = React.useMemo(
+    () => ({
+      [resolveEventName(
+        EVENT_NAMESPACE,
+        EVENT_NAME.OPEN_PANEL_CHOOSE_COLUMN,
+        '',
+      )]: () => {
+        setIsOpenChooseColumnPanel(true);
+      },
+      [resolveEventName(
+        EVENT_NAMESPACE,
+        EVENT_NAME.CLOSE_PANEL_CHOOSE_COLUMN,
+        '',
+      )]: () => {
+        setIsOpenChooseColumnPanel(false);
+      },
+    }),
+    [],
+  );
+
+  useEventListeners(defaultEventHandlers, EventBusInstance);
+
   return (
-    <div className="relative border w-full h-full" ref={constraintsRef}>
-      <motion.div
-        className="z-10 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
-        drag
-        dragConstraints={constraintsRef}
-        dragElastic={0.2}
-      >
-        <ChooseColumnPanel gridApi={gridApi} />
-      </motion.div>
+    <div className="relative h-full w-full" ref={constraintsRef}>
+      {/* ----- panel ----- */}
+      <AnimatePresence>
+        {isOpenChooseColumnPanel && (
+          <motion.div
+            className="absolute top-1/2 left-1/2 z-10 -translate-x-1/2 -translate-y-1/2"
+            drag
+            dragConstraints={constraintsRef}
+            dragElastic={0.2}
+            initial={{ scale: 0.8, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            exit={{ scale: 0.8, opacity: 0 }}
+            transition={{
+              duration: 0.25,
+              ease: 'easeOut',
+            }}
+          >
+            <ChooseColumnPanel gridApi={gridApi} />
+          </motion.div>
+        )}
+      </AnimatePresence>
+      {/* ----- grid ----- */}
       <EcCoreDataGrid
         onGridReady={handleGridReady}
         columnDefaults={columnDefaults}
