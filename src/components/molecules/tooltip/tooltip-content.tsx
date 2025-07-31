@@ -4,27 +4,6 @@ import * as TooltipPrimitive from "@radix-ui/react-tooltip";
 import { cn } from "@/composables/utils/shadcn";
 import { motion } from "motion/react";
 
-const getMotionVariants = (
-  side: React.ComponentProps<typeof TooltipPrimitive.Content>["side"],
-) => ({
-  hidden: {
-    opacity: 0,
-    ...(side === "left" && { x: 8 }), // Slide từ phải sang trái
-    ...(side === "right" && { x: -8 }), // Slide từ trái sang phải
-    ...(side === "top" && { y: 8 }), // Slide từ dưới lên
-    ...(side === "bottom" && { y: -8 }), // Slide từ trên xuống
-  },
-  visible: {
-    opacity: 1,
-    x: 0,
-    y: 0,
-    transition: {
-      duration: 0.25,
-      ease: "easeOut",
-    },
-  },
-});
-
 function TooltipContent({
   className,
   sideOffset = 4,
@@ -60,5 +39,26 @@ function TooltipContent({
     </TooltipPrimitive.Portal>
   );
 }
+
+const getMotionVariants = (
+  side: React.ComponentProps<typeof TooltipPrimitive.Content>["side"],
+) => ({
+  hidden: {
+    opacity: 0,
+    ...(side === "left" && { x: 8 }), // Slide từ phải sang trái
+    ...(side === "right" && { x: -8 }), // Slide từ trái sang phải
+    ...(side === "top" && { y: 8 }), // Slide từ dưới lên
+    ...(side === "bottom" && { y: -8 }), // Slide từ trên xuống
+  },
+  visible: {
+    opacity: 1,
+    x: 0,
+    y: 0,
+    transition: {
+      duration: 0.25,
+      ease: "easeOut",
+    },
+  },
+});
 
 export default TooltipContent;
