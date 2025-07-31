@@ -1,4 +1,3 @@
-import { ECStandardGrid } from '@/components/organisms/data-grid';
 import React from 'react';
 import { ColDef, ColGroupDef } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
