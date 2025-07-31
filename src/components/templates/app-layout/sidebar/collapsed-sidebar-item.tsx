@@ -104,7 +104,7 @@ function SidebarDropdownItem({
             </ECDropdownMenuTrigger>
           </CollapsedSidebarItemTrigger>
 
-          <ECDropdownMenuContent className="min-w-[8rem] max-w-[11rem] text-black-100" side="right">
+          <ECDropdownMenuContent className="min-w-[8rem] max-w-[11rem] text-black-100" side="right" align="start">
             {/* USING THE RECURSIVE RENDER COMPONENT HERE */}
             <DropdownMenuList items={dropdownItems} />
           </ECDropdownMenuContent>
